@@ -1,540 +1,453 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>HXH 獵人揪團</title>
-  <style>
-    :root{
-      --bg1:#07121f;
-      --bg2:#0a1a2b;
-      --panel:#0e2238;
-      --panel2:#102a45;
-      --line:rgba(255,255,255,.12);
-      --text:#ffffff;
-      --muted:rgba(255,255,255,.72);
-      --muted2:rgba(255,255,255,.58);
-      --navyBtn:#17365d;
-      --navyBtn2:#1a3e6b;
-      --yellow:#f5c451;
-      --yellow2:#ffd36a;
-      --good:#64d18a;
-      --bad:#ff7b7b;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>HXH 獵人揪團</title>
 
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      min-height:100vh;
-      color:var(--text);
-      font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;
-      background: radial-gradient(1200px 700px at 50% -10%, rgba(255,255,255,.08), transparent 55%),
-                  linear-gradient(180deg, var(--bg1), var(--bg2));
-    }
+<style>
+    *,
+*::before,
+*::after{
+  box-sizing: border-box;
+}
 
-    .wrap{
-      max-width:720px;
-      margin:0 auto;
-      padding:28px 16px 60px;
-    }
+body{
+margin:0;
+min-height:100vh;
+@@ -94,79 +100,80 @@
+.hidden{ display:none; }
 
-    .centered{
-      min-height: calc(100vh - 88px);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .hero{
-      width:100%;
-      padding:22px 18px 18px;
-      border-radius:22px;
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border:1px solid var(--line);
-      box-shadow: 0 12px 40px rgba(0,0,0,.25);
-      text-align:center;
-    }
-
-    h1{
-      margin:0;
-      font-size:34px;
-      letter-spacing:1px;
-      font-weight:900;
-      white-space:nowrap;         /* ✅ 手機不要換行 */
+.admin-box{
       overflow:hidden;
-      text-overflow:ellipsis;
-    }
+margin-top:22px;
+padding:18px 16px;
+background:rgba(255,255,255,.08);
+border-radius:14px;
+}
 
-    .lead{
-      margin-top:22px;
-      font-size:18px;
-      color:var(--muted);
-      line-height:1.8;
-    }
-
-    .question{
-      margin-top:24px;
-      font-size:18px;
-      color:var(--muted);
-      letter-spacing:.5px;
-    }
-
-    .btns{
-      margin-top:22px;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-    }
-
-    button{
-      width:100%;
-      border:0;
-      border-radius:18px;
-      padding:16px 16px;
-      font-size:18px;
-      font-weight:900;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-    }
-
-    .btn-navy{
-      background: linear-gradient(180deg, var(--navyBtn), var(--navyBtn2));
-      color:#fff;
-      border:1px solid rgba(255,255,255,.14);
-    }
-
-    .btn-yellow{
-      background: linear-gradient(180deg, var(--yellow), var(--yellow2));
-      color:#111;
-    }
-
-    .panel{
-      margin-top:18px;
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:16px;
-    }
-
-    .title{
-      font-size:18px;
-      font-weight:900;
-      margin:0 0 10px;
-      letter-spacing:.5px;
-    }
-
-    .muted{ color:var(--muted); font-size:13px; line-height:1.7; }
-    .muted2{ color:var(--muted2); font-size:12px; line-height:1.6; }
-
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-top:10px;
-    }
-
-    input, select{
-      flex:1;
-      min-width:210px;
-      padding:14px 14px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.18);
-      color:#fff;
-      font-size:16px;
-      outline:none;
-    }
-
-    input::placeholder{ color:rgba(255,255,255,.55); }
-
-    .mini{
-      padding:12px 12px;
-      font-size:15px;
-      border-radius:14px;
-    }
-
-    .statusline{
-      min-height:18px;
-      margin-top:10px;
-      font-size:13px;
-      color:var(--muted);
-    }
-
-    .tabs{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-
-    .tab{
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      color:#fff;
-      font-size:13px;
-      cursor:pointer;
-      user-select:none;
-    }
-
-    .tab.active{
-      background: linear-gradient(180deg, var(--yellow), var(--yellow2));
-      border-color: transparent;
-      color:#111;
-      font-weight:900;
-    }
-
-    .summary{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      border-radius:999px;
-      padding:10px 12px;
-      font-size:13px;
-      color:var(--muted);
-    }
-    .pill b{ color:#fff; font-size:14px; }
-
-    .good{ color:var(--good) !important; }
-    .bad{ color:var(--bad) !important; }
-
-    table{
-      width:100%;
-      border-collapse:separate;
-      border-spacing:0;
-      overflow:hidden;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      margin-top:12px;
-    }
-
-    thead th{
-      font-size:13px;
-      color:rgba(255,255,255,.85);
-      text-align:left;
-      padding:12px 10px;
-      border-bottom:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-    }
-
-    tbody td{
-      padding:12px 10px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-      vertical-align:top;
-      color:rgba(255,255,255,.92);
-      font-size:14px;
-    }
-
-    tbody tr:last-child td{ border-bottom:none; }
-
-    .right{ text-align:right; }
-    .center{ text-align:center; }
-
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      white-space:nowrap;
-      padding:7px 10px;
-      border-radius:999px;
-      font-size:13px;
-      font-weight:900;
-      min-width:64px;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.14);
-    }
-    .badge.paid{ color:var(--good); }
-    .badge.unpaid{ color:var(--bad); }
-
-    .small{ font-size:12px; color:var(--muted2); line-height:1.5; margin-top:4px; }
-
-    .hide{ display:none !important; }
-
-    .spinner{
-      width:18px;height:18px;
-      border:2px solid rgba(255,255,255,.35);
-      border-top-color:#fff;
-      border-radius:50%;
-      animation:spin .8s linear infinite;
-      display:none;
-    }
-    .loading .spinner{ display:inline-block; }
-    @keyframes spin{ to{ transform:rotate(360deg); } }
-
-    .btn-inline{
-      width:auto;
-      padding:12px 14px;
-      border-radius:14px;
-      font-size:15px;
-    }
-
-    .btn-ghost{
-      background: rgba(0,0,0,.18);
-      border:1px solid rgba(255,255,255,.14);
-      color:#fff;
-    }
-
-    .btn-danger{
-      background: rgba(255,123,123,.18);
-      border:1px solid rgba(255,123,123,.28);
-      color:#fff;
-    }
-
-    /* 手機：表格太寬時先藏「金額」欄（保留團別） */
-    @media(max-width:720px){
-      th:nth-child(4), td:nth-child(4){ display:none; }
-    }
-  </style>
+.admin-box input{
+width:100%;
+padding:12px;
+border-radius:10px;
+border:none;
+margin-bottom:12px;
+font-size:14px;
+}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
+<div class="box">
+<h1>HXH 獵人揪團</h1>
 
-    <!-- Landing (你截圖那頁) -->
-    <div class="centered" id="landing">
-      <div class="hero">
-        <h1>HXH 獵人揪團</h1>
+<div class="quote">
+我知道你又敗家了，<br>
+我也是。
+</div>
 
-        <div class="lead"> </div>
+<div class="question">
+——你是豆漿嗎？
+</div>
 
-        <div class="question">— 你是豆漿嗎？</div>
+<!-- 初始選擇 -->
+<div id="choice">
+<button class="btn btn-main" onclick="enterAdmin()">
+是，我就是豆漿
+</button>
+<button class="btn btn-sub" onclick="enterUser()">
+不是，我來查團務
+</button>
+</div>
 
-        <div class="btns">
-          <button class="btn-navy" id="btnAdmin">是，我就是豆漿</button>
-          <button class="btn-yellow" id="btnUser">不是，我來查團務</button>
-        </div>
+<!-- 管理者驗證區 -->
+<div id="admin" class="hidden">
+<div class="admin-box">
+<div style="margin-bottom:10px;font-size:14px;">
+管理者驗證
+</div>
+<input id="a_key" type="password" placeholder="請輸入管理碼">
+<button class="btn btn-admin" onclick="adminEnter()">進入管理頁</button>
+<div id="a_status" style="margin-top:8px;font-size:13px;opacity:.85;"></div>
+
+<!-- 一般查詢頁 -->
+<div id="userPage" class="hidden">
+  <div class="admin-box">
+    <div style="margin-bottom:10px;font-size:14px;">一般查詢</div>
+
+    <input id="u_name" placeholder="暱稱（FB / LINE 名稱）">
+    <input id="u_key" placeholder="查詢密碼">
+
+    <button class="btn btn-admin" onclick="userQuery()">查詢</button>
+    <div id="u_status" style="margin-top:8px;font-size:13px;opacity:.85;"></div>
+
+    <div id="u_summary" style="margin-top:10px; display:none;">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <div style="padding:8px 10px;border:1px solid rgba(255,255,255,.15);border-radius:999px;">應收：<b id="u_due"></b></div>
+        <div style="padding:8px 10px;border:1px solid rgba(255,255,255,.15);border-radius:999px;">已收：<b id="u_paid"></b></div>
+        <div style="padding:8px 10px;border:1px solid rgba(255,255,255,.15);border-radius:999px;">差額：<b id="u_bal"></b></div>
       </div>
     </div>
 
-    <!-- Admin login -->
-    <div class="panel hide" id="adminLogin">
-      <div class="title">管理者入口</div>
-      <div class="muted2">輸入管理碼才會放你進去。</div>
-
-      <div class="row">
-        <input id="a_key" placeholder="管理碼">
-        <button class="btn-navy btn-inline" id="a_enter">
-          <span class="spinner"></span> 進入
-        </button>
-        <button class="btn-ghost btn-inline" id="a_back">返回</button>
-      </div>
-      <div class="statusline" id="a_status"></div>
+    <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+      <button class="btn btn-sub" onclick="switchUserTab('orders')">訂單明細</button>
+      <button class="btn btn-sub" onclick="switchUserTab('payments')">付款明細</button>
     </div>
 
-    <!-- Admin page -->
-    <div class="panel hide" id="adminPage">
-      <div class="row" style="justify-content:space-between;">
-        <div class="title" style="margin:0;">管理頁</div>
-        <button class="btn-danger btn-inline" id="a_logout">離開管理頁</button>
-      </div>
-
-      <div class="row">
-        <select id="a_group"></select>
-        <input id="a_nick" placeholder="搜尋暱稱（可空）">
-      </div>
-
-      <div class="tabs" id="adminTabs">
-        <div class="tab active" data-at="all">全部</div>
-        <div class="tab" data-at="arrived">未全到</div>
-        <div class="tab" data-at="unboxed">未包</div>
-        <div class="tab" data-at="unshipped">未出</div>
-      </div>
-
-      <div class="row">
-        <button class="btn-ghost btn-inline" id="a_selectAll">全選</button>
-        <button class="btn-ghost btn-inline" id="a_clearSel">清空勾選</button>
-      </div>
-
-      <div class="row">
-        <button class="btn-navy btn-inline" id="a_arrivedFull">到貨=全到</button>
-        <input class="mini" id="a_arrivedSet" placeholder="手填到貨 qty（例如 1）" style="min-width:160px; max-width:220px; flex:0;">
-        <button class="btn-ghost btn-inline" id="a_applyArrived">套用到貨</button>
-      </div>
-
-      <div class="row">
-        <button class="btn-navy btn-inline" id="a_makePkg">建立包裹</button>
-        <button class="btn-navy btn-inline" id="a_markPacked">標記已包</button>
-        <button class="btn-navy btn-inline" id="a_markShipped">標記已出</button>
-      </div>
-
-      <div class="row">
-        <input id="a_tracking" placeholder="追蹤單號（批次套用，可空）">
-        <button class="btn-ghost btn-inline" id="a_setTracking">套用單號</button>
-      </div>
-
-      <div class="row">
-        <input id="a_orderLink" placeholder="賣貨便/訂單連結（批次套用，可空）">
-        <button class="btn-ghost btn-inline" id="a_setOrderLink">套用連結</button>
-      </div>
-
-      <div class="statusline" id="a2_status"></div>
-      <div id="a_list"></div>
-    </div>
-
-    <!-- User page -->
-    <div class="panel hide" id="userPage">
-      <div class="title">一般查詢</div>
-      <div class="muted2">輸入暱稱與密碼查詢自己的團務。</div>
-
-      <div class="row">
-        <input id="u_name" placeholder="暱稱（FB / LINE 名稱）">
-        <input id="u_key" placeholder="查詢密碼">
-        <button class="btn-navy btn-inline" id="u_go">
-          <span class="spinner"></span> 查詢
-        </button>
-        <button class="btn-ghost btn-inline" id="u_back">返回</button>
-      </div>
-
-      <div class="statusline" id="u_status"></div>
-
-      <div class="summary" id="u_summary" style="display:none;">
-        <div class="pill">應收：<b id="u_due"></b></div>
-        <div class="pill">已收：<b id="u_paid"></b></div>
-        <div class="pill">差額：<b id="u_bal"></b></div>
-      </div>
-
-      <div class="tabs" id="userTabs">
-        <div class="tab active" data-ut="orders">訂單明細</div>
-        <div class="tab" data-ut="payments">付款明細</div>
-      </div>
-
-      <div id="u_list"></div>
-    </div>
-
+    <div id="u_list" style="margin-top:10px;"></div>
   </div>
 
+  <button class="btn-escape" onclick="backToChoice()">返回首頁</button>
+</div>
+
+<!-- 管理頁 -->
+<div id="adminPage" class="hidden">
+  <div class="admin-box">
+    <div style="margin-bottom:10px;font-size:14px;">管理頁</div>
+
+    <select id="a_group" style="width:100%;margin-bottom:10px;"></select>
+    <input id="a_nick" placeholder="搜尋暱稱（可空）">
+
+    <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+      <button class="btn btn-sub" onclick="setAdminOnly('all')">全部</button>
+      <button class="btn btn-sub" onclick="setAdminOnly('arrived')">未全到</button>
+      <button class="btn btn-sub" onclick="setAdminOnly('unboxed')">未包</button>
+      <button class="btn btn-sub" onclick="setAdminOnly('unshipped')">未出</button>
+    </div>
+
+    <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+      <button class="btn btn-sub" onclick="selectAll()">全選</button>
+      <button class="btn btn-sub" onclick="clearSel()">清空勾選</button>
+    </div>
+
+    <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+      <button class="btn btn-admin" onclick="adminOp('arrived_full')">到貨=全到</button>
+      <input id="a_arrivedSet" placeholder="手填到貨 qty（例1）" style="min-width:140px;flex:0;">
+      <button class="btn btn-sub" onclick="applyArrived()">套用到貨</button>
+    </div>
+
+    <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+      <button class="btn btn-admin" onclick="adminOp('make_package')">建立包裹</button>
+      <button class="btn btn-admin" onclick="adminOp('mark_packed')">標記已包</button>
+      <button class="btn btn-admin" onclick="adminOp('mark_shipped')">標記已出</button>
+    </div>
+
+    <div style="margin-top:10px;">
+      <input id="a_tracking" placeholder="追蹤單號（批次套用，可空）">
+      <button class="btn btn-sub" style="margin-top:8px;" onclick="setTracking()">套用單號</button>
+    </div>
+
+    <div style="margin-top:10px;">
+      <input id="a_orderLink" placeholder="賣貨便/訂單連結（批次套用，可空）">
+      <button class="btn btn-sub" style="margin-top:8px;" onclick="setOrderLink()">套用連結</button>
+    </div>
+
+    <div id="a2_status" style="margin-top:10px;font-size:13px;opacity:.85;"></div>
+    <div id="a_list" style="margin-top:10px;"></div>
+  </div>
+
+  <button class="btn-escape" onclick="adminLogout()">返回首頁</button>
+</div>
+
+</div>
+
+<button class="btn-escape" onclick="backToUser()">
+我點錯了，其實我不是豆漿
+</button>
+</div>
+</div>
+
 <script>
-/*** 你只要改這兩行 ***/
-const API_URL = "貼上你的AppsScript /exec URL";
-const ADMIN_KEY_FALLBACK = ""; // 可留空，因為我們用輸入框 a_key
+const API_URL = "https://script.google.com/macros/s/AKfycbzwEAj6nG_MdvHoMWJ_KrggB17o15xiIgWyo-zosvLLbrHb87Fabs6leAb9CIQJ6soS/exec";
 
-const $ = (id)=>document.getElementById(id);
-function esc(s){ return String(s??"").replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m])); }
-function fmt(n){ return Number(n||0).toLocaleString("zh-Hant-TW"); }
-
-async function safeJson(res){
-  const t = await res.text();
-  try { return { ok:true, json: JSON.parse(t) }; }
-  catch(e){ return { ok:false, raw:t }; }
-}
-
-function setBtnLoading(btn, on){
-  btn.disabled = on;
-  btn.classList.toggle("loading", on);
-}
-
-function showOnly(id){
-  ["landing","adminLogin","adminPage","userPage"].forEach(x=>{
-    const el = $(x);
-    if(!el) return;
-    if(x === id) el.classList.remove("hide");
-    else el.classList.add("hide");
-  });
-}
-
-/*** Landing ***/
-$("btnAdmin").onclick = ()=> showOnly("adminLogin");
-$("btnUser").onclick  = ()=> showOnly("userPage");
-
-/*** Back buttons ***/
-$("a_back").onclick = ()=> showOnly("landing");
-$("u_back").onclick = ()=> showOnly("landing");
-
-$("a_logout").onclick = ()=>{
-  $("a_key").value = "";
-  $("a_list").innerHTML = "";
-  $("a2_status").textContent = "";
-  showOnly("landing");
-};
-
-/*** User page ***/
+let adminOnly = "all";
+let adminList = [];
+let selected = new Set();
+let groupsCache = [];
 let userTab = "orders";
 let userData = null;
 
-$("userTabs").querySelectorAll(".tab").forEach(t=>{
-  t.addEventListener("click", ()=>{
-    $("userTabs").querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-    t.classList.add("active");
-    userTab = t.dataset.ut;
-    renderUser();
+function hideAll(){
+  ["choice","admin","userPage","adminPage"].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.classList.add("hidden");
   });
-});
+}
 
-$("u_go").onclick = async ()=>{
-  const name = $("u_name").value.trim();
-  const key  = $("u_key").value.trim();
-  if(!name || !key){
-    $("u_status").textContent = "請輸入暱稱與密碼。";
+function backToChoice(){
+  hideAll();
+  document.getElementById("choice").classList.remove("hidden");
+}
+
+function enterAdmin(){
+  hideAll();
+  document.getElementById("admin").classList.remove("hidden");
+  document.getElementById("a_status").textContent = "";
+}
+
+function enterUser(){
+  hideAll();
+  document.getElementById("userPage").classList.remove("hidden");
+  document.getElementById("u_status").textContent = "";
+}
+
+function backToUser(){
+  // 你原本那顆「我點錯了」按鈕
+  backToChoice();
+}
+
+function adminLogout(){
+  document.getElementById("a_key").value = "";
+  document.getElementById("a_list").innerHTML = "";
+  document.getElementById("a2_status").textContent = "";
+  backToChoice();
+}
+
+async function safeJson(res){
+  const t = await res.text();
+  try{ return { ok:true, json: JSON.parse(t) }; }
+  catch(e){ return { ok:false, raw:t }; }
+}
+
+/** 管理者進入：驗證成功後顯示管理頁 */
+async function adminEnter(){
+  const key = document.getElementById("a_key").value.trim();
+  if(!key){
+    document.getElementById("a_status").textContent = "請輸入管理碼。";
     return;
   }
+  document.getElementById("a_status").textContent = "驗證中…";
+  const ok = await loadAdminList(true);
+  if(ok){
+    hideAll();
+    document.getElementById("adminPage").classList.remove("hidden");
+  }
+}
 
-  setBtnLoading($("u_go"), true);
-  $("u_status").textContent = "查詢中…";
-  $("u_list").innerHTML = "";
-  $("u_summary").style.display = "none";
+/** 讀管理清單 */
+async function loadAdminList(isLogin=false){
+  const admin_key = document.getElementById("a_key").value.trim();
+  const group = document.getElementById("a_group").value || "";
+  const nickname = document.getElementById("a_nick").value.trim();
 
+  const onlyMap = { all:"", arrived:"arrived", unboxed:"unboxed", unshipped:"unshipped" };
+  const only = onlyMap[adminOnly] || "";
+
+  document.getElementById("a2_status").textContent = "載入中…";
   try{
-    const url = `${API_URL}?action=query&q=${encodeURIComponent(name)}&key=${encodeURIComponent(key)}`;
+    const url = `${API_URL}?action=admin_list&admin_key=${encodeURIComponent(admin_key)}&group=${encodeURIComponent(group)}&nickname=${encodeURIComponent(nickname)}&only=${encodeURIComponent(only)}`;
     const res = await fetch(url);
     const parsed = await safeJson(res);
-
     if(!parsed.ok){
-      $("u_status").textContent = "API 回傳不是 JSON（多半是權限或錯誤頁）。";
-      $("u_list").innerHTML = `<div class="small">${esc(parsed.raw.slice(0,500))}</div>`;
-      setBtnLoading($("u_go"), false);
-      return;
+      document.getElementById("a2_status").textContent = "API 回傳不是 JSON（權限/錯誤頁）";
+      return false;
     }
-
     const data = parsed.json;
     if(!data.ok){
-      $("u_status").textContent = data.message || "查詢失敗";
-      setBtnLoading($("u_go"), false);
-      return;
+      if(isLogin) document.getElementById("a_status").textContent = data.message || "管理碼錯誤";
+      document.getElementById("a2_status").textContent = data.message || "讀取失敗";
+      return false;
     }
 
-    userData = data;
-    $("u_due").textContent  = fmt(data.due_total);
-    $("u_paid").textContent = fmt(data.paid_total);
-    $("u_bal").textContent  = fmt(data.balance);
+    // groups 下拉
+    if(!groupsCache.length){
+      groupsCache = data.groups || [];
+      const sel = document.getElementById("a_group");
+      sel.innerHTML = `<option value="">全部團別</option>` + groupsCache.map(g=>`<option value="${g}">${g}</option>`).join("");
+      sel.onchange = ()=>loadAdminList();
+    }
 
-    $("u_summary").style.display = "";
-    $("u_status").textContent = `查到 ${data.details.length} 筆訂單、${(data.payments||[]).length} 筆付款。`;
+    document.getElementById("a_nick").onkeydown = (e)=>{ if(e.key==="Enter") loadAdminList(); };
 
-    setBtnLoading($("u_go"), false);
-    renderUser();
+    adminList = data.list || [];
+    selected.clear();
+    renderAdminTable();
+    document.getElementById("a2_status").textContent = `共 ${adminList.length} 筆（已勾 ${selected.size}）`;
+    return true;
 
   }catch(err){
     console.error(err);
-    $("u_status").textContent = "查詢失敗（網路或 API 設定）。";
-    setBtnLoading($("u_go"), false);
+    document.getElementById("a2_status").textContent = "載入失敗（網路或 API）";
+    return false;
   }
-};
+}
 
-function renderUser(){
-  if(!userData){
-    $("u_list").innerHTML = "";
+function setAdminOnly(v){
+  adminOnly = v;
+  loadAdminList();
+}
+
+function selectAll(){
+  adminList.forEach(x=> selected.add(x.row_key));
+  renderAdminTable();
+}
+function clearSel(){
+  selected.clear();
+  renderAdminTable();
+}
+function getSelectedKeys(){ return Array.from(selected); }
+
+async function adminOp(op){
+  await adminUpdate(op, {});
+}
+async function applyArrived(){
+  const v = document.getElementById("a_arrivedSet").value.trim();
+  if(v==="" || isNaN(Number(v))){
+    document.getElementById("a2_status").textContent = "手填到貨 qty 要輸入數字。";
     return;
   }
+  await adminUpdate("arrived_set", { value: Number(v) });
+}
+async function setTracking(){
+  const v = document.getElementById("a_tracking").value.trim();
+  await adminUpdate("set_tracking", { tracking_no: v });
+}
+async function setOrderLink(){
+  const v = document.getElementById("a_orderLink").value.trim();
+  await adminUpdate("set_order_link", { order_link: v });
+}
+
+/** ✅ 用 GET 做 admin_update（避免 POST CORS） */
+async function adminUpdate(op, payload){
+  const admin_key = document.getElementById("a_key").value.trim();
+  const row_keys = getSelectedKeys();
+  if(!row_keys.length){
+    document.getElementById("a2_status").textContent = "請先勾選至少一筆。";
+    return;
+  }
+
+  document.getElementById("a2_status").textContent = "更新中…";
+
+  const params = new URLSearchParams();
+  params.set("action","admin_update");
+  params.set("admin_key", admin_key);
+  params.set("op", op);
+  params.set("row_keys", JSON.stringify(row_keys));
+  if(payload.value !== undefined) params.set("value", String(payload.value));
+  if(payload.tracking_no !== undefined) params.set("tracking_no", payload.tracking_no);
+  if(payload.order_link !== undefined) params.set("order_link", payload.order_link);
+
+  const url = `${API_URL}?${params.toString()}`;
+
+  const res = await fetch(url);
+  const parsed = await safeJson(res);
+  if(!parsed.ok){
+    document.getElementById("a2_status").textContent = "更新失敗（API 回傳不是 JSON）";
+    return;
+  }
+  const data = parsed.json;
+  if(!data.ok){
+    document.getElementById("a2_status").textContent = data.message || "更新失敗";
+    return;
+  }
+  document.getElementById("a2_status").textContent = data.package_id ? `已建立包裹：${data.package_id}` : "更新完成";
+  await loadAdminList();
+}
+
+function renderAdminTable(){
+  const box = document.getElementById("a_list");
+  if(!adminList.length){
+    box.innerHTML = `<div style="font-size:13px;opacity:.8;">沒有資料。</div>`;
+    return;
+  }
+
+  let html = `
+  <table>
+    <thead>
+      <tr>
+        <th class="center">選</th>
+        <th>團別</th>
+        <th>暱稱</th>
+        <th>品項</th>
+        <th class="center">qty</th>
+        <th class="center">到貨</th>
+        <th>包裹</th>
+      </tr>
+    </thead>
+    <tbody>
+  `;
+
+  adminList.forEach(d=>{
+    const checked = selected.has(d.row_key) ? "checked" : "";
+    const qty = Number(d.qty||0);
+    const aq  = Number(d.arrived_qty||0);
+
+    html += `
+      <tr>
+        <td class="center"><input type="checkbox" data-rk="${d.row_key}" ${checked}></td>
+        <td class="small">${d.group||""}</td>
+        <td>${d.nickname||""}</td>
+        <td>${d.item||""}</td>
+        <td class="center">${qty}</td>
+        <td class="center">${aq}/${qty}</td>
+        <td class="small">${d.package_id||""}</td>
+      </tr>
+    `;
+  });
+
+  html += `</tbody></table>`;
+  box.innerHTML = html;
+
+  box.querySelectorAll("input[type=checkbox][data-rk]").forEach(cb=>{
+    cb.onchange = ()=>{
+      const rk = cb.getAttribute("data-rk");
+      if(cb.checked) selected.add(rk);
+      else selected.delete(rk);
+      document.getElementById("a2_status").textContent = `共 ${adminList.length} 筆（已勾 ${selected.size}）`;
+    };
+  });
+}
+
+/** 一般查詢 */
+async function userQuery(){
+  const name = document.getElementById("u_name").value.trim();
+  const key  = document.getElementById("u_key").value.trim();
+  if(!name || !key){
+    document.getElementById("u_status").textContent = "請輸入暱稱與密碼。";
+    return;
+  }
+  document.getElementById("u_status").textContent = "查詢中…";
+  document.getElementById("u_list").innerHTML = "";
+  document.getElementById("u_summary").style.display = "none";
+
+  const url = `${API_URL}?action=query&q=${encodeURIComponent(name)}&key=${encodeURIComponent(key)}`;
+  const res = await fetch(url);
+  const parsed = await safeJson(res);
+  if(!parsed.ok){
+    document.getElementById("u_status").textContent = "API 回傳不是 JSON（權限/錯誤頁）";
+    return;
+  }
+  const data = parsed.json;
+  if(!data.ok){
+    document.getElementById("u_status").textContent = data.message || "查詢失敗";
+    return;
+  }
+
+  userData = data;
+  document.getElementById("u_due").textContent  = fmt(data.due_total);
+  document.getElementById("u_paid").textContent = fmt(data.paid_total);
+  document.getElementById("u_bal").textContent  = fmt(data.balance);
+  document.getElementById("u_summary").style.display = "";
+
+  document.getElementById("u_status").textContent = `查到 ${data.details.length} 筆訂單、${(data.payments||[]).length} 筆付款。`;
+  renderUser();
+}
+
+function switchUserTab(t){
+  userTab = t;
+  renderUser();
+}
+
+function fmt(n){ return Number(n||0).toLocaleString("zh-Hant-TW"); }
+
+function renderUser(){
+  const box = document.getElementById("u_list");
+  if(!userData){ box.innerHTML=""; return; }
 
   if(userTab === "payments"){
     const pays = userData.payments || [];
     if(!pays.length){
-      $("u_list").innerHTML = `<div class="small">沒有付款紀錄。</div>`;
+      box.innerHTML = `<div style="font-size:13px;opacity:.8;">沒有付款紀錄。</div>`;
       return;
     }
     let html = `
@@ -543,20 +456,16 @@ function renderUser(){
         <tbody>
     `;
     pays.forEach(p=>{
-      html += `<tr>
-        <td>${esc(p.paid_at||"")}</td>
-        <td class="right">${fmt(p.amount)}</td>
-        <td class="small">${esc(p.note||"")}</td>
-      </tr>`;
+      html += `<tr><td>${p.paid_at||""}</td><td class="right">${fmt(p.amount)}</td><td class="small">${p.note||""}</td></tr>`;
     });
     html += `</tbody></table>`;
-    $("u_list").innerHTML = html;
+    box.innerHTML = html;
     return;
   }
 
   const list = userData.details || [];
   if(!list.length){
-    $("u_list").innerHTML = `<div class="small">沒有訂單資料。</div>`;
+    box.innerHTML = `<div style="font-size:13px;opacity:.8;">沒有訂單資料。</div>`;
     return;
   }
 
@@ -570,259 +479,28 @@ function renderUser(){
           <th class="center">數量</th>
           <th>團別</th>
           <th class="right">金額</th>
-          <th class="center">狀態</th>
         </tr>
       </thead>
       <tbody>
   `;
 
   list.forEach(d=>{
-    const qty = Number(d.qty||0);
-    const aq  = Number(d.arrived_qty||0);
-    const arrivedText = `${aq}/${qty}`;
-    const pack = (d.pack_status||"未包") === "已包" ? "已包" : "未包";
-    const ship = (d.ship_status||"未出") === "已出" ? "已出" : "未出";
-    const pref = d.ship_pref || "等齊";
-
-    const statusLines = `
-      <div class="small">到貨：${esc(arrivedText)}（${esc(pref)}）</div>
-      <div class="small">包貨：${esc(pack)}${d.packed_at? " @" + esc(d.packed_at):""}</div>
-      <div class="small">出貨：${esc(ship)}${d.shipped_at? " @" + esc(d.shipped_at):""}</div>
-      ${d.tracking_no ? `<div class="small">單號：${esc(d.tracking_no)}</div>` : ``}
-      ${d.order_link ? `<div class="small">連結：<a href="${esc(d.order_link)}" target="_blank" style="color:#fff;text-decoration:underline;">點我</a></div>` : ``}
-    `;
-
     html += `
       <tr>
-        <td>${esc(d.item||"")}</td>
-        <td class="center">${esc(qty)}</td>
-        <td class="small">${esc(d.group||"")}</td>
+        <td>${d.item||""}</td>
+        <td class="center">${d.qty||""}</td>
+        <td class="small">${d.group||""}</td>
         <td class="right">${fmt(d.amount)}</td>
-        <td>${statusLines}</td>
       </tr>
     `;
   });
 
   html += `</tbody></table>`;
-  $("u_list").innerHTML = html;
+  box.innerHTML = html;
 }
 
-/*** Admin page ***/
-let adminOnly = "all";
-let adminList = [];
-let selected = new Set();
-let groupsCache = [];
-
-$("adminTabs").querySelectorAll(".tab").forEach(t=>{
-  t.addEventListener("click", ()=>{
-    $("adminTabs").querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-    t.classList.add("active");
-    adminOnly = t.dataset.at;
-    loadAdminList();
-  });
-});
-
-$("a_enter").onclick = async ()=>{
-  const key = $("a_key").value.trim() || ADMIN_KEY_FALLBACK;
-  if(!key){
-    $("a_status").textContent = "請輸入管理碼。";
-    return;
-  }
-  setBtnLoading($("a_enter"), true);
-  $("a_status").textContent = "驗證中…";
-  const ok = await loadAdminList(true);
-  setBtnLoading($("a_enter"), false);
-  if(ok){
-    $("a_status").textContent = "";
-    showOnly("adminPage");
-  }
-};
-
-$("a_group").onchange = ()=> loadAdminList();
-$("a_nick").onkeydown = (e)=>{ if(e.key==="Enter") loadAdminList(); };
-
-async function loadAdminList(isLogin=false){
-  const admin_key = $("a_key").value.trim() || ADMIN_KEY_FALLBACK;
-
-  const group = $("a_group").value || "";
-  const nickname = $("a_nick").value.trim();
-
-  const onlyMap = { all:"", arrived:"arrived", unboxed:"unboxed", unshipped:"unshipped" };
-  const only = onlyMap[adminOnly] || "";
-
-  $("a2_status").textContent = "載入中…";
-
-  try{
-    const url = `${API_URL}?action=admin_list&admin_key=${encodeURIComponent(admin_key)}&group=${encodeURIComponent(group)}&nickname=${encodeURIComponent(nickname)}&only=${encodeURIComponent(only)}`;
-    const res = await fetch(url);
-    const parsed = await safeJson(res);
-
-    if(!parsed.ok){
-      $("a2_status").textContent = "API 回傳不是 JSON（權限或錯誤頁）。";
-      return false;
-    }
-    const data = parsed.json;
-    if(!data.ok){
-      if(isLogin) $("a_status").textContent = data.message || "管理碼錯誤";
-      $("a2_status").textContent = data.message || "讀取失敗";
-      return false;
-    }
-
-    if(!groupsCache.length){
-      groupsCache = data.groups || [];
-      $("a_group").innerHTML =
-        `<option value="">全部團別</option>` +
-        groupsCache.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join("");
-    }
-
-    adminList = data.list || [];
-    selected.clear();
-    renderAdminTable();
-    $("a2_status").textContent = `共 ${adminList.length} 筆（已勾 ${selected.size}）`;
-    return true;
-
-  }catch(err){
-    console.error(err);
-    $("a2_status").textContent = "載入失敗（網路或 API）。";
-    return false;
-  }
-}
-
-$("a_selectAll").onclick = ()=>{
-  adminList.forEach(x=> selected.add(x.row_key));
-  renderAdminTable();
-};
-$("a_clearSel").onclick = ()=>{
-  selected.clear();
-  renderAdminTable();
-};
-
-function getSelectedKeys(){ return Array.from(selected); }
-
-async function adminUpdate(op, payload={}){
-  const admin_key = $("a_key").value.trim() || ADMIN_KEY_FALLBACK;
-  const row_keys = getSelectedKeys();
-  if(!row_keys.length){
-    $("a2_status").textContent = "請先勾選至少一筆。";
-    return;
-  }
-
-  $("a2_status").textContent = "更新中…";
-
-  const body = Object.assign({ action:"admin_update", admin_key, op, row_keys }, payload);
-
-  const res = await fetch(API_URL, {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify(body)
-  });
-
-  const parsed = await safeJson(res);
-  if(!parsed.ok){
-    $("a2_status").textContent = "更新失敗（API 回傳不是 JSON）。";
-    return;
-  }
-  const data = parsed.json;
-  if(!data.ok){
-    $("a2_status").textContent = data.message || "更新失敗";
-    return;
-  }
-
-  if(data.package_id){
-    $("a2_status").textContent = `已建立包裹：${data.package_id}`;
-  }else{
-    $("a2_status").textContent = "更新完成";
-  }
-  await loadAdminList();
-}
-
-$("a_arrivedFull").onclick = ()=> adminUpdate("arrived_full");
-$("a_applyArrived").onclick = ()=>{
-  const v = $("a_arrivedSet").value.trim();
-  if(v==="" || isNaN(Number(v))){
-    $("a2_status").textContent = "手填到貨 qty 要輸入數字。";
-    return;
-  }
-  adminUpdate("arrived_set", { value: Number(v) });
-};
-
-$("a_makePkg").onclick = ()=> adminUpdate("make_package");
-$("a_markPacked").onclick = ()=> adminUpdate("mark_packed");
-$("a_markShipped").onclick = ()=> adminUpdate("mark_shipped");
-
-$("a_setTracking").onclick = ()=>{
-  const v = $("a_tracking").value.trim();
-  adminUpdate("set_tracking", { tracking_no: v });
-};
-$("a_setOrderLink").onclick = ()=>{
-  const v = $("a_orderLink").value.trim();
-  adminUpdate("set_order_link", { order_link: v });
-};
-
-function renderAdminTable(){
-  $("a2_status").textContent = `共 ${adminList.length} 筆（已勾 ${selected.size}）`;
-
-  if(!adminList.length){
-    $("a_list").innerHTML = `<div class="small">沒有資料。</div>`;
-    return;
-  }
-
-  let html = `
-    <table>
-      <thead>
-        <tr>
-          <th class="center">選</th>
-          <th>團別</th>
-          <th>暱稱</th>
-          <th>品項</th>
-          <th class="center">qty</th>
-          <th class="center">到貨</th>
-          <th>包裹</th>
-          <th class="center">包/出</th>
-          <th>單號/連結</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-
-  adminList.forEach(d=>{
-    const checked = selected.has(d.row_key) ? "checked" : "";
-    const qty = Number(d.qty||0);
-    const aq  = Number(d.arrived_qty||0);
-
-    html += `
-      <tr>
-        <td class="center"><input type="checkbox" data-rk="${esc(d.row_key)}" ${checked}></td>
-        <td class="small">${esc(d.group||"")}</td>
-        <td>${esc(d.nickname||"")}</td>
-        <td>${esc(d.item||"")}</td>
-        <td class="center">${esc(qty)}</td>
-        <td class="center">${esc(aq)}/${esc(qty)}<div class="small">${esc(d.ship_pref||"等齊")}</div></td>
-        <td class="small">${esc(d.package_id||"")}</td>
-        <td class="center">
-          <div class="small">${esc(d.pack_status||"未包")}${d.packed_at? " @" + esc(d.packed_at):""}</div>
-          <div class="small">${esc(d.ship_status||"未出")}${d.shipped_at? " @" + esc(d.shipped_at):""}</div>
-        </td>
-        <td class="small">
-          ${d.tracking_no ? `單號：${esc(d.tracking_no)}<br>` : ``}
-          ${d.order_link ? `<a href="${esc(d.order_link)}" target="_blank" style="color:#fff;text-decoration:underline;">訂單連結</a>` : ``}
-        </td>
-      </tr>
-    `;
-  });
-
-  html += `</tbody></table>`;
-  $("a_list").innerHTML = html;
-
-  $("a_list").querySelectorAll("input[type=checkbox][data-rk]").forEach(cb=>{
-    cb.onchange = ()=>{
-      const rk = cb.getAttribute("data-rk");
-      if(cb.checked) selected.add(rk);
-      else selected.delete(rk);
-      $("a2_status").textContent = `共 ${adminList.length} 筆（已勾 ${selected.size}）`;
-    };
-  });
-}
+// 預設回到首頁顯示 choice
+backToChoice();
 </script>
 </body>
 </html>
