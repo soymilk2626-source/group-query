@@ -285,10 +285,7 @@ async function run(){
 
 function render(){
   let list = rawDetails.filter(d=>{
-<td>
-  <span class="status-badge">${d.pay_status}</span>
-</td>
-
+    const isPaid = String(d.pay_status||"").includes("已");
     if(currentFilter==="paid") return isPaid;
     if(currentFilter==="unpaid") return !isPaid;
     return true;
@@ -298,6 +295,40 @@ function render(){
     document.getElementById("list").innerHTML = "<div class='muted'>沒有資料</div>";
     return;
   }
+
+  let html = `
+  <table>
+    <thead>
+      <tr>
+        <th>品項</th>
+        <th>數量</th>
+        <th>團別</th>
+        <th class="right">金額</th>
+        <th>狀態</th>
+      </tr>
+    </thead>
+    <tbody>
+  `;
+
+  list.forEach(d=>{
+    const isPaid = String(d.pay_status||"").includes("已");
+    html += `
+      <tr>
+        <td>${d.item||""}</td>
+        <td>${d.qty||""}</td>
+        <td class="muted">${d.group || d.sheet || ""}</td>
+        <td class="right">${fmt(d.amount)}</td>
+        <td>
+          <span class="status-badge badge ${isPaid?"paid":"unpaid"}">${d.pay_status}</span>
+        </td>
+      </tr>
+    `;
+  });
+
+  html += "</tbody></table>";
+  document.getElementById("list").innerHTML = html;
+}
+
 
   let html = `
   <table>
