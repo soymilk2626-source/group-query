@@ -4,35 +4,218 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>HXH獵人揪團，一起來敗家！！</title>
-  <style>
-    body{font-family:system-ui;max-width:900px;margin:24px auto;padding:0 14px}
-    .row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-    input{flex:1;min-width:220px;padding:12px;border:1px solid #ccc;border-radius:12px}
-    button{padding:12px 16px;border:0;border-radius:12px;cursor:pointer}
-    .tabs{display:flex;gap:8px;margin:14px 0;flex-wrap:wrap}
-    .tab{padding:8px 12px;border:1px solid #ddd;border-radius:999px;cursor:pointer}
-    .tab.active{border-color:#000;font-weight:800}
-    .summary{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
-    .pill{border:1px solid #eee;border-radius:999px;padding:8px 12px}
-    .muted{color:#666;font-size:13px}
-    .group{margin-top:18px;font-weight:800}
-    .card{border:1px solid #eee;border-radius:14px;padding:12px;margin:10px 0}
-    .right{float:right}
-    .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px}
-.paid{background:#e8f5e9;color:#1b5e20;border:1px solid #c8e6c9}
-.unpaid{background:#ffebee;color:#b71c1c;border:1px solid #ffcdd2}
-.card.paidCard{border-left:6px solid #2e7d32}
-.card.unpaidCard{border-left:6px solid #c62828}
 
+  <style>
+    :root{
+      --navy:#1f2a44;
+      --yellow:#f5c451;
+      --bg:#fafafa;
+      --line:#e6e6e6;
+      --paid:#2e7d32;
+      --unpaid:#c62828;
+    }
+
+    body{
+      margin:0;
+      background:var(--bg);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Hiragino Sans",
+        "Noto Sans JP",
+        "PingFang TC",
+        "Microsoft JhengHei",
+        sans-serif;
+      color:#222;
+    }
+
+    .wrap{
+      max-width:980px;
+      margin:0 auto;
+      padding:28px 16px 60px;
+    }
+
+    h1{
+      margin:0 0 8px;
+      font-size:28px;
+      color:var(--navy);
+      letter-spacing:1px;
+    }
+
+    .subtitle{
+      font-size:14px;
+      line-height:1.7;
+      color:#555;
+      margin-bottom:20px;
+    }
+
+    .subtitle b{ color:var(--navy); }
+
+    .subtitle a{
+      color:var(--navy);
+      text-decoration:underline;
+      font-weight:600;
+    }
+
+    /* ===== 查詢區 ===== */
+    .search{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:22px 0;
+    }
+
+    .search input{
+      flex:1;
+      min-width:200px;
+      padding:12px 14px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      font-size:15px;
+    }
+
+    .search button{
+      padding:12px 22px;
+      border-radius:10px;
+      border:none;
+      background:var(--navy);
+      color:#fff;
+      font-size:15px;
+      cursor:pointer;
+    }
+
+    .search button:hover{
+      opacity:.9;
+    }
+
+    /* ===== Tabs ===== */
+    .tabs{
+      display:flex;
+      gap:8px;
+      margin:14px 0 10px;
+    }
+
+    .tab{
+      padding:6px 14px;
+      border-radius:999px;
+      font-size:13px;
+      border:1px solid var(--line);
+      cursor:pointer;
+      background:#fff;
+    }
+
+    .tab.active{
+      background:var(--yellow);
+      border-color:var(--yellow);
+      font-weight:700;
+    }
+
+    /* ===== Summary ===== */
+    .summary{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin:16px 0 22px;
+    }
+
+    .sum{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:12px 16px;
+      font-size:14px;
+    }
+
+    .sum b{ font-size:16px; }
+
+    /* ===== Table ===== */
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      overflow:hidden;
+    }
+
+    thead{
+      background:#f1f3f6;
+    }
+
+    th, td{
+      padding:12px 10px;
+      text-align:left;
+      font-size:14px;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+    }
+
+    th{
+      color:var(--navy);
+      font-weight:700;
+      font-size:13px;
+    }
+
+    tr:last-child td{
+      border-bottom:none;
+    }
+
+    .right{ text-align:right; }
+
+    .badge{
+      padding:2px 8px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      display:inline-block;
+    }
+
+    .paid{
+      background:#e8f5e9;
+      color:var(--paid);
+    }
+
+    .unpaid{
+      background:#ffebee;
+      color:var(--unpaid);
+    }
+
+    .muted{
+      color:#777;
+      font-size:12px;
+    }
+
+    .group-title{
+      margin:26px 0 8px;
+      font-weight:800;
+      color:var(--navy);
+      font-size:15px;
+    }
+
+    @media(max-width:720px){
+      th:nth-child(3), td:nth-child(3){
+        display:none;
+      }
+    }
   </style>
 </head>
-<body>
-  <h2>HXH獵人揪團，一起來敗家！！</h2>
-  <div class="muted">輸入暱稱＋密碼，查所有團明細與總金額</div>
 
-  <div class="row">
-    <input id="name" placeholder="暱稱（例如：豆漿 / 阿漿）" />
-    <input id="key" placeholder="查詢密碼（提示：夯特今年西元年）" />
+<body>
+<div class="wrap">
+
+  <h1>HXH獵人揪團，一起來敗家！！</h1>
+
+  <div class="subtitle">
+    <b>這是 HXH 限定揪團！！</b><br>
+    目前主要在 LINE 上活動，有現貨才會在其他地方發布。<br>
+    有任何問題都可以直接私訊我的帳號或來信給我～<br>
+    FB：Hau May Dun ｜ Email：soymilk2626@gmail.com<br>
+    <a href="#" target="_blank">>> 點我進群組 <<</a>
+  </div>
+
+  <div class="search">
+    <input id="name" placeholder="暱稱（FB / LINE 名稱）">
+    <input id="key" placeholder="查詢密碼">
     <button id="go">查詢</button>
   </div>
 
@@ -42,54 +225,44 @@
     <div class="tab" data-filter="paid">已付款</div>
   </div>
 
-  <div id="status" class="muted"></div>
-
   <div class="summary" id="summary" style="display:none">
-    <div class="pill">已付：<b id="paid"></b></div>
-    <div class="pill">未付：<b id="unpaid"></b></div>
-    <div class="pill">總計：<b id="all"></b></div>
+    <div class="sum">已付：<b id="paid"></b></div>
+    <div class="sum">未付：<b id="unpaid"></b></div>
+    <div class="sum">總計：<b id="all"></b></div>
   </div>
 
   <div id="list"></div>
 
+</div>
+
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzwEAj6nG_MdvHoMWJ_KrggB17o15xiIgWyo-zosvLLbrHb87Fabs6leAb9CIQJ6soS/exec"; // ⭐ 下一步會教你改這行
+const API_URL = "請貼上你的 Apps Script Web App 網址";
 
 let rawDetails = [];
 let currentFilter = "all";
 
 document.getElementById("go").addEventListener("click", run);
 document.querySelectorAll(".tab").forEach(t=>{
-  t.addEventListener("click", ()=>{
+  t.onclick = ()=>{
     document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
     t.classList.add("active");
     currentFilter = t.dataset.filter;
     render();
-  });
+  };
 });
 
 async function run(){
   const name = document.getElementById("name").value.trim();
-  const key = document.getElementById("key").value.trim();
-  if(!name){ alert("請輸入暱稱"); return; }
-  if(!key){ alert("請輸入密碼"); return; }
-
-  setStatus("查詢中…");
-  document.getElementById("summary").style.display = "none";
-  document.getElementById("list").innerHTML = "";
-  rawDetails = [];
+  const key  = document.getElementById("key").value.trim();
+  if(!name || !key){ alert("請輸入暱稱與密碼"); return; }
 
   const url = `${API_URL}?q=${encodeURIComponent(name)}&key=${encodeURIComponent(key)}`;
   const res = await fetch(url);
   const data = await res.json();
 
-  if(!data.ok){
-    setStatus("查詢失敗：" + (data.message || ""));
-    return;
-  }
+  if(!data.ok){ alert(data.message || "查詢失敗"); return; }
 
   rawDetails = data.details || [];
-  setStatus(`找到 ${rawDetails.length} 筆紀錄`);
   document.getElementById("paid").textContent = fmt(data.total_paid);
   document.getElementById("unpaid").textContent = fmt(data.total_unpaid);
   document.getElementById("all").textContent = fmt(data.total_all);
@@ -99,47 +272,53 @@ async function run(){
 }
 
 function render(){
-  const filtered = rawDetails.filter(d=>{
+  let list = rawDetails.filter(d=>{
     const isPaid = String(d.pay_status||"").includes("已");
     if(currentFilter==="paid") return isPaid;
     if(currentFilter==="unpaid") return !isPaid;
     return true;
   });
-  renderGrouped(filtered);
-}
 
-function renderGrouped(details){
-  const list = document.getElementById("list");
-  if(!details.length){
-    list.innerHTML = `<div class="muted">沒有資料</div>`;
+  if(!list.length){
+    document.getElementById("list").innerHTML = "<div class='muted'>沒有資料</div>";
     return;
   }
 
-  const keyOf = d => (d.group && d.group.trim()) ? d.group.trim() : (d.sheet||"").trim();
-  const groups = new Map();
-  details.forEach(d=>{
-    const k = keyOf(d) || "（未命名）";
-    if(!groups.has(k)) groups.set(k, []);
-    groups.get(k).push(d);
+  let html = `
+  <table>
+    <thead>
+      <tr>
+        <th>品項</th>
+        <th>數量</th>
+        <th>團別</th>
+        <th class="right">金額</th>
+        <th>狀態</th>
+      </tr>
+    </thead>
+    <tbody>
+  `;
+
+  list.forEach(d=>{
+    const isPaid = String(d.pay_status||"").includes("已");
+    html += `
+      <tr>
+        <td>${d.item||""}</td>
+        <td>${d.qty||""}</td>
+        <td class="muted">${d.group || d.sheet || ""}</td>
+        <td class="right">${fmt(d.amount)}</td>
+        <td><span class="badge ${isPaid?"paid":"unpaid"}">${d.pay_status}</span></td>
+      </tr>
+    `;
   });
 
-  let html = "";
-  for(const [k, arr] of groups){
-    let sub = 0;
-    arr.forEach(d=>sub+=Number(d.amount||0));
-const isPaid = String(d.pay_status||"").includes("已");
-html += `<div class="card ${isPaid ? "paidCard" : "unpaidCard"}">
-  <div><b>${d.item||""}</b> × ${d.qty||""}</div>
-  <div class="muted">金
-
-    });
-  }
-  list.innerHTML = html;
+  html += "</tbody></table>";
+  document.getElementById("list").innerHTML = html;
 }
 
-function setStatus(t){ document.getElementById("status").textContent=t; }
-function fmt(n){ return Number(n||0).toLocaleString("zh-Hant-TW"); }
+function fmt(n){
+  return Number(n||0).toLocaleString("zh-Hant-TW");
+}
 </script>
+
 </body>
 </html>
-
