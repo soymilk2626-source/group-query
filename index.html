@@ -83,6 +83,12 @@
   opacity:1;
 }
 
+    .btn-admin{
+  background:#f5c451;   /* 黃色，最高權限 */
+  color:#111;
+  font-weight:700;
+}
+
 
     /* 區塊顯示控制 */
     .hidden{ display:none; }
@@ -135,9 +141,10 @@
           管理者驗證
         </div>
         <input type="password" placeholder="請輸入管理碼">
-        <button class="btn btn-main" onclick="alert('之後進管理頁')">
+        <button class="btn btn-admin" onclick="alert('之後進管理頁')">
           進入管理頁
         </button>
+
       </div>
 
       <button class="btn-escape" onclick="backToUser()">
