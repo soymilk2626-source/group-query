@@ -197,6 +197,18 @@
         display:none;
       }
     }
+    .status-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  white-space:nowrap;   /* ✅ 不換行 */
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:13px;
+  line-height:1;
+  min-width:56px;       /* ✅ 給足夠寬度，避免擠爆 */
+}
+
   </style>
 </head>
 
@@ -273,7 +285,10 @@ async function run(){
 
 function render(){
   let list = rawDetails.filter(d=>{
-    const isPaid = String(d.pay_status||"").includes("已");
+<td>
+  <span class="status-badge">${d.pay_status}</span>
+</td>
+
     if(currentFilter==="paid") return isPaid;
     if(currentFilter==="unpaid") return !isPaid;
     return true;
