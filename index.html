@@ -127,12 +127,11 @@ function renderGrouped(details){
   for(const [k, arr] of groups){
     let sub = 0;
     arr.forEach(d=>sub+=Number(d.amount||0));
-    html += `<div class="group">${k}<span class="right muted">小計 ${fmt(sub)}</span></div>`;
-    arr.forEach(d=>{
-      html += `<div class="card">
-        <div><b>${d.item||""}</b> × ${d.qty||""}</div>
-        <div class="muted">金額：${fmt(d.amount)}｜${d.pay_status}</div>
-      </div>`;
+const isPaid = String(d.pay_status||"").includes("已");
+html += `<div class="card ${isPaid ? "paidCard" : "unpaidCard"}">
+  <div><b>${d.item||""}</b> × ${d.qty||""}</div>
+  <div class="muted">金
+
     });
   }
   list.innerHTML = html;
