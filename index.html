@@ -55,24 +55,34 @@
       margin-bottom:12px;
     }
 
-    .btn-main{
-      background:#f5c451;
-      color:#111;
-      font-weight:700;
-    }
+.btn-main{
+  background:#16263f;   /* 深藍 */
+  color:#fff;
+  font-weight:700;
+}
 
-    .btn-sub{
-      background:rgba(255,255,255,.14);
-      color:#fff;
-    }
 
-    .btn-escape{
-      background:none;
-      color:#aaa;
-      font-size:13px;
-      margin-top:8px;
-      text-decoration:underline;
-    }
+.btn-sub{
+  background:#f5c451;   /* 亮色，引導一般人 */
+  color:#111;
+  font-weight:700;
+}
+
+.btn-escape{
+  background:none;
+  border:none;
+  color:#ff6b6b;          /* 柔和紅，襯深藍 */
+  font-size:13px;
+  margin-top:10px;
+  text-decoration:none;  /* 不要底線外框感 */
+  cursor:pointer;
+  opacity:.9;
+}
+
+.btn-escape:hover{
+  opacity:1;
+}
+
 
     /* 區塊顯示控制 */
     .hidden{ display:none; }
