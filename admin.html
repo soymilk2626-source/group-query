@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HXH獵人揪團｜管理</title>
+  <link rel="stylesheet" href="style.css"><!-- 共用CSS -->
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>HXH獵人揪團｜管理者後台</h1>
+      <div class="muted" style="color:#e9e9e9;margin-top:6px;">
+        這頁只有你能用（需要管理碼）<!-- 可刪 -->
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:16px;font-weight:900;color:var(--navy);">管理者登入</div>
+      <div class="muted" style="margin-top:6px;">輸入管理碼才會載入清單。</div>
+
+      <div class="row" style="margin-top:10px;">
+        <input id="admin_key" placeholder="管理碼">
+        <button id="admin_login"><span class="spinner"></span><span>進入</span></button>
+      </div>
+
+      <div class="statusline" id="admin_status"></div>
+    </div>
+
+    <div class="card" id="admin_panel" style="display:none;">
+      <!-- ✅ 管理功能明天加：篩選、全選、到貨=全到、建包裹、已包/已出、單號/連結 -->
+      <div style="font-size:16px;font-weight:900;color:var(--navy);">管理面板（施工中）</div>
+      <div class="muted" style="margin-top:6px;">明天我們把勾選與批次操作搬進來。</div>
+      <div id="admin_list" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="card">
+      <a href="index.html" class="muted">← 回入口</a>
+    </div>
+  </div>
+
+  <script src="app.js"></script><!-- 共用JS工具 -->
+
+  <script>
+    // admin.html：先做最小可用的登入（明天再把功能補齊）
+
+    const btn = $("admin_login");
+
+    btn.addEventListener("click", async () => {
+      const key = $("admin_key").value.trim();
+      if(!key){ alert("請輸入管理碼"); return; }
+
+      setBtnLoading(btn, true);              // 按鈕進入 loading
+      $("admin_status").textContent = "驗證中…";
+
+      try{
+        // 先用 admin_list 測試管理碼對不對（這段 API 你明天貼你的 Apps Script 後我們再對齊）
+        const url = `${API_URL}?action=admin_list&admin_key=${encodeURIComponent(key)}`;
+        const res = await fetch(url);
+        const parsed = await safeJson(res);
+
+        if(!parsed.ok){
+          $("admin_status").textContent = "❌ API 回傳不是 JSON（多半是權限/錯誤頁）";
+          setBtnLoading(btn, false);
+          return;
+        }
+
+        const data = parsed.json;
+        if(!data.ok){
+          $("admin_status").textContent = "❌ 管理碼錯誤";
+          alert(data.message || "管理碼錯誤");
+          setBtnLoading(btn, false);
+          return;
+        }
+
+        // ✅ 登入成功：顯示管理面板
+        $("admin_status").textContent = `✅ 登入成功（共有 ${data.list?.length || 0} 筆）`;
+        $("admin_panel").style.display = "";
+
+        // 暫時先顯示筆數，明天改成表格＋勾選
+        $("admin_list").innerHTML = `<div class="muted">已載入資料，明天加上勾選/批次操作。</div>`;
+
+        setBtnLoading(btn, false);
+
+      }catch(err){
+        console.error(err);
+        $("admin_status").textContent = "❌ 驗證失敗（網路或 API）";
+        setBtnLoading(btn, false);
+      }
+    });
+  </script>
+</body>
+</html>
