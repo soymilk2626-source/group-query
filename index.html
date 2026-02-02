@@ -35,11 +35,11 @@ body{
 }
 
 .buttons{
-  margin-top:20px;
   display:flex;
-  gap:12px;
-  justify-content:center;
-  flex-wrap:wrap;
+  flex-direction:column;   /* 👈 關鍵：改成直排 */
+  gap:14px;
+  align-items:center;      /* 讓按鈕置中 */
+  margin-top:20px;
 }
 
 button{
@@ -68,27 +68,26 @@ button{
   <main class="center">
     <h1>HXH獵人揪團，一起來敗家！！</h1>
 
-    <p class="desc">
-      主要在 LINE 活動，有現貨才會在其他地方發布。<br>
-      有問題可以私訊我：FB：Hau May Dun ｜ Email：soymilk2626@gmail.com<br>
-      <a class="link" href="https://line.me/R/ti/g/cH22OTt-IX" target="_blank" rel="noreferrer">>> 點我進群組 <<</a>
-    </p>
 
-    <div class="question">先問一句——你是豆漿嗎？</div>
+
+    <div class="question">——你是豆漿嗎？</div>
 
     <div class="btns">
 <body>
   <main class="center">
-    <h1 class="tagline">我知道你又敗家了，我也是。</h1>
+    <h1 class="tagline">
+  我知道你又敗家了，<br>
+  我也是。
+</h1>
+
 
     <div class="sub">
-      HXH 獵人揪團<br>
-      一起冷靜地（不冷靜地）花錢
+     一起快樂花錢吧！ 
     </div>
 
     <div class="buttons">
-      <a href="admin.html"><button class="btn-main">🫘 是，我是豆漿</button></a>
-      <a href="user.html"><button class="btn-sub">🎒 不是，我來查團務</button></a>
+      <a href="admin.html"><button class="btn btn-yes">是，我就是豆漿</button></a>
+      <a href="user.html"><button class="btn btn-no">不是，我來查團務</button></a>
     </div>
   </main>
 </body>
