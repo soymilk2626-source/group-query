@@ -57,41 +57,29 @@
       font-weight:600;
     }
 
-    /* ===== 查詢區 ===== */
-    .search{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin:22px 0 12px;
-      align-items:center;
-    }
+ /* 查詢列：縮短＋置中 */
+.search{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+  margin:14px 0;
+}
 
-    .search input{
-      flex:1;
-      min-width:200px;
-      padding:12px 14px;
-      border:1px solid var(--line);
-      border-radius:10px;
-      font-size:15px;
-      background:#fff;
-    }
+/* 兩個輸入框：不要撐全寬，給「最大寬度」 */
+.search input{
+  flex:0 1 320px;     /* ✅ 想更短：改 280px */
+  min-width:220px;
+  max-width:360px;
+  padding:10px 12px;  /* ✅ 比原本更精簡 */
+}
 
-    .search button{
-      padding:12px 22px;
-      border-radius:10px;
-      border:none;
-      background:var(--navy);
-      color:#fff;
-      font-size:15px;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-    }
-    .search button:disabled{
-      opacity:.65;
-      cursor:not-allowed;
-    }
+/* 查詢按鈕：固定寬度，不要超大 */
+.search button{
+  flex:0 0 96px;
+  padding:10px 12px;
+  min-width:96px;
+}
 
     /* 查詢中 spinner */
     .spinner{
@@ -228,7 +216,7 @@
     </div>
 
     <div class="card">
-      <a href="index.html" class="muted">← 回入口</a>
+
     </div>
   </div>
 
