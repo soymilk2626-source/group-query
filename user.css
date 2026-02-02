@@ -1,100 +1,209 @@
 /* =========================
-   user.css：查詢頁專用（直版面）
+   user.css：查詢頁專用（直版面 + 不隱藏欄位 + 表格可左右滑）
 ========================= */
 
 body{
   background:#fafafa;
   color:#222;
-  display:block;      /* 不要入口頁那種 flex 置中 */
 }
 
-/* 你查詢頁的主容器 */
+/* 主容器 */
 .wrap{
   max-width:980px;
   margin:0 auto;
-  padding:28px 16px 60px;
+  padding:20px 16px 60px;
 }
 
-/* 查詢區：可換行，避免變成一長排 */
+/* 上方深藍標題列：不要圓角 */
+.user-hero{
+  background:var(--navy);
+  color:#fff;
+  padding:18px 16px;
+  text-align:center;
+  margin-bottom:14px;
+  border-radius:0; /* ✅ 不要圓角 */
+}
+
+.user-hero .hero-title{
+  margin:0 0 6px;
+  font-family:var(--serif);
+  font-size:22px;
+  font-weight:900;
+  color:#fff;
+}
+
+.user-hero .hero-desc{
+  margin:0;
+  font-size:14px;
+  line-height:1.8;
+  color:rgba(255,255,255,0.88);
+}
+
+/* 中間連結列 */
+.top-links{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:12px 0 10px;
+}
+
+.top-links a{
+  color:var(--navy);
+  background:#fff;
+  border:1px solid var(--line);
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:13px;
+  text-decoration:none;
+}
+
+.top-links a.timeline{
+  color:#8b2b2b;
+  border-color:#f2c9c9;
+  background:#fff7f7;
+}
+
+/* 查詢列：短一點、圓角、深藍按鈕、可換行 */
 .search{
   display:flex;
   flex-wrap:wrap;
   gap:10px;
   justify-content:center;
-  margin:12px 0;
+  margin:14px 0;
 }
 
 .search input{
-  flex:1;
+  flex:0 1 280px;
   min-width:220px;
+  max-width:360px;
+  padding:12px 14px;
+  border:1px solid var(--line);
+  border-radius:999px; /* ✅ 圓角 */
+  outline:none;
+  font-size:14px;
+  background:#fff;
+}
+
+.search input:focus{
+  border-color:var(--navy);
 }
 
 .search button{
-  min-width:120px;
-}
-
-/* 上方深藍標題列 */
-.user-hero{
-  background:#0f1f3a;
+  flex:0 0 96px;
+  min-width:96px;
+  padding:12px 14px;
+  border-radius:999px; /* ✅ 圓角 */
+  border:none;
+  background:var(--navy); /* ✅ 深藍 */
   color:#fff;
-  padding:18px 16px;
-  border-radius:16px;
-  text-align:center;
-}
-
-.user-hero .hero-title{
-  font-size:22px;
-   color:#fff;
   font-weight:900;
-  margin:0 0 8px;
+  cursor:pointer;
 }
 
-.user-hero .hero-desc{
-  margin:0;
-  color:rgba(255,255,255,0.85);
-  line-height:1.8;
-  font-size:14px;
+.search button:disabled{
+  opacity:.65;
+  cursor:not-allowed;
 }
+
+/* 查詢中動畫（深藍） */
+.loading{
+  display:none;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin:10px 0;
+  color:var(--navy);
+  font-weight:900;
+}
+
+.spinner{
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  border:3px solid rgba(15,31,58,0.25);
+  border-top-color: var(--navy);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin{
+  to{ transform:rotate(360deg); }
+}
+
+/* Tabs：訂單明細 / 付款明細 */
+.tabs{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:12px 0;
+  flex-wrap:wrap;
+}
+
+.tab{
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:900;
+}
+
+.tab.active{
+  background:var(--yellow);
+  border-color:var(--yellow);
+}
+
+/* 表格：不隱藏欄位，全部靠左右滑 */
 .table-wrap{
   width:100%;
   overflow-x:auto;
   -webkit-overflow-scrolling:touch;
-  border-radius:16px;
-  margin-top:12px;
+  border-radius:12px;
+  margin-top:10px;
 }
 
 .table-wrap table{
   width:100%;
-  min-width:900px;  /* 欄位多就加大：1000/1100 */
+  min-width:980px;
   border-collapse:collapse;
+  background:#fff;
+  border:1px solid var(--line);
 }
-/* =========================
-   查詢列：圓角 + 藍色按鈕（最終版）
-========================= */
 
-/* 輸入框：圓角 */
-.search input{
-  border-radius:999px;          /* ✅ 圓的 */
-  border:1px solid #e6e6e6;
-  outline:none;
+th, td{
+  padding:10px;
+  border-bottom:1px solid #eee;
   font-size:14px;
+  text-align:left;
+  vertical-align:top;
 }
 
-/* 點擊時不要出現醜藍框 */
-.search input:focus{
-  border-color:#0f1f3a;
+th{
+  background:#f2f3f5;
+  font-weight:900;
+  color:#1f2a44;
 }
 
-/* 查詢按鈕：深藍色 */
-.search button{
-  border-radius:999px;          /* ✅ 圓的 */
-  background:#0f1f3a;           /* ✅ 深藍 */
-  color:#ffffff;
-  border:none;
-  font-weight:800;
+tr:last-child td{ border-bottom:none; }
+
+.right{ text-align:right; }
+.center{ text-align:center; }
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  white-space:nowrap;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
 }
 
-/* hover 效果（可有可無，但好看） */
-.search button:hover{
-  opacity:0.9;
-}
+.paid{ background:#e6f4ea; color:#1b5e20; }
+.unpaid{ background:#fdecea; color:#a40000; }
+
+/* 取消左上角 back link（如果你有留著） */
+.back-link{ display:none !important; }

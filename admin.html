@@ -3,88 +3,70 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>HXH獵人揪團｜管理</title>
-  <link rel="stylesheet" href="style.css"><!-- 共用CSS -->
+  <title>HXH 獵人揪團｜管理</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="base.css">
+  <!-- 管理頁你之後要深藍主題再加 admin.css；先保持白底簡潔 -->
+  <style>
+    body{ background:#fafafa; color:#222; }
+    .wrap{ max-width:980px; margin:0 auto; padding:20px 16px 60px; }
+    .hero{ background:var(--navy); color:#fff; padding:18px 16px; text-align:center; border-radius:0; }
+    .hero h1{ margin:0; font-family:var(--serif); font-size:22px; font-weight:900; }
+    .card{ background:#fff; border:1px solid var(--line); padding:14px; margin-top:14px; }
+    input{ padding:12px 14px; border:1px solid var(--line); border-radius:999px; width:min(420px, 100%); }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .muted{ color:#777; font-size:13px; }
+    a.soft-back{ color:#b85b5b; font-weight:900; text-decoration:underline; }
+  </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="hero">
-      <h1>HXH獵人揪團｜管理者後台</h1>
-      <div class="muted" style="color:#e9e9e9;margin-top:6px;">
-      </div>
+      <h1>管理者後台</h1>
+    </div>
+
+    <div style="margin-top:10px;text-align:center;">
+      <a class="soft-back" href="index.html">其實我不是豆漿 ← 回入口</a>
     </div>
 
     <div class="card">
-      <div style="font-size:16px;font-weight:900;color:var(--navy);">管理者登入</div>
-      <div class="muted" style="margin-top:6px;">輸入管理碼才會載入清單。</div>
-
+      <div class="muted">先求能用版：這頁先保留登入框，之後再加「勾選出貨 / 建包裹 / 批次操作」。</div>
       <div class="row" style="margin-top:10px;">
         <input id="admin_key" placeholder="管理碼">
-        <button id="admin_login"><span class="spinner"></span><span>進入</span></button>
+        <button class="btn btn-main" id="login">登入</button>
       </div>
-
-      <div class="statusline" id="admin_status"></div>
+      <div id="status" class="muted" style="margin-top:10px;"></div>
     </div>
 
-    <div class="card" id="admin_panel" style="display:none;">
-      <!-- ✅ 管理功能明天加：篩選、全選、到貨=全到、建包裹、已包/已出、單號/連結 -->
-      <div style="font-size:16px;font-weight:900;color:var(--navy);">管理面板（施工中）</div>
-      <div class="muted" style="margin-top:6px;"></div>
-      <div id="admin_list" style="margin-top:10px;"></div>
-    </div>
-
-    <div class="card">
-      <a href="index.html" class="muted">← 回入口</a>
+    <div class="card" id="panel" style="display:none;">
+      <div style="font-weight:900;">✅ 登入成功</div>
+      <div class="muted" style="margin-top:6px;">下一步我們再把管理清單搬進來。</div>
     </div>
   </div>
 
-  <script src="app.js"></script><!-- 共用JS工具 -->
-
+  <script src="app.js"></script>
   <script>
-    // admin.html：先做最小可用的登入（明天再把功能補齊）
-
-    const btn = $("admin_login");
-
-    btn.addEventListener("click", async () => {
-      const key = $("admin_key").value.trim();
+    document.getElementById("login").addEventListener("click", async ()=>{
+      const key = document.getElementById("admin_key").value.trim();
+      const status = document.getElementById("status");
       if(!key){ alert("請輸入管理碼"); return; }
-
-      setBtnLoading(btn, true);              // 按鈕進入 loading
-      $("admin_status").textContent = "驗證中…";
-
+      status.textContent = "驗證中…";
       try{
-        // 先用 admin_list 測試管理碼對不對（這段 API 你明天貼你的 Apps Script 後我們再對齊）
         const url = `${API_URL}?action=admin_list&admin_key=${encodeURIComponent(key)}`;
         const res = await fetch(url);
-        const parsed = await safeJson(res);
-
-        if(!parsed.ok){
-          $("admin_status").textContent = "❌ API 回傳不是 JSON（多半是權限/錯誤頁）";
-          setBtnLoading(btn, false);
-          return;
-        }
-
-        const data = parsed.json;
-        if(!data.ok){
-          $("admin_status").textContent = "❌ 管理碼錯誤";
-          alert(data.message || "管理碼錯誤");
-          setBtnLoading(btn, false);
-          return;
-        }
-
-        // ✅ 登入成功：顯示管理面板
-        $("admin_status").textContent = `✅ 登入成功（共有 ${data.list?.length || 0} 筆）`;
-        $("admin_panel").style.display = "";
-
-        // 暫時先顯示筆數，明天改成表格＋勾選
-        $("admin_list").innerHTML = `<div class="muted">已載入資料，明天加上勾選/批次操作。</div>`;
-
-        setBtnLoading(btn, false);
-
-      }catch(err){
-        console.error(err);
-        $("admin_status").textContent = "❌ 驗證失敗（網路或 API）";
-        setBtnLoading(btn, false);
+        const data = await res.json();
+        if(!data.ok) throw new Error(data.message || "管理碼錯誤");
+        status.textContent = `✅ OK（共 ${data.list?.length || 0} 筆）`;
+        document.getElementById("panel").style.display = "";
+      }catch(e){
+        console.error(e);
+        status.textContent = "❌ " + (e.message || "失敗");
       }
     });
   </script>

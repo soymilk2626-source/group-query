@@ -1,69 +1,66 @@
 /* =========================
-   landing.css：入口頁專用
+   landing.css：入口頁專用（深藍舞台置中）
 ========================= */
 
 body{
   min-height:100vh;
-  background:#f5f3eb;
-  color:#faf3dc;
+  background: radial-gradient(1200px 700px at 30% 20%, #122a4b, var(--navy));
+  color:var(--paper);
 
-  /* 入口頁才需要置中舞台 */
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
-/* 標題、標語、提問 → 宋體 */
-.title,
-.tagline,
-.question{
-  font-family: var(--serif);
+/* 標題、標語、提問用宋體 */
+.title,.tagline,.question{
+  font-family:var(--serif);
 }
 
 .title{
   font-size:32px;
   font-weight:900;
-  margin-bottom:20px;
+  margin:0 0 20px;
 }
 
 .tagline{
   font-size:24px;
   font-weight:700;
   line-height:1.6;
-  margin-bottom:16px;
+  margin:0 0 16px;
 }
 
 .question{
   font-size:18px;
   font-weight:900;
-  color:#b50d0d;      /* 深紅暗紅 */
+  color:#b50d0d;
   letter-spacing:1px;
-  margin-bottom:10px;
+  margin:0 0 10px;
 }
 
 .sub{
   font-size:14px;
-  opacity:0.8;
-  margin-bottom:26px;
+  opacity:0.85;
+  margin:0 0 26px;
 }
 
-/* 按鈕上下排列 */
+/* 按鈕上下排列、等寬（取最長文字） */
 .buttons{
   display:flex;
   flex-direction:column;
   gap:14px;
   align-items:center;
-}
 
-/* 讓兩顆按鈕等寬：用容器取最大寬 */
-.buttons{
-  width:max-content;     /* 容器寬 = 最長那顆 */
+  width:max-content;
   margin:0 auto;
 }
+
 .btn-wrap{
   display:block;
   width:100%;
+  text-decoration:none;
 }
+
 .btn{
-  width:100%;            /* 兩顆撐滿容器 => 一樣長 */
+  width:100%;
 }

@@ -1,32 +1,32 @@
 /* =========================
-   base.css：全站共用（不放版面定位、不放背景）
+   base.css：全站共用（不放入口置中，不放頁面背景）
+   - 內容字體：Noto Sans TC
+   - 標題字體：Noto Serif TC (Source Han Serif TC/思源宋體)
 ========================= */
 
-/* 共用字型（內容黑體） */
+:root{
+  --navy:#0f1f3a;
+  --yellow:#f5c451;
+  --paper:#faf3dc;
+  --line:#e6e6e6;
+  --serif:'Noto Serif TC', "Songti TC", "PMingLiU", serif;
+  --sans:'Noto Sans TC', -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+
+*{ box-sizing:border-box; }
+
 body{
   margin:0;
-  font-family: 'Noto Sans TC',
-               -apple-system,
-               BlinkMacSystemFont,
-               "PingFang TC",
-               "Microsoft JhengHei",
-               sans-serif;
+  font-family:var(--sans);
 }
 
-/* 宋體字型堆疊（需要的元素再套用） */
-:root{
-  --serif: 'Noto Serif TC', "Songti TC", "PMingLiU", serif;
-}
-
-/* 共用工具：置中容器（入口頁會用到） */
+/* 通用容器（入口會用） */
 .center{
   text-align:center;
   padding:24px;
 }
 
-/* =========================
-   共用按鈕（兩頁都會用到）
-========================= */
+/* 共用按鈕 */
 .btn{
   padding:14px 24px;
   border-radius:999px;
@@ -38,7 +38,7 @@ body{
 }
 
 .btn-main{
-  background:#f5c451;
+  background:var(--yellow);
   color:#1b1b1b;
 }
 
@@ -48,87 +48,7 @@ body{
   border:1px solid rgba(255,255,255,0.35);
 }
 
-/* =========================
-   連結列：放在查詢上方、置中
-========================= */
-.top-links{
-  display:flex;
-  justify-content:center;
-  gap:14px;
-  flex-wrap:wrap;
-  margin-top:12px;
-}
-
-.top-links a{
-  color:#0f1f3a;
-  background:#fff;
-  border:1px solid #e6e6e6;
-  padding:8px 12px;
+/* 查詢頁常用：圓角輸入框 + 深藍按鈕（user.css 也會用到） */
+.input-pill{
   border-radius:999px;
-  font-weight:800;
-  font-size:13px;
-  text-decoration:none;
-}
-
-.top-links a:hover{ opacity:.9; }
-
-.top-links a.timeline{
-  color:#8b2b2b;
-  border-color:#f2c9c9;
-  background:#fff7f7;
-}
-
-/* =========================
-   Tabs：訂單明細 / 付款明細
-========================= */
-.tabs{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  margin-top:14px;
-  flex-wrap:wrap;
-}
-
-.tab{
-  padding:8px 14px;
-  border-radius:999px;
-  border:1px solid #e6e6e6;
-  background:#fff;
-  cursor:pointer;
-  font-size:13px;
-  font-weight:800;
-}
-
-.tab.active{
-  background:#f5c451;
-  border-color:#f5c451;
-}
-
-/* =========================
-   表格手機不跑版：左右滑
-========================= */
-.table-wrap{
-  width:100%;
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-  border-radius:16px;
-  margin-top:12px;
-}
-
-.table-wrap table{
-  width:100%;
-  min-width:900px;
-  border-collapse:collapse;
-  background:#fff;
-  border:1px solid #e6e6e6;
-  border-radius:16px;
-  overflow:hidden;
-}
-
-/* 查詢中提示 */
-.loading{
-  margin-top:12px;
-  text-align:center;
-  font-weight:700;
-  color:#555;
 }
