@@ -233,17 +233,25 @@
 </head>
 
 <body>
-<div class="wrap">
+<div class="user-hero">
+  <h1 class="hero-title">HXH獵人揪團，一起來敗家！！</h1>
 
-  獵人揪團，一起來敗家！！</h1>
-
-  <div class="subtitle">
-    <b>這是 HXH 限定揪團！！</b><br>
+  <p class="hero-desc">
+    這是 HXH 限定揪團！！<br>
     目前主要在 LINE 上活動，有現貨才會在其他地方發布。<br>
     有任何問題都可以直接私訊我的帳號或來信給我～<br>
     FB：Hau May Dun ｜ Email：soymilk2626@gmail.com<br>
-    <a href="https://line.me/R/ti/g/cH22OTt-IX" target="_blank">>> 點我進群組 <<</a>
-  </div>
+    <a href="https://line.me/R/ti/g/cH22OTt-IX" target="_blank" style="color:#f5c451;font-weight:900;text-decoration:underline;">
+      >> 點我進群組 <<
+    </a>
+  </p>
+</div>
+
+<div class="top-links">
+  <a class="timeline" href="timeline.html">到貨時間軸</a>
+  <a href="index.html">回入口</a>
+  <a href="#" onclick="alert('待更新'); return false;">其他連結</a>
+</div>
 
   <div class="search">
     <input id="name" placeholder="暱稱（FB / LINE 名稱）">
@@ -256,17 +264,23 @@
 
   <div id="status" class="statusline"></div>
 
-  <div class="tabs">
-    <div class="tab active" data-filter="all">全部</div>
-    <div class="tab" data-filter="unpaid">未付款</div>
-    <div class="tab" data-filter="paid">已付款</div>
-  </div>
+<div class="tabs">
+  <div class="tab active" data-ut="orders">訂單明細</div>
+  <div class="tab" data-ut="payments">付款明細</div>
+</div>
+
+<div id="list"></div>
+
 
   <div class="summary" id="summary" style="display:none">
     <div class="sum">已付：<b id="paid"></b></div>
     <div class="sum">未付：<b id="unpaid"></b></div>
     <div class="sum">總計：<b id="all"></b></div>
   </div>
+        
+<div id="loading" class="loading" style="display:none;">
+  查詢中，請稍候…
+</div>
 
   <div id="list"></div>
 
@@ -274,152 +288,106 @@
   
 <script>
 
-let rawDetails = [];
-let currentFilter = "all";
+let currentTab = "orders";
+let userData = null; // 查詢回來的資料：包含 details / payments
 
-const $ = (id)=>document.getElementById(id);
-
-const btn = $("go");
-btn.addEventListener("click", run);
-
-document.querySelectorAll(".tab").forEach(t=>{
+// tab 切換
+document.querySelectorAll(".tab[data-ut]").forEach(t=>{
   t.addEventListener("click", ()=>{
-    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll(".tab[data-ut]").forEach(x=>x.classList.remove("active"));
     t.classList.add("active");
-    currentFilter = t.dataset.filter;
+    currentTab = t.dataset.ut;
     render();
   });
 });
 
-function setLoading(isLoading, msg){
-  btn.disabled = isLoading;
-  btn.classList.toggle("loading", isLoading);
-  $("status").textContent = msg || "";
-}
-
-function fmt(n){ return Number(n||0).toLocaleString("zh-Hant-TW"); }
-
-function esc(s){
-  return String(s ?? "").replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
-}
-
-/** ✅ 這個函式會把「API 回的不是 JSON（HTML）」也印出來，方便抓權限/錯誤頁 */
-async function safeJson(res){
-  const text = await res.text();
-  try{
-    return { ok:true, json: JSON.parse(text) };
-  }catch(e){
-    return { ok:false, raw:text };
-  }
-}
-
-async function run(){
-  const name = $("name").value.trim();
-  const key  = $("key").value.trim();
-
-  $("list").innerHTML = "";
-  $("summary").style.display = "none";
-
-  if(!name || !key){
-    alert("請輸入暱稱與密碼");
-    return;
-  }
-
-  // ✅ 查詢中動畫 + 提示文字
-  setLoading(true, "查詢中…");
-
-  try{
-    const url = `${API_URL}?q=${encodeURIComponent(name)}&key=${encodeURIComponent(key)}`;
-    const res = await fetch(url, { method:"GET" });
-
-    if(!res.ok){
-      setLoading(false, `❌ API 回應失敗（HTTP ${res.status}）`);
-      $("list").innerHTML = `<div class="errorbox">HTTP ${res.status}\n請確認 Apps Script 是否部署成「任何人」可存取。</div>`;
-      return;
-    }
-
-    const parsed = await safeJson(res);
-    if(!parsed.ok){
-      // ✅ 這就是你遇到 Unexpected token '<' 的真正原因之一：回來是 HTML 不是 JSON
-      setLoading(false, "❌ API 回傳不是 JSON（多半是權限或錯誤頁）");
-      $("list").innerHTML =
-        `<div class="errorbox">API 回傳不是 JSON，所以網頁無法解析。\n\n以下是回傳內容（前 600 字）：\n${esc(parsed.raw.slice(0,600))}</div>`;
-      return;
-    }
-
-    const data = parsed.json;
-    if(!data.ok){
-      setLoading(false, "查無資料或密碼錯誤");
-      alert(data.message || "查詢失敗");
-      return;
-    }
-
-    rawDetails = data.details || [];
-
-    $("paid").textContent = fmt(data.total_paid);
-    $("unpaid").textContent = fmt(data.total_unpaid);
-    $("all").textContent = fmt(data.total_all);
-    $("summary").style.display = "";
-
-    setLoading(false, `✅ 找到 ${rawDetails.length} 筆資料`);
-    render();
-
-  }catch(err){
-    console.error(err);
-    setLoading(false, "❌ 查詢失敗（網路或 API 設定問題）");
-    $("list").innerHTML = `<div class="errorbox">${esc(err.message || String(err))}</div>`;
-  }
+// 查詢成功後，把 data 存起來再 render
+async function runQuery(){
+  // ...你原本查詢 fetch 的內容保留...
+  // 查到資料後做：
+  // userData = data;
+  // render();
 }
 
 function render(){
-  if(!rawDetails.length){
-    $("list").innerHTML = "<div class='muted'>沒有資料</div>";
+  const listEl = document.getElementById("list");
+  if(!userData){
+    listEl.innerHTML = "";
     return;
   }
 
-  const list = rawDetails.filter(d=>{
-    const isPaid = String(d.pay_status||"").includes("已");
-    if(currentFilter==="paid") return isPaid;
-    if(currentFilter==="unpaid") return !isPaid;
-    return true;
-  });
+  if(currentTab === "payments"){
+    const pays = userData.payments || [];
+    if(!pays.length){
+      listEl.innerHTML = `<div class="muted">沒有付款紀錄</div>`;
+      return;
+    }
 
-  if(!list.length){
-    $("list").innerHTML = "<div class='muted'>沒有符合的資料</div>";
+    let html = `
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>時間</th><th class="right">金額</th><th>備註</th></tr></thead>
+          <tbody>
+    `;
+    pays.forEach(p=>{
+      html += `
+        <tr>
+          <td>${esc(p.paid_at||"")}</td>
+          <td class="right">${fmt(p.amount)}</td>
+          <td class="muted">${esc(p.note||"")}</td>
+        </tr>
+      `;
+    });
+    html += `</tbody></table></div>`;
+    listEl.innerHTML = html;
+    return;
+  }
+
+  // orders（訂單明細）
+  const rows = userData.details || [];
+  if(!rows.length){
+    listEl.innerHTML = `<div class="muted">沒有訂單資料</div>`;
     return;
   }
 
   let html = `
-  <table>
-    <thead>
-      <tr>
-        <th>品項</th>
-        <th>數量</th>
-        <th>團別</th>
-        <th class="right">金額</th>
-        <th>狀態</th>
-      </tr>
-    </thead>
-    <tbody>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>團別</th>
+            <th>品項</th>
+            <th class="center">數量</th>
+            <th class="right">金額</th>
+            <th class="center">到貨</th>
+            <th class="center">包/出</th>
+          </tr>
+        </thead>
+        <tbody>
   `;
 
-  list.forEach(d=>{
-    const isPaid = String(d.pay_status||"").includes("已");
-    const group = d.group || d.sheet || "";
+  rows.forEach(d=>{
+    const qty = Number(d.qty||0);
+    const aq  = Number(d.arrived_qty||0);
     html += `
       <tr>
+        <td class="muted">${esc(d.group||"")}</td>
         <td>${esc(d.item||"")}</td>
-        <td>${esc(d.qty||"")}</td>
-        <td class="muted">${esc(group)}</td>
+        <td class="center">${esc(qty)}</td>
         <td class="right">${fmt(d.amount)}</td>
-        <td><span class="status-badge ${isPaid ? "paid" : "unpaid"}">${esc(d.pay_status||"")}</span></td>
+        <td class="center">${esc(aq)}/${esc(qty)}</td>
+        <td class="center">
+          <div class="muted">${esc(d.pack_status||"未包")}${d.packed_at? "@" + esc(d.packed_at):""}</div>
+          <div class="muted">${esc(d.ship_status||"未出")}${d.shipped_at? "@" + esc(d.shipped_at):""}</div>
+        </td>
       </tr>
     `;
   });
 
-  html += "</tbody></table>";
-  $("list").innerHTML = html;
+  html += `</tbody></table></div>`;
+  listEl.innerHTML = html;
 }
+
 </script>
 </body>
 </html>
