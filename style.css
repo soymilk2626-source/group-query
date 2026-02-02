@@ -65,3 +65,21 @@ body{
   color:#ffffff;
   border:1px solid rgba(255,255,255,0.35);
 }
+/* 🔧 強制覆蓋問題句樣式 */
+.question{
+  font-size:18px;
+  font-weight:900;
+  color:#ffb3b3;
+  letter-spacing:1px;
+  text-align:center;
+}
+/* 🔧 包住按鈕的 a，統一寬度 */
+.btn-wrap{
+  display:block;
+  width:280px;          /* 👈 關鍵：兩顆一樣寬 */
+}
+
+/* 按鈕撐滿外層 */
+.btn{
+  width:100%;
+}
