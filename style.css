@@ -150,3 +150,26 @@ tr:last-child td{ border-bottom:none; }
 }
 .loading .spinner{ display:inline-block; }
 @keyframes spin{ to{ transform:rotate(360deg);} }
+
+.btn{
+  padding:14px 22px;
+  border-radius:999px;
+  border:0;
+  cursor:pointer;
+  font-size:16px;
+  font-weight:900;
+  min-width:260px;          /* 讓上下按鈕寬度一致 */
+}
+
+/* 「是」：深色主按鈕 */
+.btn-yes{
+  background:#0b1a33;       /* 深藍（比背景再深） */
+  color:#fff;
+}
+
+/* 「不是」：淺色次按鈕 */
+.btn-no{
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+  border:1px solid rgba(255,255,255,0.3);
+}
