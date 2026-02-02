@@ -55,7 +55,7 @@ body{
 .question{
   font-size:18px;
   font-weight:900;
-  color:#e06a6a;       /* ✅ 更紅、更暗紅 */
+  color:#9c0b0b;       /* ✅ 更紅、更暗紅 */
   letter-spacing:1px;
   margin-bottom:10px;
 }
@@ -67,33 +67,46 @@ body{
   margin-bottom:26px;
 }
 
+
 /* =========================
    按鈕區
 ========================= */
 
-/* 按鈕容器：上下排列 + 由最長按鈕決定整體寬度 */
+/* 按鈕容器：上下排列 */
 .buttons{
-  display:inline-block;     /* 讓容器寬度跟內容走 */
-  width:max-content;        /* ✅ 容器寬度 = 最長那顆 */
-  text-align:center;
-  margin: 0 auto;           /* 置中 */
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  align-items:center;
 }
 
-/* 讓每個連結變成一整行，並且撐滿容器 */
+/* 包住 button 的 a
+   👉 寬度由「最長文字」決定 */
 .btn-wrap{
   display:block;
-  width:100%;               /* ✅ 跟容器同寬 */
-  margin-top:14px;          /* 上下間距（取代 gap） */
+  width:max-content;
 }
 
-/* 共用按鈕：撐滿外層寬度 */
+/* 共用按鈕樣式 */
 .btn{
-  width:100%;               /* ✅ 兩顆一樣長就靠這行 */
+  width:100%;            /* 撐滿外層 a */
   padding:14px 24px;
   border-radius:999px;
   border:0;
   font-size:16px;
   font-weight:900;
   cursor:pointer;
-  text-align:center;
+}
+
+/* 主按鈕：黃色 */
+.btn-main{
+  background:#f5c451;
+  color:#1b1b1b;
+}
+
+/* 次按鈕：淺色 */
+.btn-sub{
+  background:rgba(255,255,255,0.12);
+  color:#ffffff;
+  border:1px solid rgba(255,255,255,0.35);
 }
