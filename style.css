@@ -1,85 +1,111 @@
-/* 整頁置中（手機、桌機都穩） */
+/* =========================
+   全站基礎設定
+========================= */
+
 body{
   margin:0;
   min-height:100vh;
-  background:#0f1f3a;                /* 深藍底 */
-  color:#ffffff;
+
+  /* 深藍背景 */
+  background:#0f1f3a;
+
+  /* 文字顏色 */
+  color:#f5f5f5;
+
+  /* 置中整個畫面 */
   display:flex;
-  align-items:center;                /* 垂直置中 */
-  justify-content:center;            /* 水平置中 */
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;
+  align-items:center;
+  justify-content:center;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "PingFang TC",
+    "Microsoft JhengHei",
+    sans-serif;
 }
 
-/* 內容容器 */
+/* =========================
+   主要內容容器
+========================= */
+
 .center{
   text-align:center;
-  padding:20px;
+  padding:24px;
 }
 
-/* 標語 */
-.tagline{
-  font-size:22px;
+/* =========================
+   文字區塊
+========================= */
+
+.title{
+  font-size:28px;
   font-weight:900;
-  letter-spacing:1px;
+  margin-bottom:18px;
+}
+
+.tagline{
+  font-size:20px;
+  font-weight:700;
+  line-height:1.6;
   margin-bottom:14px;
 }
 
-/* 問題句：柔和紅色、放大 */
+/* 問題句：柔和紅＋放大＋加粗 */
 .question{
-  font-size:18px;                    /* 放大一點 */
-  font-weight:900;
-  color:#ffb3b3;                     /* 柔和紅 */
+  font-size:18px;
+  font-weight:900;       /* ← 加粗 */
+  color:#ffb3b3;         /* ← 柔和紅 */
   letter-spacing:1px;
-  margin-bottom:22px;
+  margin-bottom:10px;
 }
+
+/* 小字 */
+.sub{
+  font-size:14px;
+  opacity:0.8;
+  margin-bottom:26px;
+}
+
+/* =========================
+   按鈕區
+========================= */
 
 /* 按鈕容器：上下排列 */
 .buttons{
   display:flex;
-  flex-direction:column;             /* 上下 */
+  flex-direction:column;
   gap:14px;
   align-items:center;
 }
 
-/* 共用按鈕設定 */
-.btn{
-  min-width:280px;                   /* ✅ 兩顆一樣寬 */
-  padding:14px 22px;
-  border-radius:999px;
-  border:0;
-  cursor:pointer;
-  font-size:16px;
-  font-weight:900;
-  text-align:center;
+/* 包住 button 的 a
+   👉 寬度由「最長文字」決定 */
+.btn-wrap{
+  display:block;
+  width:max-content;
 }
 
-/* 主按鈕：黃色（不是豆漿） */
+/* 共用按鈕樣式 */
+.btn{
+  width:100%;            /* 撐滿外層 a */
+  padding:14px 24px;
+  border-radius:999px;
+  border:0;
+  font-size:16px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+/* 主按鈕：黃色 */
 .btn-main{
-  background:#f5c451;                /* 黃色 */
+  background:#f5c451;
   color:#1b1b1b;
 }
 
-/* 次按鈕：淺色（是豆漿） */
+/* 次按鈕：淺色 */
 .btn-sub{
   background:rgba(255,255,255,0.12);
   color:#ffffff;
   border:1px solid rgba(255,255,255,0.35);
-}
-/* 🔧 強制覆蓋問題句樣式 */
-.question{
-  font-size:18px;
-  font-weight:900;
-  color:#ffb3b3;
-  letter-spacing:1px;
-  text-align:center;
-}
-/* 🔧 包住按鈕的 a，統一寬度 */
-.btn-wrap{
-  display:block;
-  width:280px;          /* 👈 關鍵：兩顆一樣寬 */
-}
-
-/* 按鈕撐滿外層 */
-.btn{
-  width:100%;
 }
