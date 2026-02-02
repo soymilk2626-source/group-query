@@ -1,175 +1,67 @@
-/* style.css：全站共用樣式（入口/查詢/管理都吃同一套） */
-
-:root{
-  --navy:#1f2a44;
-  --yellow:#f5c451;
-  --bg:#fafafa;
-  --line:#e6e6e6;
-  --paid:#2e7d32;
-  --unpaid:#c62828;
-}
-
+/* 整頁置中（手機、桌機都穩） */
 body{
   margin:0;
-  background:var(--bg);
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;
-  color:#222;
-}
-
-.wrap{
-  max-width:980px;
-  margin:0 auto;
-  padding:18px 14px 70px;
-}
-
-/* 深藍標題條（手機也盡量一行） */
-.hero{
-  background:var(--navy);
-  color:#fff;
-  border-radius:18px;
-  padding:16px;
-}
-
-.hero h1{
-  margin:0;
-  font-size:20px;
-  line-height:1.2;
-  white-space:nowrap;          /* 盡量不換行 */
-  overflow:hidden;
-  text-overflow:ellipsis;      /* 太長就省略 */
-}
-
-.card{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:14px;
-  margin-top:14px;
-}
-
-.row{
+  min-height:100vh;
+  background:#0f1f3a;                /* 深藍底 */
+  color:#ffffff;
   display:flex;
-  gap:10px;
-  flex-wrap:wrap;
+  align-items:center;                /* 垂直置中 */
+  justify-content:center;            /* 水平置中 */
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;
+}
+
+/* 內容容器 */
+.center{
+  text-align:center;
+  padding:20px;
+}
+
+/* 標語 */
+.tagline{
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:1px;
+  margin-bottom:14px;
+}
+
+/* 問題句：柔和紅色、放大 */
+.question{
+  font-size:18px;                    /* 放大一點 */
+  font-weight:900;
+  color:#ffb3b3;                     /* 柔和紅 */
+  letter-spacing:1px;
+  margin-bottom:22px;
+}
+
+/* 按鈕容器：上下排列 */
+.buttons{
+  display:flex;
+  flex-direction:column;             /* 上下 */
+  gap:14px;
   align-items:center;
 }
 
-input, select{
-  padding:12px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  font-size:15px;
-  background:#fff;
-  flex:1;
-  min-width:220px;
-}
-
-button{
-  padding:12px 16px;
-  border:0;
-  border-radius:12px;
-  cursor:pointer;
-  background:var(--navy);
-  color:#fff;
-  font-size:15px;
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-}
-
-button.secondary{
-  background:#fff;
-  color:#222;
-  border:1px solid var(--line);
-}
-
-button:disabled{
-  opacity:.6;
-  cursor:not-allowed;
-}
-
-.muted{ color:#777; font-size:12px; }
-.statusline{ margin-top:8px; color:#666; font-size:13px; min-height:18px; }
-
-/* 表格：手機不跑版的關鍵 -> 可左右滑 */
-.table-wrap{
-  width:100%;
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-  border-radius:16px;
-}
-
-.table-wrap table{
-  width:100%;
-  min-width:900px; /* 欄位多就加大，避免擠爆 */
-  border-collapse:collapse;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:16px;
-  overflow:hidden;
-}
-
-thead{ background:#f1f3f6; }
-th, td{
-  padding:12px 10px;
-  text-align:left;
-  border-bottom:1px solid var(--line);
-  font-size:14px;
-  vertical-align:top;
-}
-th{ color:var(--navy); font-size:13px; }
-tr:last-child td{ border-bottom:none; }
-
-.right{ text-align:right; }
-.center{ text-align:center; }
-
-/* 不換行狀態 badge */
-.status-badge{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  white-space:nowrap;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:13px;
-  line-height:1;
-  min-width:56px;
-  font-weight:800;
-}
-.paid{ background:#e8f5e9; color:var(--paid); }
-.unpaid{ background:#ffebee; color:var(--unpaid); }
-
-/* 查詢中 spinner（按鈕用） */
-.spinner{
-  width:16px;height:16px;
-  border:2px solid rgba(255,255,255,.45);
-  border-top-color:#fff;
-  border-radius:50%;
-  animation:spin .8s linear infinite;
-  display:none;
-}
-.loading .spinner{ display:inline-block; }
-@keyframes spin{ to{ transform:rotate(360deg);} }
-
+/* 共用按鈕設定 */
 .btn{
+  min-width:280px;                   /* ✅ 兩顆一樣寬 */
   padding:14px 22px;
   border-radius:999px;
   border:0;
   cursor:pointer;
   font-size:16px;
   font-weight:900;
-  min-width:260px;          /* 讓上下按鈕寬度一致 */
+  text-align:center;
 }
 
-/* 「是」：深色主按鈕 */
-.btn-yes{
-  background:#0b1a33;       /* 深藍（比背景再深） */
-  color:#fff;
+/* 主按鈕：黃色（不是豆漿） */
+.btn-main{
+  background:#f5c451;                /* 黃色 */
+  color:#1b1b1b;
 }
 
-/* 「不是」：淺色次按鈕 */
-.btn-no{
+/* 次按鈕：淺色（是豆漿） */
+.btn-sub{
   background:rgba(255,255,255,0.12);
-  color:#fff;
-  border:1px solid rgba(255,255,255,0.3);
+  color:#ffffff;
+  border:1px solid rgba(255,255,255,0.35);
 }
