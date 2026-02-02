@@ -1,31 +1,56 @@
-/* user.css：查詢頁專用 */
+/* =========================
+   user.css：查詢頁專用（直版面）
+========================= */
 
-/* 正常直版面 */
 body{
   background:#fafafa;
   color:#222;
+  display:block;      /* 不要入口頁那種 flex 置中 */
 }
 
-/* 主容器 */
+/* 你查詢頁的主容器 */
 .wrap{
   max-width:980px;
   margin:0 auto;
   padding:28px 16px 60px;
 }
 
-/* 查詢區直排 */
+/* 查詢區：可換行，避免變成一長排 */
 .search{
   display:flex;
   flex-wrap:wrap;
   gap:10px;
   justify-content:center;
+  margin:12px 0;
 }
 
-/* 上方深藍標題 */
+.search input{
+  flex:1;
+  min-width:220px;
+}
+
+.search button{
+  min-width:120px;
+}
+
+/* 上方深藍標題列 */
 .user-hero{
   background:#0f1f3a;
   color:#fff;
   padding:18px 16px;
   border-radius:16px;
   text-align:center;
+}
+
+.user-hero .hero-title{
+  font-size:22px;
+  font-weight:900;
+  margin:0 0 8px;
+}
+
+.user-hero .hero-desc{
+  margin:0;
+  color:rgba(255,255,255,0.85);
+  line-height:1.8;
+  font-size:14px;
 }
