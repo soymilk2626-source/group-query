@@ -5,111 +5,67 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>HXH獵人揪團</title>
   <style>
-    :root{
-      --navy:#0f1f3a;      /* 深藍底 */
-      --navy2:#122a4b;     /* 深藍漸層 */
-      --yellow:#f5c451;    /* 黃按鈕 */
-      --white:#ffffff;
-      --soft:#d7deea;      /* 淡白文字 */
-    }
+body{
+  margin:0;
+  min-height:100vh;
+  background:#0f1f3a;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;
+}
 
-    body{
-      margin:0;
-      min-height:100vh;
-      background: radial-gradient(1200px 700px at 30% 20%, var(--navy2), var(--navy));
-      font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;
-      color:var(--white);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-    }
+.center{
+  text-align:center;
+  padding:20px;
+}
 
-    .panel{
-      width:min(720px, 100%);
-      border-radius:22px;
-      padding:22px 18px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-      backdrop-filter: blur(6px);
-    }
+.tagline{
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:1px;
+  margin-bottom:12px;
+}
 
-    h1{
-      margin:0 0 10px;
-      font-size:22px;
-      font-weight:900;
-      letter-spacing:1px;
-      white-space:nowrap;          /* 手機盡量一行 */
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
+.sub{
+  font-size:14px;
+  opacity:.85;
+  line-height:1.8;
+}
 
-    .desc{
-      margin:0;
-      color: var(--soft);
-      line-height:1.8;
-      font-size:14px;
-    }
+.buttons{
+  margin-top:20px;
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
 
-    .question{
-      margin-top:18px;
-      font-size:16px;
-      font-weight:900;
-    }
+button{
+  padding:12px 18px;
+  border-radius:999px;
+  border:0;
+  cursor:pointer;
+  font-size:15px;
+  font-weight:900;
+}
 
-    .btns{
-      margin-top:14px;
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-    }
+.btn-main{
+  background:#f5c451;
+  color:#1b1b1b;
+}
 
-    a{ text-decoration:none; }
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding:12px 16px;
-      border-radius:999px;
-      border:0;
-      cursor:pointer;
-      font-size:15px;
-      font-weight:900;
-      letter-spacing:.3px;
-      min-width: 220px;
-    }
-
-    .btn-yellow{
-      background: var(--yellow);
-      color: #1b1b1b;
-    }
-
-    .btn-ghost{
-      background: rgba(255,255,255,0.10);
-      color: var(--white);
-      border: 1px solid rgba(255,255,255,0.16);
-    }
-
-    .hint{
-      margin-top:14px;
-      color: rgba(255,255,255,0.75);
-      font-size:12px;
-      line-height:1.6;
-    }
-
-    .link{
-      color: var(--yellow);
-      text-decoration: underline;
-      font-weight:800;
-    }
-  </style>
+.btn-sub{
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+  border:1px solid rgba(255,255,255,0.25);
+}
+</style>
 </head>
 
 <body>
-  <main class="panel">
+  <main class="center">
     <h1>HXH獵人揪團，一起來敗家！！</h1>
 
     <p class="desc">
@@ -121,20 +77,18 @@
     <div class="question">先問一句——你是豆漿嗎？</div>
 
     <div class="btns">
-      <!-- ✅ 黃色主按鈕：去管理 -->
-      <a href="admin.html">
-        <button class="btn btn-yellow" type="button">🫘 是，我是豆漿</button>
-      </a>
+<body>
+  <main class="center">
+    <h1 class="tagline">我知道你又敗家了，我也是。</h1>
 
-      <!-- ✅ 次按鈕：去查詢 -->
-      <a href="user.html">
-        <button class="btn btn-ghost" type="button">🎒 不是，我來查團務</button>
-      </a>
+    <div class="sub">
+      HXH 獵人揪團<br>
+      一起冷靜地（不冷靜地）花錢
     </div>
 
-    <div class="hint">
-      小提醒：團員請走「查團務」，不要亂闖後台（會被豆漿瞪）。<br>
-      這頁只是分流入口，不會存任何個資。
+    <div class="buttons">
+      <a href="admin.html"><button class="btn-main">🫘 是，我是豆漿</button></a>
+      <a href="user.html"><button class="btn-sub">🎒 不是，我來查團務</button></a>
     </div>
   </main>
 </body>
