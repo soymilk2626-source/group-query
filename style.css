@@ -225,3 +225,65 @@ body{
   border-radius:16px;
   overflow:hidden;
 }
+.loading{
+  margin-top:12px;
+  text-align:center;
+  font-weight:700;
+  color:#555;
+}
+/* =========================
+   user.html：直版面（取消入口頁那種全畫面置中）
+========================= */
+body.page-user{
+  display:block;              /* ✅ 不要 flex 置中 */
+  min-height:auto;
+  background:#fafafa;         /* ✅ 查詢頁回到白底（你原本的查詢風格） */
+  color:#222;
+}
+
+/* user 頁內容寬度與置中 */
+.page-user .wrap{
+  max-width:980px;
+  margin:0 auto;
+  padding:28px 16px 60px;
+}
+
+/* 深藍標題列置中在最上面 */
+.page-user .user-hero{
+  margin-top:0;
+}
+
+/* 連結列不要被擠成一長排 */
+.page-user .top-links{
+  margin:14px 0 10px;
+}
+
+/* 查詢區：讓它「直版面」往下排 */
+.page-user .search{
+  display:flex;
+  flex-wrap:wrap;             /* ✅ 小螢幕會換行 */
+  gap:10px;
+  justify-content:center;
+  margin:12px 0;
+}
+
+.page-user .search input{
+  flex:1;
+  min-width:220px;
+}
+
+.page-user .search button{
+  min-width:120px;
+}
+
+/* tabs 置中一排 */
+.page-user .tabs{
+  justify-content:center;
+  margin-top:12px;
+}
+
+/* 表格區域往下，不要跟輸入框同一排 */
+.page-user #list{
+  margin-top:12px;
+}
+.page-user .back-link{ display:none; }
