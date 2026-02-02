@@ -17,12 +17,12 @@ body{
   align-items:center;
   justify-content:center;
 
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "PingFang TC",
-    "Microsoft JhengHei",
-    sans-serif;
+  font-family: 'Noto Sans TC',
+               -apple-system,
+               BlinkMacSystemFont,
+               "PingFang TC",
+               "Microsoft JhengHei",
+               sans-serif;
 }
 
 /* =========================
@@ -37,6 +37,16 @@ body{
 /* =========================
    文字區塊
 ========================= */
+/* 標題、標語、提問 → 宋體 */
+.title,
+.tagline,
+.question{
+  font-family: 'Noto Serif TC',
+               "Songti TC",
+               "PMingLiU",
+               serif;
+}
+
 
 .title{
   font-size:32px;
