@@ -4,65 +4,138 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>HXH獵人揪團</title>
+  <style>
+    :root{
+      --navy:#0f1f3a;      /* 深藍底 */
+      --navy2:#122a4b;     /* 深藍漸層 */
+      --yellow:#f5c451;    /* 黃按鈕 */
+      --white:#ffffff;
+      --soft:#d7deea;      /* 淡白文字 */
+    }
 
-  <!-- 如果你已經有 style.css，就用這行 -->
-  <link rel="stylesheet" href="style.css">
+    body{
+      margin:0;
+      min-height:100vh;
+      background: radial-gradient(1200px 700px at 30% 20%, var(--navy2), var(--navy));
+      font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;
+      color:var(--white);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
 
-  <!-- 如果你還沒用 style.css，也可以先把下面這段 style.css 內容貼到那個檔案 -->
+    .panel{
+      width:min(720px, 100%);
+      border-radius:22px;
+      padding:22px 18px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      backdrop-filter: blur(6px);
+    }
+
+    h1{
+      margin:0 0 10px;
+      font-size:22px;
+      font-weight:900;
+      letter-spacing:1px;
+      white-space:nowrap;          /* 手機盡量一行 */
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .desc{
+      margin:0;
+      color: var(--soft);
+      line-height:1.8;
+      font-size:14px;
+    }
+
+    .question{
+      margin-top:18px;
+      font-size:16px;
+      font-weight:900;
+    }
+
+    .btns{
+      margin-top:14px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    a{ text-decoration:none; }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:12px 16px;
+      border-radius:999px;
+      border:0;
+      cursor:pointer;
+      font-size:15px;
+      font-weight:900;
+      letter-spacing:.3px;
+      min-width: 220px;
+    }
+
+    .btn-yellow{
+      background: var(--yellow);
+      color: #1b1b1b;
+    }
+
+    .btn-ghost{
+      background: rgba(255,255,255,0.10);
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+
+    .hint{
+      margin-top:14px;
+      color: rgba(255,255,255,0.75);
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .link{
+      color: var(--yellow);
+      text-decoration: underline;
+      font-weight:800;
+    }
+  </style>
 </head>
 
 <body>
-  <div class="wrap">
+  <main class="panel">
+    <h1>HXH獵人揪團，一起來敗家！！</h1>
 
-    <!-- 深藍標題列 -->
-    <div class="hero">
-      <h1>HXH獵人揪團，一起來敗家！！</h1>
-      <div class="muted" style="color:#e9e9e9;margin-top:6px;">
-        主要在 LINE 活動，有現貨才會在其他地方發布。
-      </div>
+    <p class="desc">
+      主要在 LINE 活動，有現貨才會在其他地方發布。<br>
+      有問題可以私訊我：FB：Hau May Dun ｜ Email：soymilk2626@gmail.com<br>
+      <a class="link" href="https://line.me/R/ti/g/cH22OTt-IX" target="_blank" rel="noreferrer">>> 點我進群組 <<</a>
+    </p>
+
+    <div class="question">先問一句——你是豆漿嗎？</div>
+
+    <div class="btns">
+      <!-- ✅ 黃色主按鈕：去管理 -->
+      <a href="admin.html">
+        <button class="btn btn-yellow" type="button">🫘 是，我是豆漿</button>
+      </a>
+
+      <!-- ✅ 次按鈕：去查詢 -->
+      <a href="user.html">
+        <button class="btn btn-ghost" type="button">🎒 不是，我來查團務</button>
+      </a>
     </div>
 
-    <!-- 資訊卡（你原本喜歡的那種） -->
-    <div class="card">
-      <div style="font-size:16px;font-weight:900;color:var(--navy);">
-        📣 揪團資訊
-      </div>
-
-      <div class="muted" style="margin-top:8px;line-height:1.8;">
-        有任何問題都可以私訊我或來信：<br>
-        FB：Hau May Dun ｜ Email：soymilk2626@gmail.com<br>
-        <a href="https://line.me/R/ti/g/cH22OTt-IX" target="_blank" rel="noreferrer">
-          >> 點我進群組 <<
-        </a>
-      </div>
+    <div class="hint">
+      小提醒：團員請走「查團務」，不要亂闖後台（會被豆漿瞪）。<br>
+      這頁只是分流入口，不會存任何個資。
     </div>
-
-    <!-- 分流卡：你是豆漿嗎？ -->
-    <div class="card">
-      <div style="font-size:16px;font-weight:900;color:var(--navy);">
-        先問一句——你是豆漿嗎？
-      </div>
-      <div class="muted" style="margin-top:6px;">
-        是：進管理頁（需要管理碼）｜不是：進一般查詢
-      </div>
-
-      <div class="row" style="margin-top:12px;">
-        <!-- ✅ 連到管理頁 -->
-        <a href="admin.html" style="text-decoration:none;">
-          <button>🫘 是，我就是豆漿</button>
-        </a>
-
-        <!-- ✅ 連到查詢頁 -->
-        <a href="user.html" style="text-decoration:none;">
-          <button class="secondary">🎒 不是，我來查團務</button>
-        </a>
-      </div>
-
-      <div class="muted" style="margin-top:10px;">
-        小提醒：如果你是團員，請點「不是」去查詢；不要亂闖後台（會被豆漿瞪）。
-      </div>
-    </div>
-
-  </div>
+  </main>
 </body>
 </html>
