@@ -39,16 +39,16 @@ body{
 ========================= */
 
 .title{
-  font-size:28px;
+  font-size:32px;
   font-weight:900;
-  margin-bottom:18px;
+  margin-bottom:20px;
 }
 
 .tagline{
-  font-size:20px;
+  font-size:24px;
   font-weight:700;
   line-height:1.6;
-  margin-bottom:14px;
+  margin-bottom:16px;
 }
 
 /* 問題句：柔和紅＋放大＋加粗 */
