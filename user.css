@@ -68,3 +68,33 @@ body{
   min-width:900px;  /* 欄位多就加大：1000/1100 */
   border-collapse:collapse;
 }
+/* =========================
+   查詢列：圓角 + 藍色按鈕（最終版）
+========================= */
+
+/* 輸入框：圓角 */
+.search input{
+  border-radius:999px;          /* ✅ 圓的 */
+  border:1px solid #e6e6e6;
+  outline:none;
+  font-size:14px;
+}
+
+/* 點擊時不要出現醜藍框 */
+.search input:focus{
+  border-color:#0f1f3a;
+}
+
+/* 查詢按鈕：深藍色 */
+.search button{
+  border-radius:999px;          /* ✅ 圓的 */
+  background:#0f1f3a;           /* ✅ 深藍 */
+  color:#ffffff;
+  border:none;
+  font-weight:800;
+}
+
+/* hover 效果（可有可無，但好看） */
+.search button:hover{
+  opacity:0.9;
+}
