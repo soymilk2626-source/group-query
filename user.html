@@ -1,384 +1,271 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>HXH獵人揪團｜查詢</title>
-<link rel="stylesheet" href="base.css">
-<link rel="stylesheet" href="user.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HXH 獵人揪團｜查詢</title>
 
-</head>
-<body class="page-user">
+<!-- 字型：標題宋體、內容黑體 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
 
+<style>
+/* =========================
+   基本設定（直版面）
+========================= */
+body{
+  margin:0;
+  background:#fafafa;
+  color:#222;
+  font-family:'Noto Sans TC', sans-serif;
+}
 
-    </div>
+.wrap{
+  max-width:960px;
+  margin:0 auto;
+  padding:20px 16px 60px;
+}
 
-    <div class="card" id="userApp">
-  <style>
-    :root{
-      --navy:#1f2a44;
-      --yellow:#f5c451;
-      --bg:#fafafa;
-      --line:#e6e6e6;
-      --paid:#2e7d32;
-      --unpaid:#c62828;
-    }
+/* =========================
+   上方標題區（不圓角）
+========================= */
+.header{
+  background:#0f1f3a;
+  color:#fff;
+  padding:20px 16px;
+  text-align:center;
+  margin-bottom:16px;
+}
 
-    body{
-      margin:0;
-      background:var(--bg);
-      font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","PingFang TC","Microsoft JhengHei",sans-serif;
-      color:#222;
-    }
+.header h1{
+  margin:0 0 6px;
+  font-family:'Noto Serif TC', serif;
+  font-size:24px;
+  font-weight:900;
+}
 
-    .wrap{
-      max-width:980px;
-      margin:0 auto;
-      padding:28px 16px 60px;
-    }
+.header p{
+  margin:0;
+  font-size:14px;
+  opacity:.9;
+}
 
-    h1{
-      margin:0 0 8px;
-      font-size:28px;
-      color:var(--navy);
-      letter-spacing:1px;
-    }
-
-    .subtitle{
-      font-size:14px;
-      line-height:1.7;
-      color:#555;
-      margin-bottom:20px;
-    }
-    .subtitle b{ color:var(--navy); }
-    .subtitle a{
-      color:var(--navy);
-      text-decoration:underline;
-      font-weight:600;
-    }
-
- /* 查詢列：縮短＋置中 */
+/* =========================
+   查詢區
+========================= */
 .search{
   display:flex;
   flex-wrap:wrap;
   gap:10px;
   justify-content:center;
-  margin:14px 0;
+  margin:16px 0;
 }
 
-/* 兩個輸入框：不要撐全寬，給「最大寬度」 */
+/* 圓角搜尋框 */
 .search input{
-  flex:0 1 320px;     /* ✅ 想更短：改 280px */
-  min-width:220px;
-  max-width:360px;
-  padding:10px 12px;  /* ✅ 比原本更精簡 */
+  flex:0 1 280px;
+  padding:12px 14px;
+  font-size:14px;
+  border-radius:999px;       /* ✅ 圓角 */
+  border:1px solid #ddd;
+  outline:none;
 }
 
-/* 查詢按鈕：固定寬度，不要超大 */
+/* 深藍查詢按鈕 */
 .search button{
-  flex:0 0 96px;
-  padding:10px 12px;
-  min-width:96px;
+  padding:12px 18px;
+  border-radius:999px;
+  border:none;
+  background:#0f1f3a;
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
 }
 
-    /* 查詢中 spinner */
-    .spinner{
-      width:16px;
-      height:16px;
-      border:2px solid rgba(255,255,255,.45);
-      border-top-color:#fff;
-      border-radius:50%;
-      animation:spin .8s linear infinite;
-      display:none;
-    }
-    .loading .spinner{ display:inline-block; }
-    @keyframes spin{ to{ transform:rotate(360deg); } }
+.search button:disabled{
+  opacity:.6;
+  cursor:default;
+}
 
-    .statusline{
-      margin:6px 0 10px;
-      color:#666;
-      font-size:13px;
-      min-height:18px;
-    }
+/* =========================
+   查詢中提示（深藍）
+========================= */
+.loading{
+  text-align:center;
+  font-weight:800;
+  color:#0f1f3a;
+  margin:12px 0;
+}
 
-    /* ===== Tabs ===== */
-    .tabs{
-      display:flex;
-      gap:8px;
-      margin:14px 0 10px;
-    }
+/* =========================
+   Tabs
+========================= */
+.tabs{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:16px 0;
+}
 
-    .tab{
-      padding:6px 14px;
-      border-radius:999px;
-      font-size:13px;
-      border:1px solid var(--line);
-      cursor:pointer;
-      background:#fff;
-      user-select:none;
-    }
+.tab{
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid #ddd;
+  background:#fff;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+}
 
-    .tab.active{
-      background:var(--yellow);
-      border-color:var(--yellow);
-      font-weight:700;
-    }
+.tab.active{
+  background:#f5c451;
+  border-color:#f5c451;
+}
 
-    /* ===== Summary ===== */
-    .summary{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      margin:16px 0 22px;
-    }
+/* =========================
+   表格（手機左右滑）
+========================= */
+.table-wrap{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
 
-    .sum{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:12px;
-      padding:12px 16px;
-      font-size:14px;
-    }
+table{
+  width:100%;
+  min-width:900px;
+  border-collapse:collapse;
+  background:#fff;
+  border:1px solid #ddd;
+}
 
-    .sum b{ font-size:16px; }
+th,td{
+  padding:10px;
+  border-bottom:1px solid #eee;
+  font-size:14px;
+  text-align:left;
+}
 
-    /* ===== Table ===== */
-    table{
-      width:100%;
-      border-collapse:collapse;
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:14px;
-      overflow:hidden;
-    }
+th{
+  background:#f2f3f5;
+  font-weight:900;
+}
 
-    thead{ background:#f1f3f6; }
+/* 狀態標籤 */
+.badge{
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+}
 
-    th, td{
-      padding:12px 10px;
-      text-align:left;
-      font-size:14px;
-      border-bottom:1px solid var(--line);
-      vertical-align:top;
-    }
-
-    th{
-      color:var(--navy);
-      font-weight:700;
-      font-size:13px;
-    }
-
-    tr:last-child td{ border-bottom:none; }
-    .right{ text-align:right; }
-
-    .muted{ color:#777; font-size:12px; }
-
-    /* 狀態 badge：不換行 + 顏色 */
-    .status-badge{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      white-space:nowrap;      /* ✅ 不換行 */
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:13px;
-      line-height:1;
-      min-width:56px;
-      font-weight:700;
-    }
-    .paid{
-      background:#e8f5e9;
-      color:var(--paid);
-    }
-    .unpaid{
-      background:#ffebee;
-      color:var(--unpaid);
-    }
-
-    /* 手機：隱藏團別欄（你原本也有） */
-    @media(max-width:720px){
-      th:nth-child(3), td:nth-child(3){
-        display:none;
-      }
-    }
-
-    .errorbox{
-      background:#fff3f3;
-      border:1px solid #ffd0d0;
-      color:#a40000;
-      padding:10px 12px;
-      border-radius:12px;
-      font-size:13px;
-      margin:10px 0;
-      white-space:pre-wrap;
-    }
-  </style>
-    </div>
-
-    <div class="card">
-
-    </div>
-  </div>
-
-  <script src="app.js"></script><!-- 共用JS工具 -->
+.paid{ background:#e6f4ea; color:#1b5e20; }
+.unpaid{ background:#fdecea; color:#a40000; }
+</style>
 </head>
 
 <body>
-<div class="user-hero">
-  <h1 class="hero-title">HXH獵人揪團，一起來敗家！！</h1>
+<div class="wrap">
 
-  <p class="hero-desc">
-    這是 HXH 限定揪團！！<br>
-    目前主要在 LINE 上活動，有現貨才會在其他地方發布。<br>
-    有任何問題都可以直接私訊我的帳號或來信給我～<br>
-    FB：Hau May Dun ｜ Email：soymilk2626@gmail.com<br>
-    <a href="https://line.me/R/ti/g/cH22OTt-IX" target="_blank" style="color:#f5c451;font-weight:900;text-decoration:underline;">
-      >> 點我進群組 <<
-    </a>
-  </p>
-</div>
+  <!-- 標題 -->
+  <div class="header">
+    <h1>HXH 獵人揪團</h1>
+    <p>查詢你的訂單與付款狀態</p>
+  </div>
 
-<div class="top-links">
-  <a class="timeline" href="timeline.html">到貨時間軸</a>
-  <a href="index.html">回入口</a>
-  <a href="#" onclick="alert('待更新'); return false;">其他連結</a>
-</div>
-
+  <!-- 查詢 -->
   <div class="search">
-    <input id="name" placeholder="暱稱（FB / LINE 名稱）">
+    <input id="name" placeholder="暱稱（FB / LINE）">
     <input id="key" placeholder="查詢密碼">
-    <button id="go">
-      <span class="spinner" aria-hidden="true"></span>
-      <span class="btn-text">查詢</span>
-    </button>
+    <button id="go">查詢</button>
   </div>
 
-  <div id="status" class="statusline"></div>
+  <!-- 查詢中提示 -->
+  <div id="loading" class="loading" style="display:none;">查詢中…</div>
 
-<div class="tabs">
-  <div class="tab active" data-ut="orders">訂單明細</div>
-  <div class="tab" data-ut="payments">付款明細</div>
-</div>
-
-<div id="list"></div>
-
-
-  <div class="summary" id="summary" style="display:none">
-    <div class="sum">已付：<b id="paid"></b></div>
-    <div class="sum">未付：<b id="unpaid"></b></div>
-    <div class="sum">總計：<b id="all"></b></div>
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" data-type="order">訂單明細</div>
+    <div class="tab" data-type="payment">付款明細</div>
   </div>
-        
-<div id="loading" class="loading" style="display:none;">
-  查詢中，請稍候…
-</div>
 
+  <!-- 結果 -->
   <div id="list"></div>
 
 </div>
-  
+
 <script>
+/* =========================
+   ⚠️ 改成你自己的 Apps Script URL
+========================= */
+const API_URL = "你的 Apps Script exec URL";
 
-let currentTab = "orders";
-let userData = null; // 查詢回來的資料：包含 details / payments
+/* 查詢按鈕 */
+document.getElementById("go").addEventListener("click", runQuery);
 
-// tab 切換
-document.querySelectorAll(".tab[data-ut]").forEach(t=>{
-  t.addEventListener("click", ()=>{
-    document.querySelectorAll(".tab[data-ut]").forEach(x=>x.classList.remove("active"));
-    t.classList.add("active");
-    currentTab = t.dataset.ut;
-    render();
-  });
-});
-
-// 查詢成功後，把 data 存起來再 render
 async function runQuery(){
-  // ...你原本查詢 fetch 的內容保留...
-  // 查到資料後做：
-  // userData = data;
-  // render();
-}
+  const name = document.getElementById("name").value.trim();
+  const key  = document.getElementById("key").value.trim();
+  const btn  = document.getElementById("go");
+  const loading = document.getElementById("loading");
+  const list = document.getElementById("list");
 
-function render(){
-  const listEl = document.getElementById("list");
-  if(!userData){
-    listEl.innerHTML = "";
+  if(!name || !key){
+    alert("請輸入暱稱與密碼");
     return;
   }
 
-  if(currentTab === "payments"){
-    const pays = userData.payments || [];
-    if(!pays.length){
-      listEl.innerHTML = `<div class="muted">沒有付款紀錄</div>`;
-      return;
-    }
+  btn.disabled = true;
+  loading.style.display = "block";
+  list.innerHTML = "";
 
+  try{
+    const url = `${API_URL}?q=${encodeURIComponent(name)}&key=${encodeURIComponent(key)}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if(!data.ok) throw new Error(data.message || "查詢失敗");
+
+    // 範例渲染（你之後可換成完整版本）
     let html = `
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>時間</th><th class="right">金額</th><th>備註</th></tr></thead>
-          <tbody>
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>團別</th>
+          <th>品項</th>
+          <th>數量</th>
+          <th>金額</th>
+          <th>狀態</th>
+        </tr>
+      </thead>
+      <tbody>
     `;
-    pays.forEach(p=>{
+
+    data.details.forEach(d=>{
+      const paid = String(d.pay_status).includes("已");
       html += `
         <tr>
-          <td>${esc(p.paid_at||"")}</td>
-          <td class="right">${fmt(p.amount)}</td>
-          <td class="muted">${esc(p.note||"")}</td>
+          <td>${d.group}</td>
+          <td>${d.item}</td>
+          <td>${d.qty}</td>
+          <td>${d.amount}</td>
+          <td><span class="badge ${paid?'paid':'unpaid'}">${d.pay_status}</span></td>
         </tr>
       `;
     });
-    html += `</tbody></table></div>`;
-    listEl.innerHTML = html;
-    return;
+
+    html += "</tbody></table></div>";
+    list.innerHTML = html;
+
+  }catch(err){
+    list.innerHTML = `<div class="loading" style="color:#a40000;">${err.message}</div>`;
+  }finally{
+    btn.disabled = false;
+    loading.style.display = "none";
   }
-
-  // orders（訂單明細）
-  const rows = userData.details || [];
-  if(!rows.length){
-    listEl.innerHTML = `<div class="muted">沒有訂單資料</div>`;
-    return;
-  }
-
-  let html = `
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>團別</th>
-            <th>品項</th>
-            <th class="center">數量</th>
-            <th class="right">金額</th>
-            <th class="center">到貨</th>
-            <th class="center">包/出</th>
-          </tr>
-        </thead>
-        <tbody>
-  `;
-
-  rows.forEach(d=>{
-    const qty = Number(d.qty||0);
-    const aq  = Number(d.arrived_qty||0);
-    html += `
-      <tr>
-        <td class="muted">${esc(d.group||"")}</td>
-        <td>${esc(d.item||"")}</td>
-        <td class="center">${esc(qty)}</td>
-        <td class="right">${fmt(d.amount)}</td>
-        <td class="center">${esc(aq)}/${esc(qty)}</td>
-        <td class="center">
-          <div class="muted">${esc(d.pack_status||"未包")}${d.packed_at? "@" + esc(d.packed_at):""}</div>
-          <div class="muted">${esc(d.ship_status||"未出")}${d.shipped_at? "@" + esc(d.shipped_at):""}</div>
-        </td>
-      </tr>
-    `;
-  });
-
-  html += `</tbody></table></div>`;
-  listEl.innerHTML = html;
 }
-
 </script>
+
 </body>
 </html>
