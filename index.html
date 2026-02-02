@@ -1,97 +1,45 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>HXH獵人揪團</title>
-  <style>
-body{
-  margin:0;
-  min-height:100vh;
-  background:#0f1f3a;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;
-}
 
-.center{
-  text-align:center;
-  padding:20px;
-}
-
-.tagline{
-  font-size:22px;
-  font-weight:900;
-  letter-spacing:1px;
-  margin-bottom:12px;
-}
-
-.sub{
-  font-size:14px;
-  opacity:.85;
-  line-height:1.8;
-}
-
-.buttons{
-  display:flex;
-  flex-direction:column;   /* 👈 關鍵：改成直排 */
-  gap:14px;
-  align-items:center;      /* 讓按鈕置中 */
-  margin-top:20px;
-}
-
-button{
-  padding:12px 18px;
-  border-radius:999px;
-  border:0;
-  cursor:pointer;
-  font-size:15px;
-  font-weight:900;
-}
-
-.btn-main{
-  background:#f5c451;
-  color:#1b1b1b;
-}
-
-.btn-sub{
-  background:rgba(255,255,255,0.12);
-  color:#fff;
-  border:1px solid rgba(255,255,255,0.25);
-}
-</style>
+  <!-- 只負責載入樣式，不在這裡寫 style -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<main class="center">
 
-  <!-- 標語 -->
-  <h1 class="tagline">
-    我知道你又敗家了，<br>
-    我也是。
-  </h1>
+  <main class="center">
+    <!-- 主標題 -->
+    <h1 class="title">HXH獵人揪團</h1>
 
-  <!-- 問題句 -->
-  <div class="question">——你是豆漿嗎？</div>
+    <!-- 標語（強制換行） -->
+    <div class="tagline">
+      我知道你又敗家了，<br>
+      我也是。
+    </div>
 
-  <!-- 按鈕區 -->
-  <div class="buttons">
+    <!-- 問題句（柔和紅、放大、加粗） -->
+    <div class="question">——你是豆漿嗎？</div>
 
-    <!-- 主按鈕：不是豆漿 → 查團務（黃色） -->
-    <a href="user.html">
-      <button class="btn btn-main">不是豆漿，要查團務</button>
-    </a>
+    <!-- 小字 -->
+    <div class="sub">一起得到快樂吧！</div>
 
-    <!-- 次按鈕：是豆漿（淺色） -->
-    <a href="admin.html">
-      <button class="btn btn-sub">是，我就是豆漿</button>
-    </a>
+    <!-- 按鈕區 -->
+    <div class="buttons">
+      <!-- 主按鈕：黃色 -->
+      <a href="user.html" class="btn-wrap">
+        <button class="btn btn-main">不是豆漿，要查團務</button>
+      </a>
 
-  </div>
-
-</main>
+      <!-- 次按鈕：淺色 -->
+      <a href="admin.html" class="btn-wrap">
+        <button class="btn btn-sub">是，我就是豆漿</button>
+      </a>
+    </div>
+  </main>
 
 </body>
 </html>
