@@ -1,0 +1,69 @@
+/* =========================
+   landing.css：入口頁專用
+========================= */
+
+body{
+  min-height:100vh;
+  background:#0f1f3a;
+  color:#faf3dc;
+
+  /* 入口頁才需要置中舞台 */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* 標題、標語、提問 → 宋體 */
+.title,
+.tagline,
+.question{
+  font-family: var(--serif);
+}
+
+.title{
+  font-size:32px;
+  font-weight:900;
+  margin-bottom:20px;
+}
+
+.tagline{
+  font-size:24px;
+  font-weight:700;
+  line-height:1.6;
+  margin-bottom:16px;
+}
+
+.question{
+  font-size:18px;
+  font-weight:900;
+  color:#b50d0d;      /* 深紅暗紅 */
+  letter-spacing:1px;
+  margin-bottom:10px;
+}
+
+.sub{
+  font-size:14px;
+  opacity:0.8;
+  margin-bottom:26px;
+}
+
+/* 按鈕上下排列 */
+.buttons{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  align-items:center;
+}
+
+/* 讓兩顆按鈕等寬：用容器取最大寬 */
+.buttons{
+  width:max-content;     /* 容器寬 = 最長那顆 */
+  margin:0 auto;
+}
+.btn-wrap{
+  display:block;
+  width:100%;
+}
+.btn{
+  width:100%;            /* 兩顆撐滿容器 => 一樣長 */
+}
