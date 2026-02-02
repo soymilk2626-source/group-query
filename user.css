@@ -55,3 +55,16 @@ body{
   line-height:1.8;
   font-size:14px;
 }
+.table-wrap{
+  width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  border-radius:16px;
+  margin-top:12px;
+}
+
+.table-wrap table{
+  width:100%;
+  min-width:900px;  /* 欄位多就加大：1000/1100 */
+  border-collapse:collapse;
+}
