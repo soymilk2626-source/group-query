@@ -32,7 +32,7 @@
 
     <!-- 連結列（你之後想到其他連結再加） -->
     <div class="top-links">
-      <a class="timeline" href="timeline.html">到貨時間軸</a>
+      <a class="timeline" href="https://gitmind.com/app/docs/mtny45ji" target="_blank" rel="noopener">到貨時間軸</a>
       <a href="index.html">回入口</a>
       <a href="#" onclick="alert('之後再加');return false;">其他連結</a>
     </div>
@@ -101,11 +101,13 @@
       try{
         // 兼容兩種 API：有 action=query 的，也有單純 q&key 的
         const url1 = `${API_URL}?action=query&q=${encodeURIComponent(name)}&key=${encodeURIComponent(key)}`;
+        console.log("[query] url", url1);
         let res = await fetch(url1);
 
         // 如果你的 API 不吃 action，會回 404/錯誤；就改用 url2
         if(!res.ok){
           const url2 = `${API_URL}?q=${encodeURIComponent(name)}&key=${encodeURIComponent(key)}`;
+          console.log("[query] fallback url", url2);
           res = await fetch(url2);
         }
 
@@ -117,6 +119,7 @@
           throw new Error("API 回傳不是 JSON（可能是權限頁/錯誤頁）。");
         }
 
+        console.log("[query] response", { ok: data.ok, message: data.message });
         if(!data.ok){
           throw new Error(data.message || "查詢失敗");
         }
@@ -200,6 +203,7 @@
                 <th>品項</th>
                 <th class="center">數量</th>
                 <th class="right">金額</th>
+                <th class="center">付款</th>
                 <th class="center">到貨</th>
                 <th>包/出</th>
               </tr>
@@ -214,6 +218,8 @@
 
         const pack = (d.pack_status || "未包");
         const ship = (d.ship_status || "未出");
+        const paidRaw = d.paid_status ?? d.payment_status ?? d.paid ?? d.is_paid ?? d.pay_status ?? d.status ?? "";
+        const paidBadge = getPaymentBadge(paidRaw);
 
         html += `
           <tr>
@@ -221,6 +227,7 @@
             <td>${esc(d.item || "")}</td>
             <td class="center">${esc(qty)}</td>
             <td class="right">${fmt(d.amount)}</td>
+            <td class="center"><span class="badge ${paidBadge.className}">${paidBadge.label}</span></td>
             <td class="center">${esc(arrivedText)}</td>
             <td>
               <div style="font-weight:900;">${esc(pack)} ${d.packed_at ? "@"+esc(d.packed_at) : ""}</div>
@@ -234,6 +241,23 @@
 
       html += `</tbody></table></div>`;
       listEl.innerHTML = html;
+    }
+
+    function getPaymentBadge(raw){
+      const normalized = String(raw ?? "").trim().toLowerCase();
+      const paidValues = ["已付", "paid", "true", "1", "yes", "y"];
+      const unpaidValues = ["未付", "unpaid", "false", "0", "no", "n"];
+
+      if(paidValues.includes(normalized)){
+        return { label: "已付", className: "paid" };
+      }
+      if(unpaidValues.includes(normalized)){
+        return { label: "未付", className: "unpaid" };
+      }
+      if(!normalized){
+        return { label: "未付", className: "unpaid" };
+      }
+      return { label: esc(raw), className: "unpaid" };
     }
   </script>
 </body>
