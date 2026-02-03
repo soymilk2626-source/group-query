@@ -10,10 +10,10 @@ const CONFIG = {
   spreadsheetId: "PUT_YOUR_SPREADSHEET_ID_HERE",
   // ✅ 付款明細分頁（若沒有可留空）
   paymentsSheetName: "payments",
-  // ✅ 使用者查詢用密碼（可留空表示不驗證）
-  userQueryKey: "USER_QUERY_KEY",
-  // ✅ 管理者密碼（必填）
-  adminKey: "ADMIN_KEY",
+  // ✅ 使用者查詢用密碼
+  userQueryKey: "HXH2026",
+  // ✅ 管理者密碼
+  adminKey: "a-2001626",
   // ✅ 別名表 sheet 名稱（可留空）
   aliasesSheetName: "aliases"
 };
@@ -111,7 +111,7 @@ function queryByName(params) {
   const aliasData = loadAliases();
   const resolved = resolveNickname(qInput, lineUserId, aliasData);
 
-  if (!resolved.canonical) {
+  if (!resolved.canonical || !resolved.canonicalNormalized) {
     return {
       ok: false,
       message: "找不到對應暱稱，請確認別名設定",
@@ -131,11 +131,19 @@ function queryByName(params) {
   const matchedRows = [];
   const scanned = [];
   ordersSheets.forEach(sheetInfo => {
+    const sheetName = sheetInfo.sheet.getName();
     const sheetRows = readRows(sheetInfo.sheet, ORDER_FIELD_ALIASES, sheetInfo.headerIndex, sheetInfo.requiredMissing);
-    const filtered = sheetRows.filter(row => normalizeName(row.nickname) === resolved.canonicalNormalized);
+    const filtered = sheetRows.filter(row => {
+      const normalized = normalizeName(row.nickname);
+      return normalized && normalized.includes(resolved.canonicalNormalized);
+    });
+    filtered.forEach(row => {
+      row.group = sheetName;
+      row.row_id = `${sheetName}|${row.row_index}`;
+    });
     matchedRows.push.apply(matchedRows, filtered);
     scanned.push({
-      name: sheetInfo.sheet.getName(),
+      name: sheetName,
       isOrdersSheet: true,
       rows: sheetRows.length,
       matched: filtered.length,
@@ -177,7 +185,7 @@ function resolveMode(lineUserId) {
  * action=admin_list
  */
 function adminList(params) {
-  const key = params.key || params.admin_key || "";
+  const key = params.admin_key || "";
   if (CONFIG.adminKey && key !== CONFIG.adminKey) {
     return { ok: false, message: "管理碼錯誤" };
   }
@@ -212,7 +220,7 @@ function adminList(params) {
  * }
  */
 function adminUpdate(payload) {
-  const key = payload.admin_key || payload.key || "";
+  const key = payload.admin_key || "";
   if (CONFIG.adminKey && key !== CONFIG.adminKey) {
     return { ok: false, message: "管理碼錯誤" };
   }

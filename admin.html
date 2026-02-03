@@ -254,7 +254,7 @@
     }
 
     async function loadAdminList(){
-      const url = `${API_URL}?action=admin_list&key=${encodeURIComponent(adminKey)}`;
+      const url = `${API_URL}?action=admin_list&admin_key=${encodeURIComponent(adminKey)}`;
       console.log("[admin_list] url", url);
       try{
         const res = await fetch(url);
