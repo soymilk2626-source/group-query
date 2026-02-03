@@ -351,7 +351,7 @@
 
         html += `
           <tr>
-            <td class="center"><input type="checkbox" class="row-check" data-row-index="${row.row_index}"></td>
+            <td class="center"><input type="checkbox" class="row-check" data-row-id="${esc(row.row_id || "")}"></td>
             <td>${esc(row.group || row.sheet || "")}</td>
             <td>${esc(row.name || row.nickname || "")}</td>
             <td>${esc(row.item || "")}</td>
@@ -391,8 +391,9 @@
     function getSelectedRows(){
       const selectedIds = Array.from(document.querySelectorAll(".row-check"))
         .filter(input => input.checked)
-        .map(input => Number(input.dataset.rowIndex));
-      return allRows.filter(row => selectedIds.includes(Number(row.row_index)));
+        .map(input => input.dataset.rowId)
+        .filter(Boolean);
+      return allRows.filter(row => selectedIds.includes(row.row_id));
     }
 
     function formatNow(){
@@ -421,7 +422,7 @@
         const res = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "admin_update", key: adminKey, updates })
+          body: JSON.stringify({ action: "admin_update", admin_key: adminKey, updates })
         });
         const data = await res.json();
         console.log("[admin_update] response", { ok: data.ok, message: data.message });
@@ -440,8 +441,8 @@
     function batchArrivedAll(){
       const rows = getSelectedRows();
       const updates = rows.map(row => ({
-        row_index: row.row_index,
-        arrived_qty: Number(row.qty || 0)
+        row_id: row.row_id,
+        patch: { arrived_qty: Number(row.qty || 0) }
       }));
       sendUpdates(updates, "已將到貨設為全到");
     }
@@ -454,8 +455,8 @@
       }
       const rows = getSelectedRows();
       const updates = rows.map(row => ({
-        row_index: row.row_index,
-        arrived_qty: value
+        row_id: row.row_id,
+        patch: { arrived_qty: value }
       }));
       sendUpdates(updates, "已更新到貨數量");
     }
@@ -464,8 +465,8 @@
       const rows = getSelectedRows();
       const packageId = generatePackageId();
       const updates = rows.map(row => ({
-        row_index: row.row_index,
-        package_id: packageId
+        row_id: row.row_id,
+        patch: { package_id: packageId }
       }));
       sendUpdates(updates, `已建立包裹 ${packageId}`);
     }
@@ -474,9 +475,8 @@
       const rows = getSelectedRows();
       const now = formatNow();
       const updates = rows.map(row => ({
-        row_index: row.row_index,
-        pack_status: "已包",
-        packed_at: now
+        row_id: row.row_id,
+        patch: { pack_status: "已包", packed_at: now }
       }));
       sendUpdates(updates, "已標記包貨");
     }
@@ -485,9 +485,8 @@
       const rows = getSelectedRows();
       const now = formatNow();
       const updates = rows.map(row => ({
-        row_index: row.row_index,
-        ship_status: "已出",
-        shipped_at: now
+        row_id: row.row_id,
+        patch: { ship_status: "已出", shipped_at: now }
       }));
       sendUpdates(updates, "已標記出貨");
     }
@@ -500,8 +499,8 @@
       }
       const rows = getSelectedRows();
       const updates = rows.map(row => ({
-        row_index: row.row_index,
-        tracking_no: value
+        row_id: row.row_id,
+        patch: { tracking_no: value }
       }));
       sendUpdates(updates, "已套用單號");
     }
@@ -514,8 +513,8 @@
       }
       const rows = getSelectedRows();
       const updates = rows.map(row => ({
-        row_index: row.row_index,
-        order_link: value
+        row_id: row.row_id,
+        patch: { order_link: value }
       }));
       sendUpdates(updates, "已套用訂單連結");
     }
@@ -528,8 +527,8 @@
       }
       const rows = getSelectedRows();
       const updates = rows.map(row => ({
-        row_index: row.row_index,
-        ship_pref: value
+        row_id: row.row_id,
+        patch: { ship_pref: value }
       }));
       sendUpdates(updates, "已套用出貨偏好");
     }
