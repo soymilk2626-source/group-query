@@ -41,9 +41,9 @@ body{
 }
 
 .top-links a.timeline{
-  color:#8b2b2b;
-  border-color:#f2c9c9;
-  background:#fff7f7;
+  color:var(--navy);
+  border-color:var(--yellow);
+  background:transparent;
 }
 
 /* 查詢列：短一點、圓角、深藍按鈕、可換行 */
@@ -155,8 +155,8 @@ th, td{
   padding:10px;
   border-bottom:1px solid #eee;
   font-size:14px;
-  text-align:left;
-  vertical-align:top;
+  text-align:center;
+  vertical-align:middle;
 }
 
 th{
@@ -179,10 +179,12 @@ tr:last-child td{ border-bottom:none; }
   border-radius:999px;
   font-size:12px;
   font-weight:900;
+  line-height:1;
 }
 
 .paid{ background:#e6f4ea; color:#1b5e20; }
 .unpaid{ background:#fdecea; color:#a40000; }
+.neutral{ background:#f1f2f4; color:#555; }
 
 /* 取消左上角 back link（如果你有留著） */
 .back-link{ display:none !important; }

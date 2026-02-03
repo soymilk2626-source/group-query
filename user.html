@@ -36,13 +36,11 @@
     <div class="container">
       <div class="top-links">
         <a class="timeline" href="https://gitmind.com/app/docs/mtny45ji" target="_blank" rel="noopener">到貨時間軸</a>
+
         <a href="index.html">回入口</a>
         <a href="#" onclick="alert('之後再加');return false;">其他連結</a>
       </div>
 
-      <div style="display:flex;justify-content:center;margin:4px 0 0;">
-        <button class="btn btn-sub" type="button" onclick="location.href='admin.html'">我是豆漿</button>
-      </div>
 
       <!-- 查詢列 -->
       <div class="search">
@@ -137,11 +135,11 @@
 
         // 你舊版欄位可能是 total_paid/total_unpaid/total_all
         // 新版欄位可能是 due_total/paid_total/balance
-        const due  = data.due_total ?? data.total_all ?? 0;
-        const paid = data.paid_total ?? data.total_paid ?? 0;
-        const bal  = data.balance ?? (Number(due||0) - Number(paid||0));
+        const due  = Number(data.should_pay ?? data.due_total ?? data.total_all) || 0;
+        const paid = Number(data.paid ?? data.paid_total ?? data.total_paid) || 0;
+        const unpaid = Number(data.unpaid ?? data.total_unpaid) || Math.max(0, due - paid);
 
-        summaryEl.textContent = `應收：${fmt(due)}　已收：${fmt(paid)}　差額：${fmt(bal)}`;
+        summaryEl.textContent = `應收：${fmt(due)}　已收：${fmt(paid)}　未收：${fmt(unpaid)}`;
         summaryEl.style.display = "";
 
         if(!(data.details || []).length){
@@ -263,20 +261,7 @@
     }
 
     function getPaymentBadge(raw){
-      const normalized = String(raw ?? "").trim().toLowerCase();
-      const paidValues = ["已付", "paid", "true", "1", "yes", "y"];
-      const unpaidValues = ["未付", "unpaid", "false", "0", "no", "n"];
 
-      if(paidValues.includes(normalized)){
-        return { label: "已付", className: "paid" };
-      }
-      if(unpaidValues.includes(normalized)){
-        return { label: "未付", className: "unpaid" };
-      }
-      if(!normalized){
-        return { label: "未付", className: "unpaid" };
-      }
-      return { label: esc(raw), className: "unpaid" };
     }
   </script>
 </body>
