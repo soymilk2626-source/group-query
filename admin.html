@@ -163,30 +163,6 @@
     </div>
     <a class="escape-link" href="index.html">其實我不是豆漿</a>
 
-    <div class="container">
-      <div class="card">
-        <h2>管理碼登入</h2>
-        <div class="admin-login">
-          <input id="admin_key" type="password" placeholder="管理碼（ADMIN_KEY）" />
-          <button id="login" class="btn btn-primary">登入</button>
-        </div>
-        <div id="login-status" class="status-line"></div>
-      </div>
-
-      <div id="admin-panel" class="card panel-hidden">
-        <h2>主面板</h2>
-
-      <div class="row">
-        <label>
-          團別
-          <select id="group-filter"></select>
-        </label>
-        <label>
-          暱稱搜尋
-          <input id="name-filter" class="pill-input" placeholder="輸入暱稱關鍵字" />
-        </label>
-      </div>
-
       <div class="tabs" id="quick-tabs">
         <button class="tab active" data-filter="all">全部</button>
         <button class="tab" data-filter="not-arrived">未全到</button>
@@ -213,8 +189,7 @@
         <button id="tracking-apply" class="btn btn-ghost">套用單號</button>
         <input id="link-input" class="pill-input" placeholder="套用訂單連結" />
         <button id="link-apply" class="btn btn-ghost">套用訂單連結</button>
-        <input id="note-input" class="pill-input" placeholder="套用出貨備註" />
-        <button id="note-apply" class="btn btn-ghost">套用出貨備註</button>
+
         <select id="ship-pref-input">
           <option value="">套用出貨偏好</option>
           <option value="先寄">先寄</option>
@@ -266,7 +241,6 @@
     document.getElementById("tracking-apply").addEventListener("click", () => batchApplyTracking());
     document.getElementById("link-apply").addEventListener("click", () => batchApplyLink());
     document.getElementById("ship-pref-apply").addEventListener("click", () => batchApplyShipPref());
-    document.getElementById("note-apply").addEventListener("click", () => batchApplyNote());
 
     async function handleLogin(){
       const key = document.getElementById("admin_key").value.trim();
@@ -543,20 +517,6 @@
         patch: { order_link: value }
       }));
       sendUpdates(updates, "已套用訂單連結");
-    }
-
-    function batchApplyNote(){
-      const value = document.getElementById("note-input").value.trim();
-      if(!value){
-        setStatus(panelStatus, "請輸入出貨備註", true);
-        return;
-      }
-      const rows = getSelectedRows();
-      const updates = rows.map(row => ({
-        row_id: row.row_id,
-        patch: { note: value }
-      }));
-      sendUpdates(updates, "已套用出貨備註");
     }
 
     function batchApplyShipPref(){
