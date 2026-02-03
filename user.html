@@ -133,6 +133,14 @@
         summaryEl.textContent = `應收：${fmt(due)}　已收：${fmt(paid)}　差額：${fmt(bal)}`;
         summaryEl.style.display = "";
 
+        if(!(data.details || []).length){
+          console.log("[query] no rows matched", {
+            nickname: name,
+            keyProvided: Boolean(key),
+            sheet: data.source_sheet || "orders"
+          });
+        }
+
         userData = data;
         render();
 
