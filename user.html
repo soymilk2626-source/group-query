@@ -36,7 +36,6 @@
     <div class="container">
       <div class="top-links">
         <a class="timeline" href="https://gitmind.com/app/docs/mtny45ji" target="_blank" rel="noopener">到貨時間軸</a>
-
         <a href="index.html">回入口</a>
         <a href="#" onclick="alert('之後再加');return false;">其他連結</a>
       </div>
@@ -133,13 +132,6 @@
           throw new Error(data.message || "查詢失敗");
         }
 
-        // 你舊版欄位可能是 total_paid/total_unpaid/total_all
-        // 新版欄位可能是 due_total/paid_total/balance
-        const due  = Number(data.should_pay ?? data.due_total ?? data.total_all) || 0;
-        const paid = Number(data.paid ?? data.paid_total ?? data.total_paid) || 0;
-        const unpaid = Number(data.unpaid ?? data.total_unpaid) || Math.max(0, due - paid);
-
-        summaryEl.textContent = `應收：${fmt(due)}　已收：${fmt(paid)}　未收：${fmt(unpaid)}`;
         summaryEl.style.display = "";
 
         if(!(data.details || []).length){

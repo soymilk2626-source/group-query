@@ -163,21 +163,6 @@
     </div>
     <a class="escape-link" href="index.html">其實我不是豆漿</a>
 
-      <div class="tabs" id="quick-tabs">
-        <button class="tab active" data-filter="all">全部</button>
-        <button class="tab" data-filter="not-arrived">未全到</button>
-        <button class="tab" data-filter="not-packed">未包</button>
-        <button class="tab" data-filter="not-shipped">未出</button>
-      </div>
-
-      <div class="row" style="margin-top:12px;">
-        <button id="select-all" class="btn btn-ghost">全選</button>
-        <button id="clear-all" class="btn btn-ghost">清空勾選</button>
-        <button id="arrived-all" class="btn btn-yellow">到貨=全到 ✅</button>
-        <input id="arrived-input" type="number" min="0" class="pill-input" placeholder="手填到貨 qty" />
-        <button id="arrived-apply" class="btn btn-yellow">套用到貨 qty</button>
-      </div>
-
       <div class="row">
         <button id="package-create" class="btn btn-yellow">建立包裹 📦</button>
         <button id="mark-packed" class="btn btn-yellow">標記已包 📦</button>
@@ -241,6 +226,7 @@
     document.getElementById("tracking-apply").addEventListener("click", () => batchApplyTracking());
     document.getElementById("link-apply").addEventListener("click", () => batchApplyLink());
     document.getElementById("ship-pref-apply").addEventListener("click", () => batchApplyShipPref());
+
 
     async function handleLogin(){
       const key = document.getElementById("admin_key").value.trim();
@@ -518,6 +504,7 @@
       }));
       sendUpdates(updates, "已套用訂單連結");
     }
+
 
     function batchApplyShipPref(){
       const value = document.getElementById("ship-pref-input").value;
