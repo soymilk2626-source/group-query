@@ -16,52 +16,60 @@
 
 <body>
   <div class="wrap">
-    <div class="user-hero">
-      <h1 class="hero-title">HXH獵人揪團，一起來敗家！！</h1>
-      <p class="hero-desc">
-        這是 HXH 限定揪團！！<br>
-        目前主要在 LINE 上活動，有現貨才會在其他地方發布。<br>
-        有任何問題都可以直接私訊我的帳號或來信給我～<br>
-        FB：Hau May Dun ｜ Email：soymilk2626@gmail.com<br>
-        <a href="https://line.me/R/ti/g/cH22OTt-IX" target="_blank" rel="noreferrer"
-           style="color:var(--yellow);font-weight:900;text-decoration:underline;">
-          >> 點我進群組 <<
-        </a>
-      </p>
+    <div class="topbar">
+      <div class="container">
+        <h1>HXH獵人揪團，一起來敗家！！</h1>
+        <p class="hero-desc">
+          這是 HXH 限定揪團！！<br>
+          目前主要在 LINE 上活動，有現貨才會在其他地方發布。<br>
+          有任何問題都可以直接私訊我的帳號或來信給我～<br>
+          FB：Hau May Dun ｜ Email：soymilk2626@gmail.com<br>
+          <a href="https://line.me/R/ti/g/cH22OTt-IX" target="_blank" rel="noreferrer"
+             style="color:var(--yellow);font-weight:900;text-decoration:underline;">
+            >> 點我進群組 <<
+          </a>
+        </p>
+      </div>
     </div>
 
     <!-- 連結列（你之後想到其他連結再加） -->
-    <div class="top-links">
-      <a class="timeline" href="https://gitmind.com/app/docs/mtny45ji" target="_blank" rel="noopener">到貨時間軸</a>
-      <a href="index.html">回入口</a>
-      <a href="#" onclick="alert('之後再加');return false;">其他連結</a>
-    </div>
+    <div class="container">
+      <div class="top-links">
+        <a class="timeline" href="https://gitmind.com/app/docs/mtny45ji" target="_blank" rel="noopener">到貨時間軸</a>
+        <a href="index.html">回入口</a>
+        <a href="#" onclick="alert('之後再加');return false;">其他連結</a>
+      </div>
 
-    <!-- 查詢列 -->
-    <div class="search">
-      <input id="name" placeholder="暱稱（FB / LINE 名稱）" />
-      <input id="key" placeholder="查詢密碼" />
-      <button id="go">查詢</button>
-    </div>
-    <div style="text-align:center;color:#666;font-size:12px;margin:-6px 0 6px;">
-      （提示：夯特2026）
-    </div>
+      <div style="display:flex;justify-content:center;margin:4px 0 0;">
+        <button class="btn btn-sub" type="button" onclick="location.href='admin.html'">我是豆漿</button>
+      </div>
 
-    <!-- 查詢中動畫（深藍） -->
-    <div id="loading" class="loading">
-      <div class="spinner"></div>
-      <div>查詢中…</div>
+      <!-- 查詢列 -->
+      <div class="search">
+        <input id="name" placeholder="暱稱（FB / LINE 名稱）" />
+        <input id="key" placeholder="查詢密碼" />
+        <button id="go">查詢</button>
+      </div>
+      <div style="text-align:center;color:#666;font-size:12px;margin:-6px 0 6px;">
+        （提示：夯特2026）
+      </div>
+
+      <!-- 查詢中動畫（深藍） -->
+      <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <div>查詢中…</div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active" data-tab="orders">訂單明細</div>
+        <div class="tab" data-tab="payments">付款明細</div>
+      </div>
+
+      <div id="summary" style="text-align:center;font-weight:900;color:#555;margin:6px 0 0;display:none;"></div>
+
+      <div id="list"></div>
     </div>
-
-    <!-- Tabs -->
-    <div class="tabs">
-      <div class="tab active" data-tab="orders">訂單明細</div>
-      <div class="tab" data-tab="payments">付款明細</div>
-    </div>
-
-    <div id="summary" style="text-align:center;font-weight:900;color:#555;margin:6px 0 0;display:none;"></div>
-
-    <div id="list"></div>
   </div>
 
   <script src="app.js"></script>

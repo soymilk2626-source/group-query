@@ -22,10 +22,7 @@
     }
 
     body{ background:#fafafa; color:#222; font-family:var(--sans); }
-    .wrap{ max-width:1200px; margin:0 auto; padding:20px 16px 80px; }
-    .header{ background:var(--navy); color:#fff; padding:20px 16px; text-align:center; border-radius:0; }
-    .header h1{ margin:0; font-family:var(--serif); font-size:24px; font-weight:900; }
-    .header p{ margin:6px 0 0; font-size:13px; color:rgba(255,255,255,0.75); }
+    .wrap{ padding:20px 0 80px; }
     .escape-link{ display:block; text-align:center; margin:10px 0 0; color:var(--soft-red); font-weight:800; text-decoration:underline; }
 
     .card{ background:#fff; border:1px solid var(--line); padding:16px; margin-top:16px; }
@@ -91,14 +88,12 @@
 
     .table-wrap{
       width:100%;
-      overflow-x:auto;
-      -webkit-overflow-scrolling:touch;
+      overflow-x:visible;
       border-radius:12px;
       margin-top:12px;
     }
     table{
       width:100%;
-      min-width:1300px;
       border-collapse:collapse;
       background:#fff;
       border:1px solid var(--line);
@@ -131,28 +126,55 @@
     .pill-input{ width:180px; }
     .note{ color:#777; font-size:12px; }
     .panel-hidden{ display:none; }
+
+    .admin-login{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .admin-login input{
+      width:min(360px, 90vw);
+      height:44px;
+      border-radius:999px;
+      padding:0 14px;
+    }
+    .admin-login button{
+      height:44px;
+      border-radius:999px;
+      padding:0 18px;
+    }
+
+    @media (max-width: 767px){
+      .table-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+      table{ min-width:900px; }
+    }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <header class="header">
-      <h1>管理者後台</h1>
-      <p>出貨 / 包裹 / 到貨 勾選管理</p>
-    </header>
+    <div class="topbar">
+      <div class="container">
+        <h1>管理者後台</h1>
+        <div class="sub">出貨 / 包裹 / 到貨 勾選管理</div>
+      </div>
+    </div>
     <a class="escape-link" href="index.html">其實我不是豆漿</a>
 
-    <div class="card">
-      <h2>管理碼登入</h2>
-      <div class="row">
-        <input id="admin_key" class="pill-input" placeholder="管理碼（ADMIN_KEY）" />
-        <button id="login" class="btn btn-primary">登入</button>
+    <div class="container">
+      <div class="card">
+        <h2>管理碼登入</h2>
+        <div class="admin-login">
+          <input id="admin_key" type="password" placeholder="管理碼（ADMIN_KEY）" />
+          <button id="login" class="btn btn-primary">登入</button>
+        </div>
+        <div id="login-status" class="status-line"></div>
       </div>
-      <div id="login-status" class="status-line"></div>
-    </div>
 
-    <div id="admin-panel" class="card panel-hidden">
-      <h2>主面板</h2>
+      <div id="admin-panel" class="card panel-hidden">
+        <h2>主面板</h2>
 
       <div class="row">
         <label>
@@ -199,8 +221,9 @@
         <button id="ship-pref-apply" class="btn btn-ghost">套用出貨偏好</button>
       </div>
 
-      <div id="panel-status" class="status-line"></div>
-      <div id="admin-table"></div>
+        <div id="panel-status" class="status-line"></div>
+        <div id="admin-table"></div>
+      </div>
     </div>
   </div>
 
