@@ -9,30 +9,11 @@ body{
 
 /* 主容器 */
 .wrap{
-  max-width:980px;
-  margin:0 auto;
-  padding:20px 16px 60px;
+  padding:20px 0 60px;
 }
 
-/* 上方深藍標題列：不要圓角 */
-.user-hero{
-  background:var(--navy);
-  color:#fff;
-  padding:18px 16px;
-  text-align:center;
-  margin-bottom:14px;
-  border-radius:0; /* ✅ 不要圓角 */
-}
-
-.user-hero .hero-title{
-  margin:0 0 6px;
-  font-family:var(--serif);
-  font-size:22px;
-  font-weight:900;
-  color:#fff;
-}
-
-.user-hero .hero-desc{
+/* 查詢頁 topbar 文字 */
+.topbar .hero-desc{
   margin:0;
   font-size:14px;
   line-height:1.8;
@@ -158,15 +139,13 @@ body{
 /* 表格：不隱藏欄位，全部靠左右滑 */
 .table-wrap{
   width:100%;
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
+  overflow-x:visible;
   border-radius:12px;
   margin-top:10px;
 }
 
 .table-wrap table{
   width:100%;
-  min-width:980px;
   border-collapse:collapse;
   background:#fff;
   border:1px solid var(--line);
@@ -207,3 +186,14 @@ tr:last-child td{ border-bottom:none; }
 
 /* 取消左上角 back link（如果你有留著） */
 .back-link{ display:none !important; }
+
+@media (max-width: 767px){
+  .table-wrap{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .table-wrap table{
+    min-width:900px;
+  }
+}

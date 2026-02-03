@@ -16,49 +16,60 @@
 
 <body>
   <div class="wrap">
-    <div class="user-hero">
-      <h1 class="hero-title">HXH獵人揪團，一起來敗家！！</h1>
-      <p class="hero-desc">
-        這是 HXH 限定揪團！！<br>
-        目前主要在 LINE 上活動，有現貨才會在其他地方發布。<br>
-        有任何問題都可以直接私訊我的帳號或來信給我～<br>
-        FB：Hau May Dun ｜ Email：soymilk2626@gmail.com<br>
-        <a href="https://line.me/R/ti/g/cH22OTt-IX" target="_blank" rel="noreferrer"
-           style="color:var(--yellow);font-weight:900;text-decoration:underline;">
-          >> 點我進群組 <<
-        </a>
-      </p>
+    <div class="topbar">
+      <div class="container">
+        <h1>HXH獵人揪團，一起來敗家！！</h1>
+        <p class="hero-desc">
+          這是 HXH 限定揪團！！<br>
+          目前主要在 LINE 上活動，有現貨才會在其他地方發布。<br>
+          有任何問題都可以直接私訊我的帳號或來信給我～<br>
+          FB：Hau May Dun ｜ Email：soymilk2626@gmail.com<br>
+          <a href="https://line.me/R/ti/g/cH22OTt-IX" target="_blank" rel="noreferrer"
+             style="color:var(--yellow);font-weight:900;text-decoration:underline;">
+            >> 點我進群組 <<
+          </a>
+        </p>
+      </div>
     </div>
 
     <!-- 連結列（你之後想到其他連結再加） -->
-    <div class="top-links">
-      <a class="timeline" href="timeline.html">到貨時間軸</a>
-      <a href="index.html">回入口</a>
-      <a href="#" onclick="alert('之後再加');return false;">其他連結</a>
+    <div class="container">
+      <div class="top-links">
+        <a class="timeline" href="https://gitmind.com/app/docs/mtny45ji" target="_blank" rel="noopener">到貨時間軸</a>
+        <a href="index.html">回入口</a>
+        <a href="#" onclick="alert('之後再加');return false;">其他連結</a>
+      </div>
+
+      <div style="display:flex;justify-content:center;margin:4px 0 0;">
+        <button class="btn btn-sub" type="button" onclick="location.href='admin.html'">我是豆漿</button>
+      </div>
+
+      <!-- 查詢列 -->
+      <div class="search">
+        <input id="name" placeholder="暱稱（FB / LINE 名稱）" />
+        <input id="key" placeholder="查詢密碼" />
+        <button id="go">查詢</button>
+      </div>
+      <div style="text-align:center;color:#666;font-size:12px;margin:-6px 0 6px;">
+        （提示：夯特2026）
+      </div>
+
+      <!-- 查詢中動畫（深藍） -->
+      <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <div>查詢中…</div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active" data-tab="orders">訂單明細</div>
+        <div class="tab" data-tab="payments">付款明細</div>
+      </div>
+
+      <div id="summary" style="text-align:center;font-weight:900;color:#555;margin:6px 0 0;display:none;"></div>
+
+      <div id="list"></div>
     </div>
-
-    <!-- 查詢列 -->
-    <div class="search">
-      <input id="name" placeholder="暱稱（FB / LINE 名稱）" />
-      <input id="key" placeholder="查詢密碼" />
-      <button id="go">查詢</button>
-    </div>
-
-    <!-- 查詢中動畫（深藍） -->
-    <div id="loading" class="loading">
-      <div class="spinner"></div>
-      <div>查詢中…</div>
-    </div>
-
-    <!-- Tabs -->
-    <div class="tabs">
-      <div class="tab active" data-tab="orders">訂單明細</div>
-      <div class="tab" data-tab="payments">付款明細</div>
-    </div>
-
-    <div id="summary" style="text-align:center;font-weight:900;color:#555;margin:6px 0 0;display:none;"></div>
-
-    <div id="list"></div>
   </div>
 
   <script src="app.js"></script>
@@ -101,11 +112,13 @@
       try{
         // 兼容兩種 API：有 action=query 的，也有單純 q&key 的
         const url1 = `${API_URL}?action=query&q=${encodeURIComponent(name)}&key=${encodeURIComponent(key)}`;
+        console.log("[query] url", url1);
         let res = await fetch(url1);
 
         // 如果你的 API 不吃 action，會回 404/錯誤；就改用 url2
         if(!res.ok){
           const url2 = `${API_URL}?q=${encodeURIComponent(name)}&key=${encodeURIComponent(key)}`;
+          console.log("[query] fallback url", url2);
           res = await fetch(url2);
         }
 
@@ -117,6 +130,7 @@
           throw new Error("API 回傳不是 JSON（可能是權限頁/錯誤頁）。");
         }
 
+        console.log("[query] response", { ok: data.ok, message: data.message });
         if(!data.ok){
           throw new Error(data.message || "查詢失敗");
         }
@@ -129,6 +143,14 @@
 
         summaryEl.textContent = `應收：${fmt(due)}　已收：${fmt(paid)}　差額：${fmt(bal)}`;
         summaryEl.style.display = "";
+
+        if(!(data.details || []).length){
+          console.log("[query] no rows matched", {
+            nickname: name,
+            keyProvided: Boolean(key),
+            sheet: data.source_sheet || "orders"
+          });
+        }
 
         userData = data;
         render();
@@ -200,6 +222,7 @@
                 <th>品項</th>
                 <th class="center">數量</th>
                 <th class="right">金額</th>
+                <th class="center">付款</th>
                 <th class="center">到貨</th>
                 <th>包/出</th>
               </tr>
@@ -214,6 +237,8 @@
 
         const pack = (d.pack_status || "未包");
         const ship = (d.ship_status || "未出");
+        const paidRaw = d.paid_status ?? d.payment_status ?? d.paid ?? d.is_paid ?? d.pay_status ?? d.status ?? "";
+        const paidBadge = getPaymentBadge(paidRaw);
 
         html += `
           <tr>
@@ -221,6 +246,7 @@
             <td>${esc(d.item || "")}</td>
             <td class="center">${esc(qty)}</td>
             <td class="right">${fmt(d.amount)}</td>
+            <td class="center"><span class="badge ${paidBadge.className}">${paidBadge.label}</span></td>
             <td class="center">${esc(arrivedText)}</td>
             <td>
               <div style="font-weight:900;">${esc(pack)} ${d.packed_at ? "@"+esc(d.packed_at) : ""}</div>
@@ -234,6 +260,23 @@
 
       html += `</tbody></table></div>`;
       listEl.innerHTML = html;
+    }
+
+    function getPaymentBadge(raw){
+      const normalized = String(raw ?? "").trim().toLowerCase();
+      const paidValues = ["已付", "paid", "true", "1", "yes", "y"];
+      const unpaidValues = ["未付", "unpaid", "false", "0", "no", "n"];
+
+      if(paidValues.includes(normalized)){
+        return { label: "已付", className: "paid" };
+      }
+      if(unpaidValues.includes(normalized)){
+        return { label: "未付", className: "unpaid" };
+      }
+      if(!normalized){
+        return { label: "未付", className: "unpaid" };
+      }
+      return { label: esc(raw), className: "unpaid" };
     }
   </script>
 </body>

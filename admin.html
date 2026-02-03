@@ -11,64 +11,557 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="base.css">
-  <!-- 管理頁你之後要深藍主題再加 admin.css；先保持白底簡潔 -->
   <style>
-    body{ background:#fafafa; color:#222; }
-    .wrap{ max-width:980px; margin:0 auto; padding:20px 16px 60px; }
-    .hero{ background:var(--navy); color:#fff; padding:18px 16px; text-align:center; border-radius:0; }
-    .hero h1{ margin:0; font-family:var(--serif); font-size:22px; font-weight:900; }
-    .card{ background:#fff; border:1px solid var(--line); padding:14px; margin-top:14px; }
-    input{ padding:12px 14px; border:1px solid var(--line); border-radius:999px; width:min(420px, 100%); }
+    :root{
+      --navy:#0f1f3a;
+      --yellow:#f5c451;
+      --soft-red:#c45a5a;
+      --badge-green:#e7f3ec;
+      --badge-gray:#f1f2f4;
+      --badge-text:#2f4f3a;
+    }
+
+    body{ background:#fafafa; color:#222; font-family:var(--sans); }
+    .wrap{ padding:20px 0 80px; }
+    .escape-link{ display:block; text-align:center; margin:10px 0 0; color:var(--soft-red); font-weight:800; text-decoration:underline; }
+
+    .card{ background:#fff; border:1px solid var(--line); padding:16px; margin-top:16px; }
+    .card h2{ margin:0 0 10px; font-family:var(--serif); font-size:18px; }
+
     .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .muted{ color:#777; font-size:13px; }
-    a.soft-back{ color:#b85b5b; font-weight:900; text-decoration:underline; }
+    .row + .row{ margin-top:10px; }
+
+    input, select{
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      font-size:14px;
+      font-family:var(--sans);
+      background:#fff;
+      min-height:40px;
+    }
+
+    .btn{
+      padding:10px 14px;
+      border-radius:999px;
+      border:0;
+      font-size:14px;
+      font-weight:900;
+      cursor:pointer;
+      font-family:var(--sans);
+    }
+
+    .btn-primary{ background:var(--navy); color:#fff; }
+    .btn-ghost{ background:#fff; border:1px solid var(--line); color:#222; }
+    .btn-yellow{ background:var(--yellow); color:#1b1b1b; }
+    .btn:disabled{ opacity:.6; cursor:not-allowed; }
+
+    .status-line{
+      margin-top:10px;
+      font-size:13px;
+      font-weight:700;
+    }
+    .status-line.error{ color:var(--soft-red); }
+    .status-line.success{ color:#2f4f3a; }
+
+    .tabs{
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+
+    .tab{
+      padding:6px 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:900;
+    }
+    .tab.active{
+      background:var(--yellow);
+      border-color:var(--yellow);
+    }
+
+    .table-wrap{
+      width:100%;
+      overflow-x:visible;
+      border-radius:12px;
+      margin-top:12px;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:#fff;
+      border:1px solid var(--line);
+    }
+    th, td{
+      padding:10px;
+      border-bottom:1px solid #eee;
+      font-size:14px;
+      text-align:left;
+      vertical-align:top;
+    }
+    th{ background:#f2f3f5; font-weight:900; color:#1f2a44; }
+    tr:last-child td{ border-bottom:none; }
+    .center{ text-align:center; }
+    .right{ text-align:right; }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:4px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .badge.ok{ background:var(--badge-green); color:var(--badge-text); }
+    .badge.muted{ background:var(--badge-gray); color:#555; }
+
+    .pill-input{ width:180px; }
+    .note{ color:#777; font-size:12px; }
+    .panel-hidden{ display:none; }
+
+    .admin-login{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .admin-login input{
+      width:min(360px, 90vw);
+      height:44px;
+      border-radius:999px;
+      padding:0 14px;
+    }
+    .admin-login button{
+      height:44px;
+      border-radius:999px;
+      padding:0 18px;
+    }
+
+    @media (max-width: 767px){
+      .table-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+      table{ min-width:900px; }
+    }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <div class="hero">
-      <h1>HXH 獵人揪團｜管理後台</h1>
-    </div>
-
-
-
-    <div class="card">
-      <div class="muted">施工中，待建設：勾選出貨、包裹追蹤、批次操作」。</div>
-      <div class="row" style="margin-top:10px;">
-        <input id="admin_key" placeholder="管理碼">
-        <button class="btn btn-main" id="login">登入</button>
+    <div class="topbar">
+      <div class="container">
+        <h1>管理者後台</h1>
+        <div class="sub">出貨 / 包裹 / 到貨 勾選管理</div>
       </div>
-      <div id="status" class="muted" style="margin-top:10px;"></div>
     </div>
-    <div style="margin-top:10px;text-align:center;">
-      <a class="soft-back" href="index.html">其實我不是豆漿</a>
-    </div>
-    <div class="card" id="panel" style="display:none;">
-      <div style="font-weight:900;">✅ 登入成功</div>
-      <div class="muted" style="margin-top:6px;">下一步我們再把管理清單搬進來。</div>
+    <a class="escape-link" href="index.html">其實我不是豆漿</a>
+
+    <div class="container">
+      <div class="card">
+        <h2>管理碼登入</h2>
+        <div class="admin-login">
+          <input id="admin_key" type="password" placeholder="管理碼（ADMIN_KEY）" />
+          <button id="login" class="btn btn-primary">登入</button>
+        </div>
+        <div id="login-status" class="status-line"></div>
+      </div>
+
+      <div id="admin-panel" class="card panel-hidden">
+        <h2>主面板</h2>
+
+      <div class="row">
+        <label>
+          團別
+          <select id="group-filter"></select>
+        </label>
+        <label>
+          暱稱搜尋
+          <input id="name-filter" class="pill-input" placeholder="輸入暱稱關鍵字" />
+        </label>
+      </div>
+
+      <div class="tabs" id="quick-tabs">
+        <button class="tab active" data-filter="all">全部</button>
+        <button class="tab" data-filter="not-arrived">未全到</button>
+        <button class="tab" data-filter="not-packed">未包</button>
+        <button class="tab" data-filter="not-shipped">未出</button>
+      </div>
+
+      <div class="row" style="margin-top:12px;">
+        <button id="select-all" class="btn btn-ghost">全選</button>
+        <button id="clear-all" class="btn btn-ghost">清空勾選</button>
+        <button id="arrived-all" class="btn btn-yellow">到貨=全到 ✅</button>
+        <input id="arrived-input" type="number" min="0" class="pill-input" placeholder="手填到貨 qty" />
+        <button id="arrived-apply" class="btn btn-yellow">套用到貨 qty</button>
+      </div>
+
+      <div class="row">
+        <button id="package-create" class="btn btn-yellow">建立包裹 📦</button>
+        <button id="mark-packed" class="btn btn-yellow">標記已包 📦</button>
+        <button id="mark-shipped" class="btn btn-yellow">標記已出 🚚</button>
+      </div>
+
+      <div class="row">
+        <input id="tracking-input" class="pill-input" placeholder="套用單號" />
+        <button id="tracking-apply" class="btn btn-ghost">套用單號</button>
+        <input id="link-input" class="pill-input" placeholder="套用訂單連結" />
+        <button id="link-apply" class="btn btn-ghost">套用訂單連結</button>
+        <select id="ship-pref-input">
+          <option value="">套用出貨偏好</option>
+          <option value="先寄">先寄</option>
+          <option value="等齊">等齊</option>
+        </select>
+        <button id="ship-pref-apply" class="btn btn-ghost">套用出貨偏好</button>
+      </div>
+
+        <div id="panel-status" class="status-line"></div>
+        <div id="admin-table"></div>
+      </div>
     </div>
   </div>
 
   <script src="app.js"></script>
   <script>
-    document.getElementById("login").addEventListener("click", async ()=>{
+    let adminKey = "";
+    let allRows = [];
+    let currentFilter = "all";
+
+    const loginBtn = document.getElementById("login");
+    const loginStatus = document.getElementById("login-status");
+    const panelStatus = document.getElementById("panel-status");
+    const adminPanel = document.getElementById("admin-panel");
+    const adminTable = document.getElementById("admin-table");
+    const groupFilter = document.getElementById("group-filter");
+    const nameFilter = document.getElementById("name-filter");
+
+    loginBtn.addEventListener("click", handleLogin);
+    groupFilter.addEventListener("change", applyFilters);
+    nameFilter.addEventListener("input", applyFilters);
+
+    document.querySelectorAll("#quick-tabs .tab").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#quick-tabs .tab").forEach(t => t.classList.remove("active"));
+        btn.classList.add("active");
+        currentFilter = btn.dataset.filter;
+        applyFilters();
+      });
+    });
+
+    document.getElementById("select-all").addEventListener("click", () => toggleSelection(true));
+    document.getElementById("clear-all").addEventListener("click", () => toggleSelection(false));
+    document.getElementById("arrived-all").addEventListener("click", () => batchArrivedAll());
+    document.getElementById("arrived-apply").addEventListener("click", () => batchArrivedManual());
+    document.getElementById("package-create").addEventListener("click", () => batchPackageCreate());
+    document.getElementById("mark-packed").addEventListener("click", () => batchMarkPacked());
+    document.getElementById("mark-shipped").addEventListener("click", () => batchMarkShipped());
+    document.getElementById("tracking-apply").addEventListener("click", () => batchApplyTracking());
+    document.getElementById("link-apply").addEventListener("click", () => batchApplyLink());
+    document.getElementById("ship-pref-apply").addEventListener("click", () => batchApplyShipPref());
+
+    async function handleLogin(){
       const key = document.getElementById("admin_key").value.trim();
-      const status = document.getElementById("status");
-      if(!key){ alert("請輸入管理碼"); return; }
-      status.textContent = "驗證中…";
+      if(!key){
+        setStatus(loginStatus, "請輸入管理碼", true);
+        return;
+      }
+      adminKey = key;
+      setStatus(loginStatus, "驗證中…");
+      await loadAdminList();
+    }
+
+    async function loadAdminList(){
+      const url = `${API_URL}?action=admin_list&admin_key=${encodeURIComponent(adminKey)}`;
+      console.log("[admin_list] url", url);
       try{
-        const url = `${API_URL}?action=admin_list&admin_key=${encodeURIComponent(key)}`;
         const res = await fetch(url);
         const data = await res.json();
-        if(!data.ok) throw new Error(data.message || "管理碼錯誤");
-        status.textContent = `✅ OK（共 ${data.list?.length || 0} 筆）`;
-        document.getElementById("panel").style.display = "";
-      }catch(e){
-        console.error(e);
-        status.textContent = "❌ " + (e.message || "失敗");
+        console.log("[admin_list] response", { ok: data.ok, message: data.message });
+        if(!data.ok){
+          setStatus(loginStatus, data.message || "管理碼錯誤", true);
+          return;
+        }
+        allRows = data.details || [];
+        adminPanel.classList.remove("panel-hidden");
+        setStatus(loginStatus, "登入成功", false, true);
+        buildGroupOptions(data.groups);
+        applyFilters();
+      }catch(err){
+        console.error(err);
+        setStatus(loginStatus, "無法連線管理清單", true);
       }
-    });
+    }
+
+    function buildGroupOptions(groupsFromApi){
+      const groups = groupsFromApi?.length
+        ? groupsFromApi
+        : Array.from(new Set(allRows.map(row => (row.group || row.sheet || "").trim()).filter(Boolean)));
+
+      groupFilter.innerHTML = `<option value="">全部團別</option>` +
+        groups.map(g => `<option value="${esc(g)}">${esc(g)}</option>`).join("");
+    }
+
+    function applyFilters(){
+      const selectedGroup = groupFilter.value;
+      const nameQuery = nameFilter.value.trim().toLowerCase();
+      let rows = allRows.slice();
+
+      if(selectedGroup){
+        rows = rows.filter(row => String(row.group || row.sheet || "").trim() === selectedGroup);
+      }
+      if(nameQuery){
+        rows = rows.filter(row => String(row.name || row.nickname || "").trim().toLowerCase().includes(nameQuery));
+      }
+
+      if(currentFilter === "not-arrived"){
+        rows = rows.filter(row => Number(row.arrived_qty || 0) < Number(row.qty || 0));
+      }
+      if(currentFilter === "not-packed"){
+        rows = rows.filter(row => normalizeStatus(row.pack_status) !== "已包");
+      }
+      if(currentFilter === "not-shipped"){
+        rows = rows.filter(row => normalizeStatus(row.ship_status) !== "已出");
+      }
+
+      renderTable(rows);
+    }
+
+    function renderTable(rows){
+      if(!rows.length){
+        adminTable.innerHTML = `<div class="note">目前沒有符合條件的資料。</div>`;
+        return;
+      }
+
+      let html = `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th class="center">勾選</th>
+                <th>團別</th>
+                <th>暱稱</th>
+                <th>品項</th>
+                <th class="center">qty</th>
+                <th class="center">arrived/qty</th>
+                <th>出貨偏好</th>
+                <th>包裹編號</th>
+                <th>包貨狀態</th>
+                <th>出貨狀態</th>
+                <th>物流單號</th>
+                <th>訂單連結</th>
+                <th>備註</th>
+              </tr>
+            </thead>
+            <tbody>
+      `;
+
+      rows.forEach(row => {
+        const qty = Number(row.qty || 0);
+        const arrived = Number(row.arrived_qty || 0);
+        const packStatus = normalizeStatus(row.pack_status) || "未包";
+        const shipStatus = normalizeStatus(row.ship_status) || "未出";
+        const packBadge = buildBadge(packStatus);
+        const shipBadge = buildBadge(shipStatus);
+        const packedAt = row.packed_at ? ` @${esc(row.packed_at)}` : "";
+        const shippedAt = row.shipped_at ? ` @${esc(row.shipped_at)}` : "";
+        const orderLink = row.order_link ? `<a href="${esc(row.order_link)}" target="_blank" rel="noopener">訂單連結</a>` : "";
+
+        html += `
+          <tr>
+            <td class="center"><input type="checkbox" class="row-check" data-row-id="${esc(row.row_id || "")}"></td>
+            <td>${esc(row.group || row.sheet || "")}</td>
+            <td>${esc(row.name || row.nickname || "")}</td>
+            <td>${esc(row.item || "")}</td>
+            <td class="center">${esc(qty)}</td>
+            <td class="center">${esc(arrived)}/${esc(qty)}</td>
+            <td>${esc(row.ship_pref || "")}</td>
+            <td>${esc(row.package_id || "")}</td>
+            <td>${packBadge} ${packedAt}</td>
+            <td>${shipBadge} ${shippedAt}</td>
+            <td>${esc(row.tracking_no || "")}</td>
+            <td>${orderLink}</td>
+            <td>${esc(row.note || "")}</td>
+          </tr>
+        `;
+      });
+
+      html += `</tbody></table></div>`;
+      adminTable.innerHTML = html;
+    }
+
+    function normalizeStatus(value){
+      return String(value || "").trim();
+    }
+
+    function buildBadge(statusText){
+      const isOk = statusText === "已包" || statusText === "已出";
+      const className = isOk ? "badge ok" : "badge muted";
+      return `<span class="${className}">${esc(statusText)}</span>`;
+    }
+
+    function toggleSelection(isChecked){
+      document.querySelectorAll(".row-check").forEach(input => {
+        input.checked = isChecked;
+      });
+    }
+
+    function getSelectedRows(){
+      const selectedIds = Array.from(document.querySelectorAll(".row-check"))
+        .filter(input => input.checked)
+        .map(input => input.dataset.rowId)
+        .filter(Boolean);
+      return allRows.filter(row => selectedIds.includes(row.row_id));
+    }
+
+    function formatNow(){
+      const d = new Date();
+      const pad = n => String(n).padStart(2, "0");
+      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    function generatePackageId(){
+      const d = new Date();
+      const pad = n => String(n).padStart(2, "0");
+      const datePart = `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}`;
+      const rand = Math.floor(Math.random() * 900) + 100;
+      return `P${datePart}-${rand}`;
+    }
+
+    async function sendUpdates(updates, successMessage){
+      if(!updates.length){
+        setStatus(panelStatus, "請先勾選資料", true);
+        return;
+      }
+      const url = `${API_URL}?action=admin_update`;
+      console.log("[admin_update] url", url);
+
+      try{
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "admin_update", admin_key: adminKey, updates })
+        });
+        const data = await res.json();
+        console.log("[admin_update] response", { ok: data.ok, message: data.message });
+        if(!data.ok){
+          setStatus(panelStatus, data.message || "更新失敗", true);
+          return;
+        }
+        setStatus(panelStatus, successMessage || "更新完成", false, true);
+        await loadAdminList();
+      }catch(err){
+        console.error(err);
+        setStatus(panelStatus, "無法更新資料", true);
+      }
+    }
+
+    function batchArrivedAll(){
+      const rows = getSelectedRows();
+      const updates = rows.map(row => ({
+        row_id: row.row_id,
+        patch: { arrived_qty: Number(row.qty || 0) }
+      }));
+      sendUpdates(updates, "已將到貨設為全到");
+    }
+
+    function batchArrivedManual(){
+      const value = Number(document.getElementById("arrived-input").value);
+      if(Number.isNaN(value)){
+        setStatus(panelStatus, "請輸入到貨數量", true);
+        return;
+      }
+      const rows = getSelectedRows();
+      const updates = rows.map(row => ({
+        row_id: row.row_id,
+        patch: { arrived_qty: value }
+      }));
+      sendUpdates(updates, "已更新到貨數量");
+    }
+
+    function batchPackageCreate(){
+      const rows = getSelectedRows();
+      const packageId = generatePackageId();
+      const updates = rows.map(row => ({
+        row_id: row.row_id,
+        patch: { package_id: packageId }
+      }));
+      sendUpdates(updates, `已建立包裹 ${packageId}`);
+    }
+
+    function batchMarkPacked(){
+      const rows = getSelectedRows();
+      const now = formatNow();
+      const updates = rows.map(row => ({
+        row_id: row.row_id,
+        patch: { pack_status: "已包", packed_at: now }
+      }));
+      sendUpdates(updates, "已標記包貨");
+    }
+
+    function batchMarkShipped(){
+      const rows = getSelectedRows();
+      const now = formatNow();
+      const updates = rows.map(row => ({
+        row_id: row.row_id,
+        patch: { ship_status: "已出", shipped_at: now }
+      }));
+      sendUpdates(updates, "已標記出貨");
+    }
+
+    function batchApplyTracking(){
+      const value = document.getElementById("tracking-input").value.trim();
+      if(!value){
+        setStatus(panelStatus, "請輸入單號", true);
+        return;
+      }
+      const rows = getSelectedRows();
+      const updates = rows.map(row => ({
+        row_id: row.row_id,
+        patch: { tracking_no: value }
+      }));
+      sendUpdates(updates, "已套用單號");
+    }
+
+    function batchApplyLink(){
+      const value = document.getElementById("link-input").value.trim();
+      if(!value){
+        setStatus(panelStatus, "請輸入訂單連結", true);
+        return;
+      }
+      const rows = getSelectedRows();
+      const updates = rows.map(row => ({
+        row_id: row.row_id,
+        patch: { order_link: value }
+      }));
+      sendUpdates(updates, "已套用訂單連結");
+    }
+
+    function batchApplyShipPref(){
+      const value = document.getElementById("ship-pref-input").value;
+      if(!value){
+        setStatus(panelStatus, "請選擇出貨偏好", true);
+        return;
+      }
+      const rows = getSelectedRows();
+      const updates = rows.map(row => ({
+        row_id: row.row_id,
+        patch: { ship_pref: value }
+      }));
+      sendUpdates(updates, "已套用出貨偏好");
+    }
+
+    function setStatus(target, message, isError, isSuccess){
+      target.textContent = message || "";
+      target.classList.remove("error", "success");
+      if(isError) target.classList.add("error");
+      if(isSuccess) target.classList.add("success");
+    }
   </script>
 </body>
 </html>
