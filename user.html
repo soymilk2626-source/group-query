@@ -36,13 +36,10 @@
     <div class="container">
       <div class="top-links">
         <a class="timeline" href="https://gitmind.com/app/docs/mtny45ji" target="_blank" rel="noopener">到貨時間軸</a>
-        <button class="btn btn-main" type="button"
-                onclick="location.href='https://soymilk2626-source.github.io/group-query/admin.html'">
-          我是豆漿
-        </button>
         <a href="index.html">回入口</a>
         <a href="#" onclick="alert('之後再加');return false;">其他連結</a>
       </div>
+
 
       <!-- 查詢列 -->
       <div class="search">
@@ -135,8 +132,6 @@
           throw new Error(data.message || "查詢失敗");
         }
 
-        const totals = computeTotalsFromDetails(data.details || [], data.payments || []);
-        summaryEl.textContent = `應收：${fmt(totals.shouldPay)}　已收：${fmt(totals.paid)}　未收：${fmt(totals.unpaid)}`;
         summaryEl.style.display = "";
 
         if(!(data.details || []).length){
@@ -258,24 +253,7 @@
     }
 
     function getPaymentBadge(raw){
-      const text = String(raw ?? "").trim();
-      if(!text){
-        return { label: "其他", className: "neutral" };
-      }
-      if(text.includes("已")){
-        return { label: text, className: "paid" };
-      }
-      if(text.includes("未")){
-        return { label: text, className: "unpaid" };
-      }
-      return { label: text, className: "neutral" };
-    }
 
-    function computeTotalsFromDetails(details, payments){
-      const shouldPay = details.reduce((sum, row) => sum + (Number(row.amount) || 0), 0);
-      const paid = payments.reduce((sum, row) => sum + (Number(row.amount) || 0), 0);
-      const unpaid = Math.max(0, shouldPay - paid);
-      return { shouldPay, paid, unpaid };
     }
   </script>
 </body>
