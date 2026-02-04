@@ -1,0 +1,220 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/user.css b/user.css
+index 937ce5a5db80b6319ec45a4b3971fb5d117c4488..5489dea50f5e62d2c5d29cfabd7dba9faa99c686 100644
+--- a/user.css
++++ b/user.css
+@@ -1,90 +1,75 @@
+ /* =========================
+    user.css：查詢頁專用（直版面 + 不隱藏欄位 + 表格可左右滑）
+ ========================= */
+ 
+ body{
+   background:#fafafa;
+   color:#222;
+ }
+ 
+ /* 主容器 */
+ .wrap{
+-  max-width:980px;
+-  margin:0 auto;
+-  padding:20px 16px 60px;
++  padding:20px 0 60px;
+ }
+ 
+-/* 上方深藍標題列：不要圓角 */
+-.user-hero{
+-  background:var(--navy);
+-  color:#fff;
+-  padding:18px 16px;
+-  text-align:center;
+-  margin-bottom:14px;
+-  border-radius:0; /* ✅ 不要圓角 */
+-}
+-
+-.user-hero .hero-title{
+-  margin:0 0 6px;
+-  font-family:var(--serif);
+-  font-size:22px;
+-  font-weight:900;
+-  color:#fff;
+-}
+-
+-.user-hero .hero-desc{
++/* 查詢頁 topbar 文字 */
++.topbar .hero-desc{
+   margin:0;
+   font-size:14px;
+   line-height:1.8;
+   color:rgba(255,255,255,0.88);
+ }
+ 
+ /* 中間連結列 */
+ .top-links{
+   display:flex;
+   justify-content:center;
+   gap:10px;
+   flex-wrap:wrap;
+   margin:12px 0 10px;
+ }
+ 
+-.top-links a{
+-  color:var(--navy);
+-  background:#fff;
+-  border:1px solid var(--line);
+-  padding:8px 12px;
++.top-links .top-link{
++  display:inline-flex;
++  align-items:center;
++  justify-content:center;
++  min-width:120px;
++  height:40px;
++  padding:0 16px;
+   border-radius:999px;
+   font-weight:800;
+   font-size:13px;
+   text-decoration:none;
++  color:var(--yellow);
++  background:transparent;
++  border:1px solid var(--yellow);
++  cursor:pointer;
+ }
+ 
+-.top-links a.timeline{
+-  color:#8b2b2b;
+-  border-color:#f2c9c9;
+-  background:#fff7f7;
++.top-links .top-link:hover{
++  background:rgba(245,196,81,0.08);
+ }
+ 
+ /* 查詢列：短一點、圓角、深藍按鈕、可換行 */
+ .search{
+   display:flex;
+   flex-wrap:wrap;
+   gap:10px;
+   justify-content:center;
+   margin:14px 0;
+ }
+ 
+ .search input{
+   flex:0 1 280px;
+   min-width:220px;
+   max-width:360px;
+   padding:12px 14px;
+   border:1px solid var(--line);
+   border-radius:999px; /* ✅ 圓角 */
+   outline:none;
+   font-size:14px;
+   background:#fff;
+ }
+ 
+ .search input:focus{
+   border-color:var(--navy);
+@@ -136,74 +121,99 @@ body{
+   display:flex;
+   justify-content:center;
+   gap:10px;
+   margin:12px 0;
+   flex-wrap:wrap;
+ }
+ 
+ .tab{
+   padding:8px 14px;
+   border-radius:999px;
+   border:1px solid var(--line);
+   background:#fff;
+   cursor:pointer;
+   font-size:13px;
+   font-weight:900;
+ }
+ 
+ .tab.active{
+   background:var(--yellow);
+   border-color:var(--yellow);
+ }
+ 
+ /* 表格：不隱藏欄位，全部靠左右滑 */
+ .table-wrap{
+   width:100%;
+-  overflow-x:auto;
+-  -webkit-overflow-scrolling:touch;
++  overflow-x:visible;
+   border-radius:12px;
+   margin-top:10px;
+ }
+ 
+ .table-wrap table{
+   width:100%;
+-  min-width:980px;
+   border-collapse:collapse;
+   background:#fff;
+   border:1px solid var(--line);
++  table-layout:fixed;
+ }
+ 
+ th, td{
+   padding:10px;
+   border-bottom:1px solid #eee;
+   font-size:14px;
+-  text-align:left;
+-  vertical-align:top;
++  text-align:center;
++  vertical-align:middle;
+ }
+ 
+ th{
+   background:#f2f3f5;
+   font-weight:900;
+   color:#1f2a44;
+ }
+ 
+ tr:last-child td{ border-bottom:none; }
+ 
+ .right{ text-align:right; }
+ .center{ text-align:center; }
+ 
++.col-qty,
++.col-item,
++.col-pay,
++.col-arrived{
++  width:120px;
++}
++
++.col-item{
++  overflow:hidden;
++  text-overflow:ellipsis;
++  white-space:nowrap;
++}
++
+ .badge{
+   display:inline-flex;
+   align-items:center;
+   justify-content:center;
+   white-space:nowrap;
+   padding:6px 10px;
+   border-radius:999px;
+   font-size:12px;
+   font-weight:900;
++  line-height:1;
+ }
+ 
+ .paid{ background:#e6f4ea; color:#1b5e20; }
+ .unpaid{ background:#fdecea; color:#a40000; }
++.neutral{ background:#f1f2f4; color:#555; }
+ 
+ /* 取消左上角 back link（如果你有留著） */
+ .back-link{ display:none !important; }
++
++@media (max-width: 767px){
++  .table-wrap{
++    overflow-x:auto;
++    -webkit-overflow-scrolling:touch;
++  }
++
++  .table-wrap table{
++    min-width:900px;
++  }
++}
+ 
+EOF
+)
