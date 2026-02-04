@@ -54,6 +54,9 @@
     .btn-primary{ background:var(--navy); color:#fff; }
     .btn-ghost{ background:#fff; border:1px solid var(--line); color:#222; }
     .btn-yellow{ background:var(--yellow); color:#1b1b1b; }
+    .btn-primary-action{ background:var(--yellow); color:#1b1b1b; }
+    .btn-secondary-action{ background:#fff; border:1px solid var(--line); color:#1b1b1b; }
+    .btn-neutral-action{ background:#f6f6f6; border:1px solid #e3e3e3; color:#666; }
     .btn:disabled{ opacity:.6; cursor:not-allowed; }
 
     .status-line{
@@ -188,6 +191,7 @@
           暱稱搜尋
           <input id="name-filter" class="pill-input" placeholder="輸入暱稱關鍵字" />
         </label>
+        <button id="name-search" class="btn btn-neutral-action" type="button">套用搜尋</button>
       </div>
 
       <div class="tabs" id="quick-tabs">
@@ -198,32 +202,32 @@
       </div>
 
       <div class="row" style="margin-top:12px;">
-        <button id="select-all" class="btn btn-ghost">全選</button>
-        <button id="clear-all" class="btn btn-ghost">清空勾選</button>
-        <button id="arrived-all" class="btn btn-yellow">到貨=全到 ✅</button>
+        <button id="select-all" class="btn btn-neutral-action">全選</button>
+        <button id="clear-all" class="btn btn-neutral-action">清空勾選</button>
+        <button id="arrived-all" class="btn btn-primary-action">到貨=全到 ✅</button>
         <input id="arrived-input" type="number" min="0" class="pill-input" placeholder="手填到貨 qty" />
-        <button id="arrived-apply" class="btn btn-yellow">套用到貨 qty</button>
+        <button id="arrived-apply" class="btn btn-primary-action">套用到貨 qty</button>
       </div>
 
       <div class="row">
-        <button id="package-create" class="btn btn-yellow">建立包裹 📦</button>
-        <button id="mark-packed" class="btn btn-yellow">標記已包 📦</button>
-        <button id="mark-shipped" class="btn btn-yellow">標記已出 🚚</button>
+        <button id="package-create" class="btn btn-primary-action">建立包裹 📦</button>
+        <button id="mark-packed" class="btn btn-secondary-action">標記已包 📦</button>
+        <button id="mark-shipped" class="btn btn-primary-action">標記已出 🚚</button>
       </div>
 
       <div class="row">
         <input id="tracking-input" class="pill-input" placeholder="套用單號" />
-        <button id="tracking-apply" class="btn btn-ghost">套用單號</button>
+        <button id="tracking-apply" class="btn btn-secondary-action">套用單號</button>
         <input id="link-input" class="pill-input" placeholder="套用訂單連結" />
-        <button id="link-apply" class="btn btn-ghost">套用訂單連結</button>
+        <button id="link-apply" class="btn btn-secondary-action">套用訂單連結</button>
         <input id="note-input" class="pill-input" placeholder="套用出貨備註" />
-        <button id="note-apply" class="btn btn-ghost">套用出貨備註</button>
+        <button id="note-apply" class="btn btn-secondary-action">套用出貨備註</button>
         <select id="ship-pref-input">
           <option value="">套用出貨偏好</option>
           <option value="先寄">先寄</option>
           <option value="等齊">等齊</option>
         </select>
-        <button id="ship-pref-apply" class="btn btn-ghost">套用出貨偏好</button>
+        <button id="ship-pref-apply" class="btn btn-secondary-action">套用出貨偏好</button>
       </div>
 
         <div id="panel-status" class="status-line"></div>
@@ -249,6 +253,13 @@
     loginBtn.addEventListener("click", handleLogin);
     groupFilter.addEventListener("change", applyFilters);
     nameFilter.addEventListener("input", applyFilters);
+    document.getElementById("name-search").addEventListener("click", applyFilters);
+    nameFilter.addEventListener("keydown", (event) => {
+      if(event.key === "Enter"){
+        event.preventDefault();
+        applyFilters();
+      }
+    });
 
     document.querySelectorAll("#quick-tabs .tab").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -353,8 +364,8 @@
                 <th>團別</th>
                 <th>暱稱</th>
                 <th>品項</th>
-                <th class="center">qty</th>
-                <th class="center">arrived/qty</th>
+                <th class="center">數量</th>
+                <th class="center">到貨數量</th>
                 <th>出貨偏好</th>
                 <th>付款狀態</th>
                 <th>包裹編號</th>
@@ -416,17 +427,26 @@
     }
 
     function getPaymentBadge(raw){
+      const normalized = normalizePaymentValue(raw);
+      if(normalized.status === "paid"){
+        return { label: "已付款", className: "paid" };
+      }
+      return { label: "未付款", className: "unpaid" };
+    }
+
+    function normalizePaymentValue(raw){
       const text = String(raw ?? "").trim();
-      if(!text){
-        return { label: "其他", className: "neutral" };
+      const invalidTokens = ["", "-", "—", "_", "?", "N/A", "na", "其他"];
+      if(invalidTokens.includes(text)){
+        return { status: "unpaid" };
       }
-      if(text.includes("已")){
-        return { label: text, className: "paid" };
+      if(/^\d+(\.\d+)?$/.test(text)){
+        const value = Number(text);
+        if(value >= 0){
+          return { status: "paid" };
+        }
       }
-      if(text.includes("未")){
-        return { label: text, className: "unpaid" };
-      }
-      return { label: text, className: "neutral" };
+      return { status: "unpaid" };
     }
 
     function toggleSelection(isChecked){

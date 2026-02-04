@@ -29,21 +29,25 @@ body{
   margin:12px 0 10px;
 }
 
-.top-links a{
-  color:var(--navy);
-  background:#fff;
-  border:1px solid var(--line);
-  padding:8px 12px;
+.top-links .top-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:120px;
+  height:40px;
+  padding:0 16px;
   border-radius:999px;
   font-weight:800;
   font-size:13px;
   text-decoration:none;
+  color:var(--yellow);
+  background:transparent;
+  border:1px solid var(--yellow);
+  cursor:pointer;
 }
 
-.top-links a.timeline{
-  color:var(--navy);
-  border-color:var(--yellow);
-  background:transparent;
+.top-links .top-link:hover{
+  background:rgba(245,196,81,0.08);
 }
 
 /* 查詢列：短一點、圓角、深藍按鈕、可換行 */
@@ -149,6 +153,7 @@ body{
   border-collapse:collapse;
   background:#fff;
   border:1px solid var(--line);
+  table-layout:fixed;
 }
 
 th, td{
@@ -169,6 +174,19 @@ tr:last-child td{ border-bottom:none; }
 
 .right{ text-align:right; }
 .center{ text-align:center; }
+
+.col-qty,
+.col-item,
+.col-pay,
+.col-arrived{
+  width:120px;
+}
+
+.col-item{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
 
 .badge{
   display:inline-flex;
