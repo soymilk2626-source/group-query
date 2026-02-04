@@ -1,0 +1,345 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/user.html b/user.html
+index 5c0d92a24d91b4e5c6d6fae58396f5c0247dc500..17da7fcef88d50462d9ddbd638e7b24f0e99af6e 100644
+--- a/user.html
++++ b/user.html
+@@ -1,240 +1,287 @@
+ <!doctype html>
+ <html lang="zh-Hant">
+ <head>
+   <meta charset="utf-8" />
+   <meta name="viewport" content="width=device-width,initial-scale=1" />
+   <title>HXH 獵人揪團｜查詢</title>
+ 
+   <!-- Fonts: 標題宋體、內容黑體 -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
+ 
+   <link rel="stylesheet" href="base.css">
+   <link rel="stylesheet" href="user.css">
+ </head>
+ 
+ <body>
+   <div class="wrap">
+-    <div class="user-hero">
+-      <h1 class="hero-title">HXH獵人揪團，一起來敗家！！</h1>
+-      <p class="hero-desc">
+-        這是 HXH 限定揪團！！<br>
+-        目前主要在 LINE 上活動，有現貨才會在其他地方發布。<br>
+-        有任何問題都可以直接私訊我的帳號或來信給我～<br>
+-        FB：Hau May Dun ｜ Email：soymilk2626@gmail.com<br>
+-        <a href="https://line.me/R/ti/g/cH22OTt-IX" target="_blank" rel="noreferrer"
+-           style="color:var(--yellow);font-weight:900;text-decoration:underline;">
+-          >> 點我進群組 <<
+-        </a>
+-      </p>
++    <div class="topbar">
++      <div class="container">
++        <h1>HXH獵人揪團，一起來敗家！！</h1>
++        <p class="hero-desc">
++          這是 HXH 限定揪團！！<br>
++          目前主要在 LINE 上活動，有現貨才會在其他地方發布。<br>
++          有任何問題都可以直接私訊我的帳號或來信給我～<br>
++          FB：Hau May Dun ｜ Email：soymilk2626@gmail.com<br>
++          <a href="https://line.me/R/ti/g/cH22OTt-IX" target="_blank" rel="noreferrer"
++             style="color:var(--yellow);font-weight:900;text-decoration:underline;">
++            >> 點我進群組 <<
++          </a>
++        </p>
++      </div>
+     </div>
+ 
+     <!-- 連結列（你之後想到其他連結再加） -->
+-    <div class="top-links">
+-      <a class="timeline" href="timeline.html">到貨時間軸</a>
+-      <a href="index.html">回入口</a>
+-      <a href="#" onclick="alert('之後再加');return false;">其他連結</a>
++    <div class="container">
++      <div class="top-links">
++        <a class="timeline" href="https://gitmind.com/app/docs/mtny45ji" target="_blank" rel="noopener">到貨時間軸</a>
++        <button class="btn btn-main" type="button"
++                onclick="location.href='https://soymilk2626-source.github.io/group-query/admin.html'">
++          我是豆漿
++        </button>
++        <a href="index.html">回入口</a>
++        <a href="#" onclick="alert('之後再加');return false;">其他連結</a>
++      </div>
++
++      <!-- 查詢列 -->
++      <div class="search">
++        <input id="name" placeholder="暱稱（FB / LINE 名稱）" />
++        <input id="key" placeholder="查詢密碼" />
++        <button id="go">查詢</button>
++      </div>
++      <div style="text-align:center;color:#666;font-size:12px;margin:-6px 0 6px;">
++        （提示：夯特2026）
++      </div>
++
++      <!-- 查詢中動畫（深藍） -->
++      <div id="loading" class="loading">
++        <div class="spinner"></div>
++        <div>查詢中…</div>
++      </div>
++
++      <!-- Tabs -->
++      <div class="tabs">
++        <div class="tab active" data-tab="orders">訂單明細</div>
++        <div class="tab" data-tab="payments">付款明細</div>
++      </div>
++
++      <div id="summary" style="text-align:center;font-weight:900;color:#555;margin:6px 0 0;display:none;"></div>
++
++      <div id="list"></div>
+     </div>
+-
+-    <!-- 查詢列 -->
+-    <div class="search">
+-      <input id="name" placeholder="暱稱（FB / LINE 名稱）" />
+-      <input id="key" placeholder="查詢密碼" />
+-      <button id="go">查詢</button>
+-    </div>
+-
+-    <!-- 查詢中動畫（深藍） -->
+-    <div id="loading" class="loading">
+-      <div class="spinner"></div>
+-      <div>查詢中…</div>
+-    </div>
+-
+-    <!-- Tabs -->
+-    <div class="tabs">
+-      <div class="tab active" data-tab="orders">訂單明細</div>
+-      <div class="tab" data-tab="payments">付款明細</div>
+-    </div>
+-
+-    <div id="summary" style="text-align:center;font-weight:900;color:#555;margin:6px 0 0;display:none;"></div>
+-
+-    <div id="list"></div>
+   </div>
+ 
+   <script src="app.js"></script>
+   <script>
+     let currentTab = "orders";
+     let userData = null;
+ 
+     const btn = document.getElementById("go");
+     const loading = document.getElementById("loading");
+     const listEl = document.getElementById("list");
+     const summaryEl = document.getElementById("summary");
+ 
+     // tab 切換
+     document.querySelectorAll(".tab").forEach(t=>{
+       t.addEventListener("click", ()=>{
+         document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+         t.classList.add("active");
+         currentTab = t.dataset.tab;
+         render();
+       });
+     });
+ 
+     btn.addEventListener("click", runQuery);
+ 
+     async function runQuery(){
+       const name = document.getElementById("name").value.trim();
+       const key  = document.getElementById("key").value.trim();
+ 
+       if(!name || !key){
+         alert("請輸入暱稱與密碼");
+         return;
+       }
+ 
+       // 開啟查詢中
+       btn.disabled = true;
+       loading.style.display = "flex";
+       listEl.innerHTML = "";
+       summaryEl.style.display = "none";
+ 
+       try{
+         // 兼容兩種 API：有 action=query 的，也有單純 q&key 的
+         const url1 = `${API_URL}?action=query&q=${encodeURIComponent(name)}&key=${encodeURIComponent(key)}`;
++        console.log("[query] url", url1);
+         let res = await fetch(url1);
+ 
+         // 如果你的 API 不吃 action，會回 404/錯誤；就改用 url2
+         if(!res.ok){
+           const url2 = `${API_URL}?q=${encodeURIComponent(name)}&key=${encodeURIComponent(key)}`;
++          console.log("[query] fallback url", url2);
+           res = await fetch(url2);
+         }
+ 
+         const text = await res.text();
+         let data;
+         try{
+           data = JSON.parse(text);
+         }catch{
+           throw new Error("API 回傳不是 JSON（可能是權限頁/錯誤頁）。");
+         }
+ 
++        console.log("[query] response", { ok: data.ok, message: data.message });
+         if(!data.ok){
+           throw new Error(data.message || "查詢失敗");
+         }
+ 
+-        // 你舊版欄位可能是 total_paid/total_unpaid/total_all
+-        // 新版欄位可能是 due_total/paid_total/balance
+-        const due  = data.due_total ?? data.total_all ?? 0;
+-        const paid = data.paid_total ?? data.total_paid ?? 0;
+-        const bal  = data.balance ?? (Number(due||0) - Number(paid||0));
++        const details = Array.isArray(data.details) ? data.details : [];
++        const payments = Array.isArray(data.payments) ? data.payments : [];
++        const totals = computeTotalsFromDetails(details, payments);
+ 
+-        summaryEl.textContent = `應收：${fmt(due)}　已收：${fmt(paid)}　差額：${fmt(bal)}`;
++        summaryEl.textContent = `應收：${fmt(totals.shouldPay)}　已收：${fmt(totals.paid)}　未收：${fmt(totals.unpaid)}`;
+         summaryEl.style.display = "";
+ 
+-        userData = data;
++        if(!details.length){
++          console.log("[query] no rows matched", {
++            nickname: name,
++            keyProvided: Boolean(key),
++            sheet: data.source_sheet || "orders"
++          });
++        }
++
++        userData = { ...data, details, payments };
+         render();
+ 
+       }catch(err){
+         console.error(err);
+-        listEl.innerHTML = `<div style="text-align:center;color:#a40000;font-weight:900;margin-top:12px;">❌ ${esc(err.message)}</div>`;
++        listEl.innerHTML = `<div style="text-align:center;color:#a40000;font-weight:900;margin-top:12px;">❌ ${esc(err.message || "查詢失敗")}</div>`;
+       }finally{
+         btn.disabled = false;
+         loading.style.display = "none";
+       }
+     }
+ 
+     function render(){
+       if(!userData){
+         listEl.innerHTML = "";
+         return;
+       }
+ 
+       if(currentTab === "payments"){
+-        const pays = userData.payments || [];
++        const pays = Array.isArray(userData.payments) ? userData.payments : [];
+         if(!pays.length){
+           listEl.innerHTML = `<div style="text-align:center;color:#777;margin-top:12px;">沒有付款紀錄</div>`;
+           return;
+         }
+ 
+         let html = `
+           <div class="table-wrap">
+             <table>
+               <thead>
+                 <tr>
+                   <th>時間</th>
+                   <th class="right">金額</th>
+                   <th>備註</th>
+                 </tr>
+               </thead>
+               <tbody>
+         `;
+ 
+         pays.forEach(p=>{
+           html += `
+             <tr>
+               <td>${esc(p.paid_at || "")}</td>
+               <td class="right">${fmt(p.amount)}</td>
+               <td>${esc(p.note || "")}</td>
+             </tr>
+           `;
+         });
+ 
+         html += `</tbody></table></div>`;
+         listEl.innerHTML = html;
+         return;
+       }
+ 
+       // orders
+-      const rows = userData.details || [];
++      const rows = Array.isArray(userData.details) ? userData.details : [];
+       if(!rows.length){
+         listEl.innerHTML = `<div style="text-align:center;color:#777;margin-top:12px;">沒有訂單資料</div>`;
+         return;
+       }
+ 
+       // 團別第一欄
+       let html = `
+         <div class="table-wrap">
+           <table>
+             <thead>
+               <tr>
+                 <th>團別</th>
+                 <th>品項</th>
+                 <th class="center">數量</th>
+                 <th class="right">金額</th>
++                <th class="center">付款</th>
+                 <th class="center">到貨</th>
+                 <th>包/出</th>
+               </tr>
+             </thead>
+             <tbody>
+       `;
+ 
+       rows.forEach(d=>{
+         const qty = Number(d.qty || 0);
+         const aq  = Number(d.arrived_qty || 0);
+         const arrivedText = `${aq}/${qty}`;
+ 
+         const pack = (d.pack_status || "未包");
+         const ship = (d.ship_status || "未出");
++        const paidRaw = d.paid_status ?? d.payment_status ?? d.paid ?? d.is_paid ?? d.pay_status ?? d.status ?? "";
++        const paidBadge = getPaymentBadge(paidRaw);
+ 
+         html += `
+           <tr>
+             <td>${esc(d.group || d.sheet || "")}</td>
+             <td>${esc(d.item || "")}</td>
+             <td class="center">${esc(qty)}</td>
+             <td class="right">${fmt(d.amount)}</td>
++            <td class="center"><span class="badge ${paidBadge.className}">${paidBadge.label}</span></td>
+             <td class="center">${esc(arrivedText)}</td>
+             <td>
+               <div style="font-weight:900;">${esc(pack)} ${d.packed_at ? "@"+esc(d.packed_at) : ""}</div>
+               <div style="font-weight:900;">${esc(ship)} ${d.shipped_at ? "@"+esc(d.shipped_at) : ""}</div>
+               ${d.tracking_no ? `<div class="muted">單號：${esc(d.tracking_no)}</div>` : ``}
+               ${d.order_link ? `<div class="muted">連結：<a href="${esc(d.order_link)}" target="_blank" rel="noreferrer">點我</a></div>` : ``}
+             </td>
+           </tr>
+         `;
+       });
+ 
+       html += `</tbody></table></div>`;
+       listEl.innerHTML = html;
+     }
++
++    function getPaymentBadge(raw){
++      const text = String(raw ?? "").trim();
++      if(!text){
++        return { label: "其他", className: "neutral" };
++      }
++      if(text.includes("已")){
++        return { label: text, className: "paid" };
++      }
++      if(text.includes("未")){
++        return { label: text, className: "unpaid" };
++      }
++      return { label: text, className: "neutral" };
++    }
++
++    function computeTotalsFromDetails(details, payments){
++      const safeDetails = Array.isArray(details) ? details : [];
++      const safePayments = Array.isArray(payments) ? payments : [];
++      const shouldPay = safeDetails.reduce((sum, row) => sum + (Number(row?.amount) || 0), 0);
++      const paid = safePayments.reduce((sum, row) => sum + (Number(row?.amount) || 0), 0);
++      const unpaid = Math.max(0, shouldPay - paid);
++      return { shouldPay, paid, unpaid };
++    }
+   </script>
+ </body>
+ </html>
+ 
+EOF
+)

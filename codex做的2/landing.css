@@ -1,0 +1,64 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/landing.css b/landing.css
+index b41535692d040c34d9ef0a7a3cfb96bd5d2d11fe..654579c8cc072ef3233e43f9fd502a6948dce697 100644
+--- a/landing.css
++++ b/landing.css
+@@ -9,53 +9,53 @@ body{
+ 
+   display:flex;
+   align-items:center;
+   justify-content:center;
+ }
+ 
+ /* 標題、標語、提問用宋體 */
+ .title,.tagline,.question{
+   font-family:var(--serif);
+ }
+ 
+ .title{
+   font-size:32px;
+   font-weight:900;
+   margin:0 0 20px;
+ }
+ 
+ .tagline{
+   font-size:24px;
+   font-weight:700;
+   line-height:1.6;
+   margin:0 0 16px;
+ }
+ 
+ .question{
+-  font-size:18px;
++  font-size:26px;
+   font-weight:900;
+-  color:#b50d0d;
++  color:#7b0b0b;
+   letter-spacing:1px;
+   margin:0 0 10px;
+ }
+ 
+ .sub{
+   font-size:14px;
+   opacity:0.85;
+   margin:0 0 26px;
+ }
+ 
+ /* 按鈕上下排列、等寬（取最長文字） */
+ .buttons{
+   display:flex;
+   flex-direction:column;
+   gap:14px;
+   align-items:center;
+ 
+   width:max-content;
+   margin:0 auto;
+ }
+ 
+ .btn-wrap{
+   display:block;
+   width:100%;
+   text-decoration:none;
+ 
+EOF
+)
